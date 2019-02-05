@@ -24,5 +24,3 @@
     mode: 0644
     backup: yes
   when: sources_list.stat.exists == True
-
-

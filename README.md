@@ -43,25 +43,31 @@ The other repo should also contain a `apt.yml` file that contains:
   hosts:
     - stretch_servers
 
-  vars:
-    distro: stretch
-
   roles:
-    - wpcli
+    - apt
 ```
 
-And a `hosts.yml` file that contains lists of servers, for example:
+And a `hosts.yml` file that contains lists of servers and the distros, for example:
 
 ```yml
 ---
 all:
   children:
+    buster_servers:
+      vars:
+        distro: buster
+      hosts:
+        dev.example.org:
     stretch_servers:
+      vars:
+        distro: squeeze
       hosts:
         cloud.example.com:
         cloud.example.org:
         cloud.example.net:
     jessie_servers:
+      vars:
+        distro: jessie
       hosts:
         host3.example.org:
         host4.example.org:
@@ -73,11 +79,3 @@ Then it can be run as follows:
 ansible-playbook apt.yml 
 ```
 
-## TODO
-
-Conditionally add files to `sources.list.d` for:
-
-* [php](https://deb.webarch.net/)
-* nodejs
-* yarn
-* docker

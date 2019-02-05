@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+{% if distro == 'stretch'  or distro == 'buster' %}
+deb https://deb.debian.org/debian {{ distro }} main
+deb https://deb.debian.org/debian {{ distro }}-updates main
+deb https://deb.debian.org/debian-security {{ distro }}/updates main
+deb https://deb.debian.org/debian {{ distro }}-backports main
+{% elif distro == 'jessie' or distro == 'wheezy' %}
+deb http://ftp.uk.debian.org/debian/ {{ distro }} main
+deb http://ftp.uk.debian.org/debian/ {{ distro }}-updates main
+deb http://security.debian.org/ {{ distro }}/updates main
+deb http://ftp.uk.debian.org/debian/ {{ distro }}-backports main
+{% endif %}

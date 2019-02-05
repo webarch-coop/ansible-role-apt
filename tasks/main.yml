@@ -8,7 +8,6 @@
       - aptitude
       - apt-listchanges
       - apt-show-versions
-      - git
     state: latest
     update_cache: yes
 

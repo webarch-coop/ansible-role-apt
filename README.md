@@ -37,7 +37,7 @@ The other repo should also contain a `apt.yml` file that contains:
 
 ```yml
 ---
-- name: Install WP CLI
+- name: Configure Apt Sources
   become: yes
 
   hosts:

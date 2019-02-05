@@ -73,7 +73,11 @@ Then it can be run as follows:
 ansible-playbook apt.yml 
 ```
 
-TODO: conditionally add files to `sources.list.d` for:
+## TODO
+
+Conditionally add files to `sources.list.d` for:
+
+* [php](https://deb.webarch.net/)
 * nodejs
 * yarn
 * docker

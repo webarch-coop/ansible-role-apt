@@ -3,8 +3,6 @@
   debug:
     msg: 
      - "apt_distro: {{ apt_distro }}"
-     - "apt_backports: {{ apt_backports }}"
-     - "apt_src: {{ apt_src }}"
     verbosity: 1
 
 - name: Include Debian tasks

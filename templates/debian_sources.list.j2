@@ -1,19 +1,23 @@
 # {{ ansible_managed }}
 {% if apt_distro == 'stretch'  or apt_distro == 'buster' %}
+# Main
 deb https://deb.debian.org/debian {{ apt_distro }} main
 deb https://deb.debian.org/debian {{ apt_distro }}-updates main
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main
-{% if apt_backports == 'True' %}
-deb https://deb.debian.org/debian {{ apt_distro }}-backports main
-{% endif %}
-{% if apt_src == 'True' %}
-deb-src https://deb.debian.org/debian {{ apt_distro }} main
-deb-src https://deb.debian.org/debian-security {{ apt_distro }}/updates main
-deb-src https://deb.debian.org/debian {{ apt_distro }}-updates main
-{% endif %} 
 {% elif apt_distro == 'jessie' or apt_distro == 'wheezy' %}
+# Main
 deb http://ftp.uk.debian.org/debian/ {{ apt_distro }} main
 deb http://ftp.uk.debian.org/debian/ {{ apt_distro }}-updates main
 deb http://security.debian.org/ {{ apt_distro }}/updates main
 deb http://ftp.uk.debian.org/debian/ {{ apt_distro }}-backports main
 {% endif %}
+{% if apt_distro == 'stretch'  or apt_distro == 'buster' and apt_backports == 'True' %}
+# Backports
+deb https://deb.debian.org/debian {{ apt_distro }}-backports main
+{% endif %}
+{% if apt_distro == 'stretch'  or apt_distro == 'buster' and apt_src == 'True' %}
+# Source
+deb-src https://deb.debian.org/debian {{ apt_distro }} main
+deb-src https://deb.debian.org/debian-security {{ apt_distro }}/updates main
+deb-src https://deb.debian.org/debian {{ apt_distro }}-updates main
+{% endif %} 

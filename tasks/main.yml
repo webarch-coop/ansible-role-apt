@@ -1,10 +1,10 @@
 ---
-- name: Debug vars
+- name: Print apt_ vars if verbosity 1 or more
   debug:
     msg: 
-     - "Apt Distro: {{ apt_distro }}"
-     - "Apt Backports: {{ apt_backports }}"
-     - "Apt Src: {{ apt_src }}"
+     - "apt_distro: {{ apt_distro }}"
+     - "apt_backports: {{ apt_backports }}"
+     - "apt_src: {{ apt_src }}"
     verbosity: 1
 
 - name: Include Debian tasks

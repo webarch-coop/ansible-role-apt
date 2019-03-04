@@ -7,9 +7,9 @@ deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main
 deb https://deb.debian.org/debian {{ apt_distro }}-backports main
 {% endif %}
 {% if apt_src == 'True' %}
-deb-src https://deb.debian.org/debian stretch main
-deb-src https://deb.debian.org/debian-security stretch/updates main
-deb-src https://deb.debian.org/debian stretch-updates main
+deb-src https://deb.debian.org/debian {{ apt_distro }} main
+deb-src https://deb.debian.org/debian-security {{ apt_distro }}/updates main
+deb-src https://deb.debian.org/debian {{ apt_distro }}-updates main
 {% endif %} 
 {% elif apt_distro == 'jessie' or apt_distro == 'wheezy' %}
 deb http://ftp.uk.debian.org/debian/ {{ apt_distro }} main

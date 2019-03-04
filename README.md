@@ -60,21 +60,17 @@ all:
         apt_distro: buster
       hosts:
         dev.example.org:
-          vars:
-            apt_src: yes
+          apt_src: yes
     stretch_servers:
       vars:
         apt_distro: squeeze
       hosts:
         cloud.example.com:
-          vars:
-            apt_src: yes
+          apt_src: yes
         cloud.example.org:
-          vars:
-            apt_backports: yes
+          apt_backports: yes
         cloud.example.net:
-          vars:
-            apt_backports: yes
+          apt_backports: yes
     jessie_servers:
       vars:
         apt_distro: jessie

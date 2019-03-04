@@ -3,10 +3,10 @@
 deb https://deb.debian.org/debian {{ apt_distro }} main
 deb https://deb.debian.org/debian {{ apt_distro }}-updates main
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main
-{% if apt_backports == 'yes' %}
+{% if apt_backports == 'True' %}
 deb https://deb.debian.org/debian {{ apt_distro }}-backports main
 {% endif %}
-{% if apt_src == 'yes' %}
+{% if apt_src == 'True' %}
 deb-src https://deb.debian.org/debian stretch main
 deb-src https://deb.debian.org/debian-security stretch/updates main
 deb-src https://deb.debian.org/debian stretch-updates main

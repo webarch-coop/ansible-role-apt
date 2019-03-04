@@ -11,13 +11,13 @@ deb http://ftp.uk.debian.org/debian/ {{ apt_distro }}-updates main
 deb http://security.debian.org/ {{ apt_distro }}/updates main
 deb http://ftp.uk.debian.org/debian/ {{ apt_distro }}-backports main
 {% endif %}
-{% if apt_backports is defined and apt_backports is true and apt_distro == 'stretch' or apt_distro == 'buster' %}
+{% if apt_backports is defined and apt_backports == 'true' and apt_distro == 'stretch' or apt_distro == 'buster' %}
 # Backports
 deb https://deb.debian.org/debian {{ apt_distro }}-backports main
 {% else %}
 # Backports repo not enabled
 {% endif %}
-{% if apt_src is defined and apt_src is true and apt_distro == 'stretch' or apt_distro == 'buster' %}
+{% if apt_src is defined and apt_src == 'true' and apt_distro == 'stretch' or apt_distro == 'buster' %}
 # Source
 deb-src https://deb.debian.org/debian {{ apt_distro }} main
 deb-src https://deb.debian.org/debian-security {{ apt_distro }}/updates main

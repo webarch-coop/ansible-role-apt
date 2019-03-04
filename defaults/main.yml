@@ -1,4 +1,4 @@
 ---
 apt_distro: stretch
-apt_backports: False
-apt_src: False
+apt_backports: false
+apt_src: false

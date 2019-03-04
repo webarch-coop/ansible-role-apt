@@ -1,26 +1,4 @@
 ---
-# apt-transport-https needs to be installed before the sources.list is updated to use HTTPS
-- name: Packages installed
-  apt:
-    pkg:
-      - apt-transport-https
-      - apticron
-      - aptitude
-      - apt-listchanges
-      - apt-show-versions
-    state: present
-    update_cache: yes
-
-# Gandi servers don't have /etc/apt/sources.list and have HTTPS enabled already
-- name: Stat /etc/apt/sources.list
-  stat:
-    path: "/etc/apt/sources.list"
-  register: sources_list
-
-- name: /etc/apt/sources.list in place
-  template:
-    src: templates/sources.list.j2
-    dest: /etc/apt/sources.list
-    mode: 0644
-    backup: yes
-  when: sources_list.stat.exists == True
+- name: Include Debian tasks
+  include_task: debian.yml
+  when: ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" )

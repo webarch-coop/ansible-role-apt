@@ -8,7 +8,7 @@
       - aptitude
       - apt-listchanges
       - apt-show-versions
-    state: latest
+    state: present
     update_cache: yes
 
 # Gandi servers don't have /etc/apt/sources.list and have HTTPS enabled already

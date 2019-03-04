@@ -55,19 +55,23 @@ all:
   children:
     buster_servers:
       vars:
-        distro: buster
+        apt_distro: buster
       hosts:
         dev.example.org:
+          apt_src: yes
     stretch_servers:
       vars:
-        distro: squeeze
+        apt_distro: squeeze
       hosts:
         cloud.example.com:
+          apt_src: yes
         cloud.example.org:
+          apt_backports: yes
         cloud.example.net:
+          apt_backports: yes
     jessie_servers:
       vars:
-        distro: jessie
+        apt_distro: jessie
       hosts:
         host3.example.org:
         host4.example.org:

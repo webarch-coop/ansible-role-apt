@@ -1,12 +1,19 @@
 # {{ ansible_managed }}
-{% if distro == 'stretch'  or distro == 'buster' %}
-deb https://deb.debian.org/debian {{ distro }} main
-deb https://deb.debian.org/debian {{ distro }}-updates main
-deb https://deb.debian.org/debian-security {{ distro }}/updates main
-deb https://deb.debian.org/debian {{ distro }}-backports main
-{% elif distro == 'jessie' or distro == 'wheezy' %}
-deb http://ftp.uk.debian.org/debian/ {{ distro }} main
-deb http://ftp.uk.debian.org/debian/ {{ distro }}-updates main
-deb http://security.debian.org/ {{ distro }}/updates main
-deb http://ftp.uk.debian.org/debian/ {{ distro }}-backports main
+{% if apt_distro == 'stretch'  or apt_distro == 'buster' %}
+deb https://deb.debian.org/debian {{ apt_distro }} main
+deb https://deb.debian.org/debian {{ apt_distro }}-updates main
+deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main
+{% if apt_backports == 'yes' %}
+deb https://deb.debian.org/debian {{ apt_distro }}-backports main
+{% endif %}
+{% if apt_src == 'yes' %}
+deb-src https://deb.debian.org/debian stretch main
+deb-src https://deb.debian.org/debian-security stretch/updates main
+deb-src https://deb.debian.org/debian stretch-updates main
+{% endif %} 
+{% elif apt_distro == 'jessie' or apt_distro == 'wheezy' %}
+deb http://ftp.uk.debian.org/debian/ {{ apt_distro }} main
+deb http://ftp.uk.debian.org/debian/ {{ apt_distro }}-updates main
+deb http://security.debian.org/ {{ apt_distro }}/updates main
+deb http://ftp.uk.debian.org/debian/ {{ apt_distro }}-backports main
 {% endif %}

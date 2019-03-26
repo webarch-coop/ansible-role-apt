@@ -1,7 +1,7 @@
 ---
 - name: Print apt_ vars if verbosity 1 or more
   debug:
-    msg: 
+    msg:
      - "apt_distro: {{ apt_distro }}"
     verbosity: 1
 

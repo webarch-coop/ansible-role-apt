@@ -11,6 +11,11 @@
     update_cache: no
   when: ( "apt-transport-https" not in ansible_facts.packages ) and ( apt_distro != "jessie" )
 
+- name: /etc/apt/sources.list.d/jessie-backports.list absent
+  file:
+    path: /etc/apt/sources.list.d/jessie-backports.list
+    state: absent
+
 # Gandi servers don't have /etc/apt/sources.list and have HTTPS enabled already
 - name: Stat /etc/apt/sources.list
   stat:

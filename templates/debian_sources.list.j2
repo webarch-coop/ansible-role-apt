@@ -6,6 +6,7 @@ deb https://deb.debian.org/debian {{ apt_distro }}-updates main
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main
 {% elif apt_distro == 'jessie' %}
 deb http://ftp.debian.org/debian/ jessie main
+deb http://ftp.debian.org/debian/ jessie-backports main
 deb http://security.debian.org/ jessie/updates main
 {% elif apt_distro == 'wheezy' or apt_distro == 'stretch' %}
 # Archived {{ apt_distro }} repos

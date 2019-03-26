@@ -1,9 +1,13 @@
 # {{ ansible_managed }}
-{% if apt_distro == 'stretch' or apt_distro == 'buster' or apt_distro == 'jessie' %}
+{% if apt_distro == 'stretch' or apt_distro == 'buster' %}
 # Main {{ apt_distro }} repos
 deb https://deb.debian.org/debian {{ apt_distro }} main
 deb https://deb.debian.org/debian {{ apt_distro }}-updates main
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main
+{% elif apt_distro == 'jessie' %}
+deb https://deb.debian.org/debian {{ apt_distro }} main
+deb https://deb.debian.org/debian {{ apt_distro }}-updates main
+deb http://security.debian.org/ jessie/updates main contrib non-free
 {% elif apt_distro == 'wheezy' or apt_distro == 'stretch' %}
 # Archived {{ apt_distro }} repos
 deb http://archive.debian.org/debian {{ apt_distro }} main

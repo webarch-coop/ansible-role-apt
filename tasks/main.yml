@@ -5,6 +5,20 @@
      - "apt_distro: {{ apt_distro }}"
     verbosity: 1
 
+- name: Check /etc/debian_version
+  shell: "lsb_release -c | awk '{ print $2 }'"
+  register: apt_debian_version_check
+  changed_when: false
+
+- name: Set a fact for the Debian version
+  set_fact:
+    apt_debian_version: "{{ apt_debian_version_check.stdout }}"
+
+- name: Set apt_distro if not defined
+  set_fact:
+    apt_distro: "{{ apt_debian_version_check.stdout }}"
+  when: apt_distro is not defined
+
 - name: Include Debian tasks
   include_tasks: debian.yml
   when: ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" ) or ( apt_distro == "stretch" )

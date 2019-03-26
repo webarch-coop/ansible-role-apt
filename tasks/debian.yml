@@ -1,15 +1,15 @@
 ---
-# apt-transport-https needs to be installed before the sources.list is updated to use HTTPS
-- name: Packages installed
+- name: Load package information as facts
+  package_facts:
+    manager: apt
+
+- name: apt-transport-https present
   apt:
     pkg:
       - apt-transport-https
-      - apticron
-      - aptitude
-      - apt-listchanges
-      - apt-show-versions
     state: present
-    update_cache: yes
+    update_cache: no 
+  when: "apt-transport-https" not in ansible_facts.packages
 
 # Gandi servers don't have /etc/apt/sources.list and have HTTPS enabled already
 - name: Stat /etc/apt/sources.list
@@ -24,3 +24,14 @@
     mode: 0644
     backup: yes
   when: sources_list.stat.exists == True
+
+- name: Packages present
+  apt:
+    pkg:
+      - apt-transport-https
+      - apticron
+      - aptitude
+      - apt-listchanges
+      - apt-show-versions
+    state: present
+    update_cache: yes

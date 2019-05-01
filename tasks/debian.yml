@@ -44,5 +44,6 @@
       - aptitude
       - apt-listchanges
       - apt-show-versions
+      - python-apt
     state: present
     update_cache: false

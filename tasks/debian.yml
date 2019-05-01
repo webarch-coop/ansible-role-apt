@@ -8,7 +8,7 @@
     pkg:
       - apt-transport-https
     state: present
-    update_cache: no
+    update_cache: false
   when: ( "apt-transport-https" not in ansible_facts.packages ) and ( apt_distro != "jessie" )
 
 - name: /etc/apt/sources.list.d/jessie-backports.list absent
@@ -27,16 +27,22 @@
     src: templates/debian_sources.list.j2
     dest: /etc/apt/sources.list
     mode: 0644
-    backup: yes
+    backup: true
   when: sources_list.stat.exists == True
+
+- name: Packages upgraded
+  apt:
+    autoclean: yes
+    autoremove: yes
+    upgrade: dist
+    update_cache: true
 
 - name: Packages present
   apt:
     pkg:
-      - apt-transport-https
       - apticron
       - aptitude
       - apt-listchanges
       - apt-show-versions
     state: present
-    update_cache: yes
+    update_cache: false

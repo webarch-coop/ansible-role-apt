@@ -21,4 +21,4 @@
 
 - name: Include Debian tasks
   include_tasks: debian.yml
-  when: ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" ) or ( apt_distro == "stretch" )
+  when: ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" )

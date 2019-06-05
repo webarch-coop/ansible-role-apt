@@ -4,7 +4,7 @@
 deb https://deb.debian.org/debian {{ apt_distro }} main contrib non-free
 #deb https://deb.debian.org/debian {{ apt_distro }}-updates main contrib non-free
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main contrib non-free
-{% if apt_distro == 'stretch' %}
+{% elif apt_distro == 'stretch' %}
 # Debian {{ apt_distro }} repos
 deb https://deb.debian.org/debian {{ apt_distro }} main contrib non-free
 deb https://deb.debian.org/debian {{ apt_distro }}-updates main contrib non-free

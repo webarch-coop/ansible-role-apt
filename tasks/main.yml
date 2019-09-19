@@ -41,7 +41,7 @@
     - apt
 
 - name: Include Ubuntu tasks
-  include_tasks: ubuntu
+  include_tasks: ubuntu.yml
   when: apt_distro == "bionic"
   tags:
     - apt

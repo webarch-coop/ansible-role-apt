@@ -16,8 +16,8 @@
 
 - name: Packages upgraded
   apt:
-    autoclean: yes
-    autoremove: yes
+    autoclean: true
+    autoremove: true
     upgrade: dist
     update_cache: true
   tags:

@@ -1,0 +1,38 @@
+---
+- name: Load package information as facts
+  package_facts:
+    manager: apt
+  tags:
+    - apt
+
+- name: /etc/apt/sources.list in place
+  template:
+    src: templates/ubuntu_sources.list.j2
+    dest: /etc/apt/sources.list
+    mode: 0644
+    backup: true
+  tags:
+    - apt
+
+- name: Packages upgraded
+  apt:
+    autoclean: yes
+    autoremove: yes
+    upgrade: dist
+    update_cache: true
+  tags:
+    - apt
+
+- name: Packages present
+  apt:
+    pkg:
+      - apticron
+      - aptitude
+      - apt-listchanges
+      - apt-show-versions
+      - python-apt
+    state: present
+    update_cache: false
+  tags:
+    - apt
+...

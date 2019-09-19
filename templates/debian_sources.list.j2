@@ -2,7 +2,7 @@
 {% if apt_distro == 'buster' %}
 # Debian {{ apt_distro }} repos
 deb https://deb.debian.org/debian {{ apt_distro }} main contrib non-free
-#deb https://deb.debian.org/debian {{ apt_distro }}-updates main contrib non-free
+deb https://deb.debian.org/debian {{ apt_distro }}-updates main contrib non-free
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main contrib non-free
 {% elif apt_distro == 'stretch' %}
 # Debian {{ apt_distro }} repos
@@ -21,3 +21,4 @@ deb http://archive.debian.org/debian {{ apt_distro }}-updates main
 deb http://archive.debian.org/debian {{ apt_distro }}/updates main
 deb http://archive.debian.org/debian {{ apt_distro }}-backports main
 {% endif %}
+# vim: ft=debsources

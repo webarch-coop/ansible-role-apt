@@ -1,17 +1,20 @@
 ---
 galaxy_info:
-  role_name: wpcli
+  role_name: apt
   author: Chris Croome
   description: Ansible role for configuring apt on Debian servers
   company: Webarchitects Co-operative
   license: license (GPLv3)
-  min_ansible_version: 1.2
+  # The name: keyword for block: was added in Ansible 2.3.
+  min_ansible_version: 2.3
   platforms:
     - name: debian
       versions:
       - buster
       - stretch
       - jessie
+    - name: ubuntu
+      - bionic
   galaxy_tags: []
     # List tags for your role here, one per line. A tag is a keyword that describes
     # and categorizes the role. Users find roles by searching for tags. Be sure to

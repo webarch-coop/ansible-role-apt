@@ -2,6 +2,8 @@
 - name: Load package information as facts
   package_facts:
     manager: apt
+  tags:
+    - apt
 
 - name: apt-transport-https present
   apt:
@@ -10,17 +12,23 @@
     state: present
     update_cache: false
   when: ( "apt-transport-https" not in ansible_facts.packages ) and ( apt_distro != "jessie" )
+  tags:
+    - apt
 
 - name: /etc/apt/sources.list.d/jessie-backports.list absent
   file:
     path: /etc/apt/sources.list.d/jessie-backports.list
     state: absent
+  tags:
+    - apt
 
 # Gandi servers don't have /etc/apt/sources.list and have HTTPS enabled already
 - name: Stat /etc/apt/sources.list
   stat:
     path: "/etc/apt/sources.list"
   register: sources_list
+  tags:
+    - apt
 
 - name: /etc/apt/sources.list in place
   template:
@@ -29,6 +37,8 @@
     mode: 0644
     backup: true
   when: sources_list.stat.exists == True
+  tags:
+    - apt
 
 - name: /etc/apt.conf in place
   template:
@@ -36,6 +46,8 @@
     dest: /etc/apt.conf
     mode: 0644
     backup: true
+  tags:
+    - apt
 
 - name: Packages upgraded
   apt:
@@ -43,6 +55,8 @@
     autoremove: yes
     upgrade: dist
     update_cache: true
+  tags:
+    - apt
 
 - name: Packages present
   apt:
@@ -54,3 +68,6 @@
       - python-apt
     state: present
     update_cache: false
+  tags:
+    - apt
+...

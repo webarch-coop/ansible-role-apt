@@ -1,6 +1,6 @@
 # Ansible role for Apt configuration
 
-Currently this role only supports Debian but the intention is to add Ubuntu support at some point.
+Currently this role only supports Debian Jessie, Stretch and Buster and Ubuntu Bionic.
 
 To use this role you need to use Ansible Galaxy to install it into another repository under `galaxy/roles/apt` by adding a `requirements.yml` file in that repo that contains:
 

@@ -4,21 +4,45 @@
     msg:
      - "apt_distro: {{ apt_distro }}"
     verbosity: 1
+  tags:
+    - apt
 
-- name: Check /etc/debian_version
+- name: lsb-release present
+  apt:
+    pkg: lsb-release
+    state: present
+  tags:
+    - apt
+
+- name: Check the distro version using lsb_release
   shell: "lsb_release -c | awk '{ print $2 }'"
   register: apt_debian_version_check
   changed_when: false
+  tags:
+    - apt
 
 - name: Set a fact for the Debian version
   set_fact:
     apt_debian_version: "{{ apt_debian_version_check.stdout }}"
+  tags:
+    - apt
 
 - name: Set apt_distro if not defined
   set_fact:
     apt_distro: "{{ apt_debian_version_check.stdout }}"
   when: apt_distro is not defined
+  tags:
+    - apt
 
 - name: Include Debian tasks
   include_tasks: debian.yml
   when: ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" )
+  tags:
+    - apt
+
+- name: Include Ubuntu tasks
+  include_tasks: ubuntu
+  when: apt_distro == "bionic"
+  tags:
+    - apt
+...

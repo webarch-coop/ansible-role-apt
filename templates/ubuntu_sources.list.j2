@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+deb http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }} main universe
+deb-src http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }} main universe
+deb http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-security main universe
+deb http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates main universe
+deb-src http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-security main universe
+deb-src http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates main universe
+# vim: ft=debsources

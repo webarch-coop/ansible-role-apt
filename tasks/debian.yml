@@ -15,10 +15,16 @@
   tags:
     - apt
 
-- name: /etc/apt/sources.list.d/jessie-backports.list absent
+- name: Various /etc/apt/sources.list.d/ files absent
   file:
-    path: /etc/apt/sources.list.d/jessie-backports.list
+    path: "/etc/apt/sources.list.d/{{ f }}.list"
     state: absent
+  loop:
+    - jessie-backports
+    - ftp_nl_debian_org_debian
+    - security_debian_org
+  loop_control:
+    loop_var: f
   tags:
     - apt
 

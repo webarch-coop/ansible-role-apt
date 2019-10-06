@@ -1,17 +1,4 @@
 ---
-- name: Load package information as facts
-  package_facts:
-    manager: apt
-  tags:
-    - apt
-
-- name: Fail if ansible_facts.packages is not defined or empty
-  fail:
-    msg: The package_facts array is empty, this could be a result of the Ansible 2.8.x bug https://github.com/ansible/ansible/issues/56921
-  when: ( ansible_facts.packages is not defined ) or ( ansible_facts.packages == [] )
-  tags:
-    - apt
-
 - name: apt-transport-https present
   apt:
     pkg:
@@ -33,7 +20,7 @@
   tags:
     - apt
 
-# Gandi servers don't have /etc/apt/sources.list and have HTTPS enabled already
+# Debian servers from Gandi don't have /etc/apt/sources.list and have HTTPS enabled already
 - name: Stat /etc/apt/sources.list
   stat:
     path: "/etc/apt/sources.list"

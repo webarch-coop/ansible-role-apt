@@ -51,6 +51,19 @@
   tags:
     - apt
 
+- name: Load package information as facts
+  package_facts:
+    manager: apt
+  tags:
+    - apt
+
+- name: Fail if ansible_facts.packages is not defined or empty
+  fail:
+    msg: The package_facts array is empty, this could be a result of the Ansible 2.8.x bug https://github.com/ansible/ansible/issues/56921
+  when: ( ansible_facts.packages is not defined ) or ( ansible_facts.packages == [] )
+  tags:
+    - apt
+
 - name: Include Debian tasks
   include_tasks: debian.yml
   when: ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" )

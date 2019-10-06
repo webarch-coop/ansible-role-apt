@@ -9,4 +9,9 @@ apt_backports: true
 apt_country: uk
 # Canonical's 'partner' repository is only available for Ubuntu
 apt_partner: false
+# Files in /etc/apt/sources.list.d/ that should be removed for Debian
+apt_debian_sources_absent:
+  - jessie-backports.list
+  - ftp_nl_debian_org_debian.list
+  - security_debian_org.list
 ...

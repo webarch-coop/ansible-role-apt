@@ -4,7 +4,7 @@
 # ---------------------------
 # Set apt_distro_switch to true if switching distro, eg stretch to buster
 apt_distro_switch: false
-# Set apt_src to enable source code repos 
+# Set apt_src to enable source code repos
 apt_src: false
 # Debian backports doesn't follow LTS, support for oldstable (stretch) will
 # be dropped around one year after the release of buster, see:

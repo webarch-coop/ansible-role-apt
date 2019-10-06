@@ -25,7 +25,7 @@
 - name: Fail if the checked distro version doesn't match the specified value of apt_distro
   fail:
     msg: "The distro was detected as {{ apt_version_check.stdout }} but you are asking for the server to be configured for {{ apt_distro }}."
-  when: ( apt_distro != apt_version_check.stdout ) and ( apt_distro_switch == False )
+  when: ( apt_distro is defined ) and ( apt_distro != apt_version_check.stdout ) and ( apt_distro_switch == False )
   tags:
     - apt
 

@@ -1,2 +1,12 @@
 ---
-apt_distro: stretch
+# Set this to true is switching distro, eg stretch to buster
+apt_distro_switch: false
+apt_src: false
+# Debian backports doesn't follow LTS support for oldstable (stretch) around one year after the release of buster.
+# https://backports.debian.org/news/buster-backports/
+apt_backports: true
+# The country code is only used for Ubuntu
+apt_country: uk
+# Canonical's 'partner' repository is only available for Ubuntu
+apt_partner: false
+...

@@ -15,21 +15,38 @@
 
 - name: Check the distro version using lsb_release
   shell: "lsb_release -c | awk '{ print $2 }'"
-  register: apt_debian_version_check
+  register: apt_version_check
   changed_when: false
   check_mode: false
   tags:
     - apt
 
-- name: Set a fact for the Debian version
-  set_fact:
-    apt_debian_version: "{{ apt_debian_version_check.stdout }}"
+- name: Fail if the checked distro version doesn't match the specified value of apt_distro
+  fail:
+    msg: "The distro was detected as {{ apt_version_check.stdout }} but you are asking for the server to be configured for {{ apt_distro }}."
+  when: ( apt_distro != apt_version_check.stdout ) and ( apt_distro_switch == False )
   tags:
     - apt
 
+- name: Warning and tasks for switching distros
+  block:
+
+    - name: Print a warning the the distro is being changed
+      debug:
+        msg: "WARNING: Updating distro from {{ apt_version_check.stdout }} to {{ apt_distro }}."
+      tags:
+        - apt
+
+    - name: Run apt-get --allow-releaseinfo-change update
+      shell: apt-get --allow-releaseinfo-change update
+      tags:
+        - apt
+
+  when: apt_distro_switch == True
+
 - name: Set apt_distro if not defined
   set_fact:
-    apt_distro: "{{ apt_debian_version_check.stdout }}"
+    apt_distro: "{{ apt_version_check.stdout }}"
   when: apt_distro is not defined
   tags:
     - apt
@@ -42,7 +59,7 @@
 
 - name: Include Ubuntu tasks
   include_tasks: ubuntu.yml
-  when: apt_distro == "bionic"
+  when: ( apt_distro == "bionic" ) or ( apt_distro == "xenial" )
   tags:
     - apt
 ...

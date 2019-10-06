@@ -1,21 +1,25 @@
 # {{ ansible_managed }}
-{% if apt_distro == 'buster' %}
+{% if apt_distro == 'buster' or if apt_distro == 'stretch' %}
 # Debian {{ apt_distro }} repos
 deb https://deb.debian.org/debian {{ apt_distro }} main contrib non-free
-deb https://deb.debian.org/debian {{ apt_distro }}-updates main contrib non-free
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main contrib non-free
-{% elif apt_distro == 'stretch' %}
-# Debian {{ apt_distro }} repos
-deb https://deb.debian.org/debian {{ apt_distro }} main contrib non-free
-deb https://deb.debian.org/debian {{ apt_distro }}-updates main contrib non-free
-deb https://deb.debian.org/debian-security {{ apt_distro }}/updates main contrib non-free
-deb https://deb.debian.org/debian {{ apt_distro }}-backports main contrib non-free
+{% if apt_backports == True %}
+deb https://deb.debian.org/debian {{ apt_distro }}-backports main
+{% endif %}
+{% if apt_src == True %}
+# Debian {{ apt_distro }} source repos
+deb-src https://deb.debian.org/debian {{ apt_distro }} main contrib non-free
+deb-src https://deb.debian.org/debian-security {{ apt_distro }}/updates main contrib non-free
+{% endif %}
+{% if apt_backports == True %}
+deb-src https://deb.debian.org/debian {{ apt_distro }}-backports main
+{% endif %}
 {% elif apt_distro == 'jessie' %}
+# Debian Jessie repos
 deb http://deb.debian.org/debian jessie main contrib non-free
-# deb http://deb.debian.org/debian jessie-backports main 
 deb http://security.debian.org/ jessie/updates main contrib non-free
-{% elif apt_distro == 'wheezy' or apt_distro == 'stretch' %}
-# Archived {{ apt_distro }} repos
+{% elif apt_distro == 'wheezy' or apt_distro == 'squeeze' %}
+# Archived Debian {{ apt_distro }} repos
 deb http://archive.debian.org/debian {{ apt_distro }} main
 deb http://archive.debian.org/debian {{ apt_distro }}-updates main
 deb http://archive.debian.org/debian {{ apt_distro }}/updates main

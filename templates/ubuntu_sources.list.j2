@@ -1,8 +1,37 @@
 # {{ ansible_managed }}
-deb http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }} main universe
-deb-src http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }} main universe
-deb http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-security main universe
-deb http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates main universe
-deb-src http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-security main universe
-deb-src http://uk.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates main universe
+# Ubuntu {{ apt_distro }} repos
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }} main restricted
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates main restricted
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }} universe
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates universe
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }} multiverse
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates multiverse
+deb http://security.ubuntu.com/ubuntu {{ apt_distro }}-security main restricted
+deb http://security.ubuntu.com/ubuntu {{ apt_distro }}-security universe
+deb http://security.ubuntu.com/ubuntu {{ apt_distro }}-security multiverse
+{% if apt_backports == True %}
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-backports main restricted universe multiverse
+{% endif %}
+{% if apt_src == True %}
+# Ubuntu {{ apt_distro }} source repos
+deb-src http://security.ubuntu.com/ubuntu {{ apt_distro }}-security multiverse
+deb-src http://security.ubuntu.com/ubuntu {{ apt_distro }}-security universe
+deb-src http://security.ubuntu.com/ubuntu {{ apt_distro }}-security main restricted
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates multiverse
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }} multiverse
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates universe
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }} universe
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }} main restricted
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-updates main restricted
+{% if apt_backports == True %}
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-backports main restricted universe multiverse
+{% endif %}
+{% endif %}
+{% if apt_partner == True %}
+# Ubuntu {{ apt_distro }} partner repos
+deb http://archive.canonical.com/ubuntu {{ apt_distro }} partner
+{% if apt_src == True %}
+deb-src http://archive.canonical.com/ubuntu {{ apt_distro }} partner
+{% endif %}
+{% endif %}
 # vim: ft=debsources

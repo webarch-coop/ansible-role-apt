@@ -3,6 +3,7 @@
   debug:
     msg: "apt_distro: {{ apt_distro }}"
     verbosity: 1
+  when: apt_distro is defined
   tags:
     - apt
 

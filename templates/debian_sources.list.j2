@@ -24,15 +24,4 @@ deb http://deb.debian.org/debian jessie {% for comp in apt_debian_components %}{
 
 deb http://security.debian.org/ jessie/updates {% for comp in apt_debian_components %}{{ comp }} {% endfor %}
 
-{% elif apt_distro == 'wheezy' or apt_distro == 'squeeze' %}
-# Archived Debian {{ apt_distro }} repos
-deb http://archive.debian.org/debian {{ apt_distro }} {% for comp in apt_debian_components %}{{ comp }} {% endfor %}
-
-deb http://archive.debian.org/debian {{ apt_distro }}-updates {% for comp in apt_debian_components %}{{ comp }} {% endfor %}
-
-deb http://archive.debian.org/debian {{ apt_distro }}/updates {% for comp in apt_debian_components %}{{ comp }} {% endfor %}
-
-deb http://archive.debian.org/debian {{ apt_distro }}-backports {% for comp in apt_debian_components %}{{ comp }} {% endfor %}
-
-{% endif %}
 # vim: ft=debsources

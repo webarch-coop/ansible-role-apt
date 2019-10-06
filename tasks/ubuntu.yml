@@ -16,38 +16,4 @@
     backup: true
   tags:
     - apt
-
-- name: Update the cache when switching distros
-  apt:
-    update_cache: true
-  when: ( apt_distro_switch is defined ) and ( apt_distro_switch == True )
-  tags:
-    - apt
-
-- name: When switching distros updates should not be done via Ansible
-  block:
-
-    - name: Packages upgraded
-      apt:
-        autoclean: true
-        autoremove: true
-        upgrade: dist
-        update_cache: true
-      tags:
-        - apt
-
-    - name: Packages present
-      apt:
-        pkg:
-          - apticron
-          - aptitude
-          - apt-listchanges
-          - apt-show-versions
-          - python-apt
-        state: present
-        update_cache: false
-      tags:
-        - apt
-
-  when: ( apt_distro_switch is not defined ) or ( apt_distro_switch == False )
 ...

@@ -2,10 +2,12 @@
 # ---------------------------
 # DEBIAN and UBUNTU Variables
 # ---------------------------
-# Set this to true is switching distro, eg stretch to buster
+# Set apt_distro_switch to true if switching distro, eg stretch to buster
 apt_distro_switch: false
+# Set apt_src to enable source code repos 
 apt_src: false
-# Debian backports doesn't follow LTS, support for oldstable (stretch) around one year after the release of buster.
+# Debian backports doesn't follow LTS, support for oldstable (stretch) will
+# be dropped around one year after the release of buster, see:
 # https://backports.debian.org/news/buster-backports/
 apt_backports: true
 # ----------------
@@ -15,7 +17,7 @@ apt_debian_components:
   - main
   - contrib
   - non-free
-# Files in /etc/apt/sources.list.d/ that should be removed for Debian
+# Files in /etc/apt/sources.list.d/ that should be removed on Debian servers
 apt_debian_sources_absent:
   - jessie-backports.list
   - ftp_nl_debian_org_debian.list

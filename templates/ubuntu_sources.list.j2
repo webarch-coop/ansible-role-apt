@@ -1,25 +1,25 @@
 # {{ ansible_managed }}
 # Ubuntu {{ apt_distro }} repos
-deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }} {% for comp in apt_ubuntu_components %}{{ comp }} {% endfor %} 
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }} {% for comp in apt_ubuntu_components %}{{ comp }}{{ " " if not loop.last else "" }}{% endfor %} 
 
-deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }}-updates {% for comp in apt_ubuntu_components %}{{ comp }} {% endfor %}
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }}-updates {% for comp in apt_ubuntu_components %}{{ comp }}{{ " " if not loop.last else "" }}{% endfor %}
 
-deb http://security.ubuntu.com/ubuntu {{ apt_distro }}-security {% for comp in apt_ubuntu_components %}{{ comp }} {% endfor %}
+deb http://security.ubuntu.com/ubuntu {{ apt_distro }}-security {% for comp in apt_ubuntu_components %}{{ comp }}{{ " " if not loop.last else "" }}{% endfor %}
 
 {% if apt_backports == True %}
-deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-backports {% for comp in apt_ubuntu_components %}{{ comp }} {% endfor %}
+deb http://{{ apt_country }}.archive.ubuntu.com/ubuntu/ {{ apt_distro }}-backports {% for comp in apt_ubuntu_components %}{{ comp }}{{ " " if not loop.last else "" }}{% endfor %}
 
 {% endif %}
 {% if apt_src == True %}
 # Ubuntu {{ apt_distro }} source repos
-deb-src http://security.ubuntu.com/ubuntu {{ apt_distro }}-security {% for comp in apt_ubuntu_components %}{{ comp }} {% endfor %}
+deb-src http://security.ubuntu.com/ubuntu {{ apt_distro }}-security {% for comp in apt_ubuntu_components %}{{ comp }}{{ " " if not loop.last else "" }}{% endfor %}
 
-deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }} {% for comp in apt_ubuntu_components %}{{ comp }} {% endfor %} 
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }} {% for comp in apt_ubuntu_components %}{{ comp }}{{ " " if not loop.last else "" }}{% endfor %} 
 
-deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }}-updates {% for comp in apt_ubuntu_components %}{{ comp }} {% endfor %}
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }}-updates {% for comp in apt_ubuntu_components %}{{ comp }}{{ " " if not loop.last else "" }}{% endfor %}
 
 {% if apt_backports == True %}
-deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }}-backports {% for comp in apt_ubuntu_components %}{{ comp }} {% endfor %}
+deb-src http://{{ apt_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }}-backports {% for comp in apt_ubuntu_components %}{{ comp }}{{ " " if not loop.last else "" }}{% endfor %}
 
 {% endif %}
 {% endif %}

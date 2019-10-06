@@ -10,9 +10,9 @@ deb https://deb.debian.org/debian {{ apt_distro }}-backports main
 # Debian {{ apt_distro }} source repos
 deb-src https://deb.debian.org/debian {{ apt_distro }} main contrib non-free
 deb-src https://deb.debian.org/debian-security {{ apt_distro }}/updates main contrib non-free
-{% endif %}
 {% if apt_backports == True %}
 deb-src https://deb.debian.org/debian {{ apt_distro }}-backports main
+{% endif %}
 {% endif %}
 {% elif apt_distro == 'jessie' %}
 # Debian Jessie repos

@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 {% if apt_distro == 'buster' or apt_distro == 'stretch' %}
 # Debian {{ apt_distro }} repos
-deb https://deb.debian.org/debian {{ apt_distro }} {% for comp in apt_debian_components %}{{ comp }}}{% if not loop.last %} {% endif %}{% endfor %}
+deb https://deb.debian.org/debian {{ apt_distro }} {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 

@@ -24,14 +24,12 @@
 
 - name: Various /etc/apt/sources.list.d/ files absent
   file:
-    path: "/etc/apt/sources.list.d/{{ f }}.list"
+    path: "/etc/apt/sources.list.d/{{ file }}"
     state: absent
-  loop:
-    - jessie-backports
-    - ftp_nl_debian_org_debian
-    - security_debian_org
+  loop: "{{ apt_debian_sources_absent }}"
   loop_control:
-    loop_var: f
+    loop_var: file
+  when: ( apt_debian_sources_absent is defined ) and ( apt_debian_sources_absent != [] )
   tags:
     - apt
 
@@ -62,25 +60,37 @@
   tags:
     - apt
 
-- name: Packages upgraded
+- name: Update the cache when switching distros
   apt:
-    autoclean: true
-    autoremove: true
-    upgrade: dist
     update_cache: true
+  when: ( apt_distro_switch is defined ) and ( apt_distro_switch == True )
   tags:
     - apt
 
-- name: Packages present
-  apt:
-    pkg:
-      - apticron
-      - aptitude
-      - apt-listchanges
-      - apt-show-versions
-      - python-apt
-    state: present
-    update_cache: false
-  tags:
-    - apt
+- name: When switching distros updates should not be done via Ansible
+  block:
+
+    - name: Packages upgraded
+      apt:
+        autoclean: true
+        autoremove: true
+        upgrade: dist
+        update_cache: true
+      tags:
+        - apt
+
+    - name: Packages present
+      apt:
+        pkg:
+          - apticron
+          - aptitude
+          - apt-listchanges
+          - apt-show-versions
+          - python-apt
+        state: present
+        update_cache: false
+      tags:
+        - apt
+
+  when: ( apt_distro_switch is not defined ) or ( apt_distro_switch == False )
 ...

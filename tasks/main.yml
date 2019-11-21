@@ -7,25 +7,10 @@
   tags:
     - apt
 
-- name: lsb-release present
-  apt:
-    pkg: lsb-release
-    state: present
-  tags:
-    - apt
-
-- name: Check the distro version using lsb_release
-  shell: "lsb_release -c | awk '{ print $2 }'"
-  register: apt_version_check
-  changed_when: false
-  check_mode: false
-  tags:
-    - apt
-
 - name: Fail if the checked distro version doesn't match the specified value of apt_distro
   fail:
-    msg: "The distro was detected as {{ apt_version_check.stdout }} but you are asking for the server to be configured for {{ apt_distro }}."
-  when: ( apt_distro is defined ) and ( apt_distro != apt_version_check.stdout ) and ( apt_distro_switch == False )
+    msg: "The distro was detected as {{ ansible_distribution_release }} but you are asking for the server to be configured for {{ apt_distro }}."
+  when: ( apt_distro is defined ) and ( apt_distro != ansible_distribution_release ) and ( apt_distro_switch == False )
   tags:
     - apt
 
@@ -34,7 +19,7 @@
 
     - name: Print a warning the the distro is being changed
       debug:
-        msg: "WARNING: Updating distro from {{ apt_version_check.stdout }} to {{ apt_distro }}."
+        msg: "WARNING: Updating distro from {{ ansible_distribution_release }} to {{ apt_distro }}."
       tags:
         - apt
 
@@ -47,7 +32,7 @@
 
 - name: Set apt_distro if not defined
   set_fact:
-    apt_distro: "{{ apt_version_check.stdout }}"
+    apt_distro: "{{ ansible_distribution_release }}"
   when: apt_distro is not defined
   tags:
     - apt

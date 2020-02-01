@@ -52,13 +52,13 @@
 
 - name: Include Debian tasks
   include_tasks: debian.yml
-  when: ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" )
+  when: ( apt_distro == "bullseye" ) or ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" )
   tags:
     - apt
 
 - name: Include Ubuntu tasks
   include_tasks: ubuntu.yml
-  when: ( apt_distro == "bionic" ) or ( apt_distro == "xenial" )
+  when: ( apt_distro == "focal" ) or ( apt_distro == "bionic" ) or ( apt_distro == "xenial" )
   tags:
     - apt
 

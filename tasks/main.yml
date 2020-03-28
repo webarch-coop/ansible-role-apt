@@ -1,4 +1,11 @@
 ---
+- name: Packages present
+  apt:
+    pkg:
+      - python-apt
+    tags:
+    - apt
+
 - name: Print apt_ vars if verbosity 1 or more
   debug:
     msg: "apt_distro: {{ apt_distro }}"

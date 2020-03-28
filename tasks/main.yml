@@ -3,7 +3,7 @@
   apt:
     pkg:
       - python-apt
-    tags:
+  tags:
     - apt
 
 - name: Print apt_ vars if verbosity 1 or more

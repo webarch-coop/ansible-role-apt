@@ -31,7 +31,7 @@
         - apt
 
     - name: Run apt-get --allow-releaseinfo-change update
-      shell: apt-get --allow-releaseinfo-change update
+      command: apt-get --allow-releaseinfo-change update
       tags:
         - apt
 

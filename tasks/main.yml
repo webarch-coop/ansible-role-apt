@@ -1,9 +1,16 @@
 ---
-- name: Packages present
+- name: Package python3-apt present
+  apt:
+    pkg:
+      - python3-apt
+  tags:
+    - apt
+
+- name: Package python-apt present for Debian
   apt:
     pkg:
       - python-apt
-      - python3-apt
+  when: ansible_distribution == "Debian"
   tags:
     - apt
 

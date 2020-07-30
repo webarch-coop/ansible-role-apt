@@ -2,6 +2,7 @@
 - name: Packages present
   apt:
     pkg:
+      - python-apt
       - python3-apt
   tags:
     - apt

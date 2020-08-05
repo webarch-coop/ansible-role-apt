@@ -13,7 +13,7 @@
     src: templates/apt.conf.j2
     dest: /etc/apt.conf
     mode: 0644
-    backup: true
+    backup: false
   tags:
     - apt
 ...

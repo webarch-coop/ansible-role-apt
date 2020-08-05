@@ -33,7 +33,7 @@
     src: templates/debian_sources.list.j2
     dest: /etc/apt/sources.list
     mode: 0644
-    backup: true
+    backup: false
   when: sources_list.stat.exists == True
   tags:
     - apt

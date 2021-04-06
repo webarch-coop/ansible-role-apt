@@ -1,49 +1,49 @@
 ---
-- name: apt-transport-https present
-  apt:
-    pkg:
-      - apt-transport-https
-    state: present
-    update_cache: false
-  when: ( "apt-transport-https" not in ansible_facts.packages ) and ( apt_distro != "jessie" )
-  tags:
-    - apt
+- name: Debian tasks
+  block:
 
-- name: Various /etc/apt/sources.list.d/ files absent
-  file:
-    path: "/etc/apt/sources.list.d/{{ file }}"
-    state: absent
-  loop: "{{ apt_debian_sources_absent }}"
-  loop_control:
-    loop_var: file
-  when: ( apt_debian_sources_absent is defined ) and ( apt_debian_sources_absent != [] )
-  tags:
-    - apt
+    - name: apt-transport-https present
+      apt:
+        pkg:
+          - apt-transport-https
+        state: present
+        update_cache: false
+      when: ( "apt-transport-https" not in ansible_facts.packages ) and ( apt_distro != "jessie" )
 
-# Debian servers from Gandi don't have /etc/apt/sources.list and have HTTPS enabled already
-- name: Stat /etc/apt/sources.list
-  stat:
-    path: "/etc/apt/sources.list"
-  register: sources_list
-  tags:
-    - apt
+    - name: Various /etc/apt/sources.list.d/ files absent
+      file:
+        path: "/etc/apt/sources.list.d/{{ file }}"
+        state: absent
+      loop: "{{ apt_debian_sources_absent }}"
+      loop_control:
+        loop_var: file
+      when: ( apt_debian_sources_absent is defined ) and ( apt_debian_sources_absent != [] )
 
-- name: /etc/apt/sources.list in place
-  template:
-    src: templates/debian_sources.list.j2
-    dest: /etc/apt/sources.list
-    mode: 0644
-    backup: false
-  when: sources_list.stat.exists == True
-  tags:
-    - apt
+    # Debian servers from Gandi don't have /etc/apt/sources.list and have HTTPS enabled already
+    - name: Stat /etc/apt/sources.list
+      stat:
+        path: "/etc/apt/sources.list"
+      register: sources_list
 
-- name: /etc/apt.conf in place
-  template:
-    src: templates/apt.conf.j2
-    dest: /etc/apt.conf
-    mode: 0644
-    backup: true
+    - name: /etc/apt/sources.list in place
+      template:
+        src: templates/debian_sources.list.j2
+        dest: /etc/apt/sources.list
+        mode: 0644
+        owner: root
+        group: root
+        backup: false
+      when: sources_list.stat.exists
+
+    - name: /etc/apt.conf in place
+      template:
+        src: templates/apt.conf.j2
+        dest: /etc/apt.conf
+        mode: 0644
+        owner: root
+        group: root
+        backup: true
+
   tags:
     - apt
 ...

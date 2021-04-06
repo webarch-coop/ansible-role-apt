@@ -1,19 +1,25 @@
 ---
-- name: /etc/apt/sources.list in place
-  template:
-    src: templates/ubuntu_sources.list.j2
-    dest: /etc/apt/sources.list
-    mode: 0644
-    backup: true
-  tags:
-    - apt
+- name: Ubuntu tasks
+  block:
 
-- name: /etc/apt.conf in place
-  template:
-    src: templates/apt.conf.j2
-    dest: /etc/apt.conf
-    mode: 0644
-    backup: false
+    - name: /etc/apt/sources.list in place
+      template:
+        src: templates/ubuntu_sources.list.j2
+        dest: /etc/apt/sources.list
+        mode: 0644
+        owner: root
+        group: root
+        backup: true
+
+    - name: /etc/apt.conf in place
+      template:
+        src: templates/apt.conf.j2
+        dest: /etc/apt.conf
+        mode: 0644
+        owner: root
+        group: root
+        backup: false
+
   tags:
     - apt
 ...

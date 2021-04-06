@@ -1,22 +1,25 @@
 # {{ ansible_managed }}
-{% if apt_distro == 'bullseye' or apt_distro == 'buster' or apt_distro == 'stretch' %}
+{% if apt_distro is regex('bullseye|buster|stretch') %}
 # Debian {{ apt_distro }} repos
 deb https://deb.debian.org/debian {{ apt_distro }} {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
+{% if apt_distro == 'bullseye' %}
+deb https://security.debian.org/debian-security {{ apt_distro }}-security {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% elif apt_distro is regex('buster|stretch') %}
+
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
-{% if apt_distro == 'buster' or apt_distro == 'stretch' %}
-{% if apt_backports == True %}
+{% if apt_backports %}
 deb https://deb.debian.org/debian {{ apt_distro }}-backports main
 {% endif %}
 {% endif %}
-{% if apt_src == True %}
+{% if apt_src %}
 # Debian {{ apt_distro }} source repos
 deb-src https://deb.debian.org/debian {{ apt_distro }} {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
 deb-src https://deb.debian.org/debian-security {{ apt_distro }}/updates {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
-{% if apt_backports == True %}
+{% if apt_backports %}
 deb-src https://deb.debian.org/debian {{ apt_distro }}-backports main
 {% endif %}
 {% endif %}

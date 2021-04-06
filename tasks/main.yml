@@ -1,113 +1,93 @@
 ---
-- name: Package python3-apt present
-  apt:
-    pkg:
-      - python3-apt
-  tags:
-    - apt
-
-- name: Package python-apt present for Debian
-  apt:
-    pkg:
-      - python-apt
-  when: ansible_distribution == "Debian"
-  tags:
-    - apt
-
-- name: Print apt_ vars if verbosity 1 or more
-  debug:
-    msg: "apt_distro: {{ apt_distro }}"
-    verbosity: 1
-  when: apt_distro is defined
-  tags:
-    - apt
-
-- name: Fail if the checked distro version doesn't match the specified value of apt_distro
-  fail:
-    msg: "The distro was detected as {{ ansible_distribution_release }} but you are asking for the server to be configured for {{ apt_distro }}."
-  when: ( apt_distro is defined ) and ( apt_distro != ansible_distribution_release ) and ( apt_distro_switch == False )
-  tags:
-    - apt
-
-- name: Warning and tasks for switching distros
+- name: Configure apt sources list for Debian and Ubuntu
   block:
 
-    - name: Print a warning the the distro is being changed
-      debug:
-        msg: "WARNING: Updating distro from {{ ansible_distribution_release }} to {{ apt_distro }}."
-      tags:
-        - apt
-
-    - name: Run apt-get --allow-releaseinfo-change update
-      command: apt-get --allow-releaseinfo-change update
-      tags:
-        - apt
-
-  when: apt_distro_switch == True
-
-- name: Set apt_distro if not defined
-  set_fact:
-    apt_distro: "{{ ansible_distribution_release }}"
-  when: apt_distro is not defined
-  tags:
-    - apt
-
-- name: Load package information as facts
-  package_facts:
-    manager: apt
-  tags:
-    - apt
-
-- name: Fail if ansible_facts.packages is not defined or empty
-  fail:
-    msg: The package_facts array is empty, this could be a result of the Ansible 2.8.x bug https://github.com/ansible/ansible/issues/56921
-  when: ( ansible_facts.packages is not defined ) or ( ansible_facts.packages == [] )
-  tags:
-    - apt
-
-- name: Include Debian tasks
-  include_tasks: debian.yml
-  when: ( apt_distro == "bullseye" ) or ( apt_distro == "buster" ) or ( apt_distro == "stretch" ) or ( apt_distro == "jessie" )
-  tags:
-    - apt
-
-- name: Include Ubuntu tasks
-  include_tasks: ubuntu.yml
-  when: ( apt_distro == "focal" ) or ( apt_distro == "bionic" ) or ( apt_distro == "xenial" )
-  tags:
-    - apt
-
-- name: Update the cache when switching distros
-  apt:
-    update_cache: true
-  when: ( apt_distro_switch is defined ) and ( apt_distro_switch == True )
-  tags:
-    - apt
-
-- name: When switching distros updates should not be done via Ansible
-  block:
-
-    - name: Packages upgraded
-      apt:
-        autoclean: true
-        autoremove: true
-        upgrade: dist
-        update_cache: true
-      tags:
-        - apt
-
-    - name: Packages present
+    - name: Package python3-apt present
       apt:
         pkg:
-          - apticron
-          - aptitude
-          - apt-listchanges
-          - apt-show-versions
-          - python-apt
-        state: present
-        update_cache: false
-      tags:
-        - apt
+          - python3-apt
 
-  when: ( apt_distro_switch is not defined ) or ( apt_distro_switch == False )
+    - name: Package python-apt present for Debian
+      apt:
+        pkg:
+          - python-apt
+      when:
+        - ansible_distribution == "Debian"
+        - ansible_distribution_release is regex('jessie|stretch|buster')
+
+    - name: Print apt_distro if verbosity 1 or more
+      debug:
+        msg: "apt_distro: {{ apt_distro }}"
+        verbosity: 1
+      when: apt_distro is defined
+
+    - name: Fail if the checked distro version doesn't match the specified value of apt_distro
+      fail:
+        msg: "The distro was detected as {{ ansible_distribution_release }} but you are asking for the server to be configured for {{ apt_distro }}."
+      when: ( apt_distro is defined ) and ( apt_distro != ansible_distribution_release ) and ( not apt_distro_switch )
+
+    - name: Warning and tasks for switching distros
+      block:
+
+        - name: Print a warning the the distro is being changed
+          debug:
+            msg: "WARNING: Updating distro from {{ ansible_distribution_release }} to {{ apt_distro }}."
+
+        - name: Run apt-get --allow-releaseinfo-change update
+          command: apt-get --allow-releaseinfo-change update
+
+      when: apt_distro_switch
+
+    - name: Set apt_distro if not defined
+      set_fact:
+        apt_distro: "{{ ansible_distribution_release }}"
+      when: apt_distro is not defined
+
+    - name: Load package information as facts
+      package_facts:
+        manager: apt
+
+    - name: Fail if ansible_facts.packages is not defined or empty
+      fail:
+        msg: The package_facts array is empty, this could be a result of the Ansible 2.8.x bug https://github.com/ansible/ansible/issues/56921
+      when: ( ansible_facts.packages is not defined ) or ( ansible_facts.packages == [] )
+
+    - name: Include Debian tasks
+      include_tasks: debian.yml
+      when: apt_distro is regex('jessie|stretch|buster|bullseye')
+
+    - name: Include Ubuntu tasks
+      include_tasks: ubuntu.yml
+      when: apt_distro is regex('focal|bionic|xenial')
+
+    - name: Update the cache when switching distros
+      apt:
+        update_cache: true
+      when: ( apt_distro_switch is defined ) and ( apt_distro_switch )
+
+    - name: When switching distros updates should not be done via Ansible
+      block:
+
+        - name: Packages upgraded
+          apt:
+            autoclean: true
+            autoremove: true
+            upgrade: dist
+            update_cache: true
+
+        - name: Packages present
+          apt:
+            pkg:
+              - apticron
+              - aptitude
+              - apt-listchanges
+              - apt-show-versions
+              - python-apt
+            state: present
+            update_cache: false
+
+      when: ( apt_distro_switch is not defined ) or ( not apt_distro_switch )
+
+  tags:
+    - apt
 ...

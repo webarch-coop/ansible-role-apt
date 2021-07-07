@@ -2,6 +2,10 @@
 - name: Configure apt sources list for Debian and Ubuntu
   block:
 
+    - name: Debug ansible_distribution_release
+      debug:
+        var: "{{ ansible_distribution_release }}"
+
     - name: Package python3-apt present
       apt:
         pkg:

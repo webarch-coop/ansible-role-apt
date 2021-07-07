@@ -5,6 +5,7 @@
     - name: Debug ansible_distribution_release
       debug:
         var: ansible_distribution_release
+        verbosity: 2
 
     - name: Python packages present for Debian
       block:

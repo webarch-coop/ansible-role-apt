@@ -4,7 +4,7 @@
 deb https://deb.debian.org/debian {{ apt_distro }} {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
 {% if apt_distro == 'bullseye' %}
-deb https://security.debian.org/debian-security {{ apt_distro }}-security {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
+# deb https://security.debian.org/debian-security {{ apt_distro }}-security {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% elif apt_distro is regex('buster|stretch') %}
 
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}

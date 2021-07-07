@@ -4,7 +4,7 @@
 
     - name: Debug ansible_distribution_release
       debug:
-        var: "{{ ansible_distribution_release }}"
+        var: ansible_distribution_release
 
     - name: Package python3-apt present
       apt:

@@ -9,7 +9,7 @@ deb https://security.debian.org/debian-security {{ apt_distro }}-security {% for
 
 deb https://deb.debian.org/debian-security {{ apt_distro }}/updates {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
-{% if apt_backports %}
+{% if apt_backports and apt_distro is regex('bullseye|buster') %}
 deb https://deb.debian.org/debian {{ apt_distro }}-backports main
 {% endif %}
 {% endif %}
@@ -19,7 +19,7 @@ deb-src https://deb.debian.org/debian {{ apt_distro }} {% for comp in apt_debian
 
 deb-src https://deb.debian.org/debian-security {{ apt_distro }}/updates {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
-{% if apt_backports %}
+{% if apt_backports and apt_distro is regex('bullseye|buster') %}
 deb-src https://deb.debian.org/debian {{ apt_distro }}-backports main
 {% endif %}
 {% endif %}

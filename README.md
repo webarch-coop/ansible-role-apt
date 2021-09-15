@@ -1,8 +1,10 @@
 # Ansible role for Apt configuration
 
-Currently this role only supports Debian Jessie, Stretch and Buster and Ubuntu Xenial and Bionic.
+Currently this role only supports Debian Jessie, Stretch, Buster and Bullseye and Ubuntu Xenial and Bionic.
 
-See the [defaults/main.yml](defaults/main.yml) for the options available.
+See the [defaults/main.yml](defaults/main.yml) for the options available.o
+
+See also the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Buster.
 
 To use this role you need to use Ansible Galaxy to install it into another repository under `galaxy/roles/apt` by adding a `requirements.yml` file in that repo that contains:
 

@@ -2,19 +2,21 @@
 galaxy_info:
   role_name: apt
   author: Chris Croome
+  namespace: chriscroome
   description: Ansible role for configuring apt on Debian servers
   company: Webarchitects Co-operative
-  license: license (GPLv3)
-  # The name: keyword for block: was added in Ansible 2.3.
-  min_ansible_version: 2.3
+  license: GNU General Public License v3.0 (GPLv3)
+  min_ansible_version: 2.9
   platforms:
     - name: debian
       versions:
+        - bullseye
         - buster
         - stretch
         - jessie
     - name: ubuntu
       versions:
+        - focal
         - bionic
         - xenial
   galaxy_tags: []

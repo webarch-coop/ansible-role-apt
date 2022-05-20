@@ -92,7 +92,7 @@
               - python3-apt
             state: present
             update_cache: false
-          when: ansible_connection != "chroot"
+          when: ( ansible_connection != "chroot" ) and ( inventory_hostname != "localhost" )
 
       when: ( apt_distro_switch is not defined ) or ( not apt_distro_switch )
 

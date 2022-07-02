@@ -10,6 +10,9 @@ apt_src: false
 # be dropped around one year after the release of buster, see:
 # https://backports.debian.org/news/buster-backports/
 apt_backports: true
+# Paths for local_facts scripts
+apt_dpkg: /usr/bin/dpkg
+apt_gpg: /usr/bin/gpg
 # ----------------
 # DEBIAN Variables
 # ----------------

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# {{ ansible_managed }}
+
+set -euo pipefail
+BASH_PATH=$(which bash)
+
+if [[ -f "${BASH_PATH}" ]]; then
+  jo state=present path="${BASH_PATH}"
+else
+  jo state=absent
+fi

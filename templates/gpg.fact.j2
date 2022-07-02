@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# {{ ansible_managed }}
+
+set -euo pipefail
+GPG="{{ apt_gpg }}"
+
+if [[ -f "${GPG}" ]]; then
+  VERSION=$("${GPG}" --version | head -n1 | awk '{ print $3 }')
+  jo state=present version="${VERSION}"
+else
+  jo state=absent
+fi

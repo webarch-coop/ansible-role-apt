@@ -3,7 +3,7 @@
   block:
 
     - name: /etc/apt/sources.list in place
-      template:
+      ansible.builtin.template:
         src: templates/ubuntu_sources.list.j2
         dest: /etc/apt/sources.list
         mode: 0644
@@ -12,7 +12,7 @@
         backup: true
 
     - name: /etc/apt.conf in place
-      template:
+      ansible.builtin.template:
         src: templates/apt.conf.j2
         dest: /etc/apt.conf
         mode: 0644

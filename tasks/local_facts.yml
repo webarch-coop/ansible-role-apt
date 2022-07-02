@@ -1,0 +1,63 @@
+---
+- name: Ansible apt local facts
+  block:
+
+    - name: Required packages present
+      ansible.builtin.apt:
+        pkg:
+          - jo
+        state: present
+
+    - name: Ansible facts.d directory present
+      ansible.builtin.file:
+        path: /etc/ansible/facts.d
+        recurse: true
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+
+    - name: Ansible local facts scripts present
+      ansible.builtin.template:
+        src: "{{ script }}.j2"
+        dest: "/etc/ansible/facts.d/{{ script }}"
+        mode: 0755
+        owner: root
+        group: root
+      loop:
+        - dpkg.fact
+        - gpg.fact
+        - bash.fact
+      loop_control:
+        loop_var: script
+
+    - name: Re-read Ansible local facts
+      ansible.builtin.setup:
+        filter: ansible_local
+
+    - name: Check that ansible_local facts are defined
+      ansible.builtin.assert:
+        that:
+          - ansible_local.dpkg is defined
+          - ansible_local.gpg is defined
+          - ansible_local.bash is defined
+
+    - name: Print Ansible local dpkg facts
+      ansible.builtin.debug:
+        var: ansible_local.dpkg
+        verbosity: 2
+
+    - name: Print Ansible local gpg facts
+      ansible.builtin.debug:
+        var: ansible_local.gpg
+        verbosity: 2
+
+    - name: Print Ansible local bash facts
+      ansible.builtin.debug:
+        var: ansible_local.bash
+        verbosity: 2
+
+  tags:
+    - apt
+    - apt_local_facts
+...

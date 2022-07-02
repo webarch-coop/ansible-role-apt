@@ -103,6 +103,8 @@
 
     - name: Include check for legacy .list file
       ansible.builtin.include_tasks: list_check.yml 
+      tags:
+        - apt_list 
 
   tags:
     - apt

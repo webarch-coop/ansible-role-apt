@@ -1,0 +1,23 @@
+---
+- name: Check for .list files in /etc/apt/sources.list.d
+  block:
+
+    - name: Find legacy apt list files
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        patterns: "*.list"
+      register: apt_list_files
+
+    - name: List legacy apt list files
+      ansible.builtin.debug:
+        var: file.path
+      loop: "{{ apt_list_files.files }}"
+      loop_control:
+        loop_var: file
+        label: "{{ file.path | basename }}"
+      when: ( apt_list_files.matched >= 1 )
+
+  tags:
+    - apt
+    - apt_list
+...

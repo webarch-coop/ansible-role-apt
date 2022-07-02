@@ -101,6 +101,9 @@
 
       when: ( apt_distro_switch is not defined ) or ( not apt_distro_switch )
 
+    - name: Include check for legacy .list file
+      ansible.builtin.include_tasks: list_check.yml 
+
   tags:
     - apt
 ...

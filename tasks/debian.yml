@@ -2,14 +2,6 @@
 - name: Debian tasks
   block:
 
-    - name: apt-transport-https present
-      ansible.builtin.apt:
-        pkg:
-          - apt-transport-https
-        state: present
-        update_cache: false
-      when: apt_distro is not regex(^jessie|stretch$')
-
     - name: Various /etc/apt/sources.list.d/ files absent
       ansible.builtin.file:
         path: "/etc/apt/sources.list.d/{{ file }}"

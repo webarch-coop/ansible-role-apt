@@ -7,11 +7,6 @@
       tags:
         - apt_local_facts
 
-    - name: Debug ansible_distribution_release
-      ansible.builtin.debug:
-        var: ansible_distribution_release
-        verbosity: 2
-
     - name: Python packages present for Debian
       block:
 
@@ -22,12 +17,19 @@
 
         - name: Package python-apt present for Debian Stretch and Jessie
           ansible.builtin.apt:
-            pkg: python-apt
+            pkg:
+              - python-apt
+              - apt-transport-https
           when: ansible_distribution_release is regex('^jessie|stretch$')
 
       when: ansible_distribution == "Debian"
 
-    - name: Print apt_distro if verbosity 1 or more
+    - name: Print ansible_distribution_release
+      ansible.builtin.debug:
+        var: ansible_distribution_release
+        verbosity: 1
+
+    - name: Print apt_distro
       ansible.builtin.debug:
         msg: "apt_distro: {{ apt_distro }}"
         verbosity: 1
@@ -70,7 +72,7 @@
 
     - name: Include Ubuntu tasks
       ansible.builtin.include_tasks: ubuntu.yml
-      when: apt_distro is regex('^xenial|bionic|focal|jammy')
+      when: apt_distro is regex('^xenial|bionic|focal|jammy$')
 
     - name: Update the cache when switching distros
       ansible.builtin.apt:
@@ -90,14 +92,23 @@
         - name: Packages present
           ansible.builtin.apt:
             pkg:
-              - apticron
               - aptitude
               - apt-listchanges
               - apt-show-versions
               - python3-apt
             state: present
             update_cache: false
-          when: ( ansible_connection != "chroot" ) and ( inventory_hostname != "localhost" )
+
+        - name: Packages present for servers with outgoing mail servers
+          ansible.builtin.apt:
+            pkg:
+              - apticron
+            state: present
+            update_cache: false
+          when:
+            - inventory_hostname != "localhost"
+            - ansible_connection != "chroot"
+            - apt_apticron | bool
 
       when: ( apt_distro_switch is not defined ) or ( not apt_distro_switch )
 

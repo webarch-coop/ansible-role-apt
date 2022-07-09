@@ -4,12 +4,14 @@
 # ---------------------------
 # Set apt_distro_switch to true if switching distro, eg stretch to buster
 apt_distro_switch: false
-# Set apt_src to enable source code repos
+# Set apt_src to true to enable source code repos
 apt_src: false
 # Debian backports doesn't follow LTS, support for oldstable (stretch) will
 # be dropped around one year after the release of buster, see:
 # https://backports.debian.org/news/buster-backports/
 apt_backports: true
+# Install apticron, when true this causes a outgoing mailserver to be installed
+apt_apticron: true
 # Paths for local_facts scripts
 apt_dpkg: /usr/bin/dpkg
 apt_gpg: /usr/bin/gpg

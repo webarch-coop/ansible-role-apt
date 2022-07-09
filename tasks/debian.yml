@@ -8,7 +8,7 @@
           - apt-transport-https
         state: present
         update_cache: false
-      when: ( "apt-transport-https" not in ansible_facts.packages ) and ( apt_distro != "jessie" )
+      when: apt_distro is not regex(^jessie|stretch$')
 
     - name: Various /etc/apt/sources.list.d/ files absent
       ansible.builtin.file:
@@ -27,7 +27,7 @@
 
     - name: /etc/apt/sources.list in place
       ansible.builtin.template:
-        src: templates/debian_sources.list.j2
+        src: "debian_{{ apt_distro }}.list.j2"
         dest: /etc/apt/sources.list
         mode: 0644
         owner: root

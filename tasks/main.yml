@@ -49,6 +49,7 @@
 
         - name: Run apt-get --allow-releaseinfo-change update
           ansible.builtin.command: apt-get --allow-releaseinfo-change update
+          changed_when: true
 
       when: apt_distro_switch
 

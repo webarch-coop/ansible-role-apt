@@ -11,7 +11,7 @@ apt_src: false
 # https://backports.debian.org/news/buster-backports/
 apt_backports: true
 # Install apticron, when true this causes a outgoing mailserver to be installed
-apt_apticron: true
+apt_apticron: false
 # Paths for local_facts scripts
 apt_dpkg: /usr/bin/dpkg
 apt_gpg: /usr/bin/gpg

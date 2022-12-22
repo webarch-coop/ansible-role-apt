@@ -18,8 +18,8 @@
         - name: Package python-apt present for Debian Stretch and Jessie
           ansible.builtin.apt:
             pkg:
-              - python-apt
               - apt-transport-https
+              - python-apt
           when: ansible_distribution_release is regex('^jessie|stretch$')
 
       when: ansible_distribution == "Debian"
@@ -96,6 +96,7 @@
               - aptitude
               - apt-listchanges
               - apt-show-versions
+              - apt-utils
               - python3-apt
             state: present
             update_cache: false

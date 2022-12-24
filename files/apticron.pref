@@ -1,0 +1,4 @@
+# Ansible managed
+
+Package: apticron
+Pin-Priority: -100

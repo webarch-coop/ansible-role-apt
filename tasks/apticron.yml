@@ -1,0 +1,55 @@
+---
+- name: Apticron tasks
+  block:
+
+    - name: Apticron present for servers with outgoing mail servers
+      block:
+
+        - name: Apt apticron preferences absent
+          ansible.builtin.file:
+            path: /etc/apt/preferences.d/apticron.pref
+            state: absent
+
+        - name: Apticron present
+          ansible.builtin.apt:
+            pkg:
+              - apticron
+            state: present
+            install_recommends: false
+            update_cache: true
+
+      when:
+        - inventory_hostname != "localhost"
+        - ansible_connection != "chroot"
+        - apt_apticron | bool
+
+    - name: Apticron absent for servers without outgoing mail servers
+      block:
+
+        - name: Apt apticron preferences present
+          ansible.builtin.copy:
+            src: apticron.pref
+            dest: /etc/apt/preferences.d/apticron.pref
+            mode: 0644
+            owner: root
+            group: root
+
+        - name: Apticron absent
+          ansible.builtin.apt:
+            pkg:
+              - apticron
+            state: absent
+            clean: true
+            purge: true
+            autoremove: true
+            autoclean: true
+            update_cache: true
+
+      when: >-
+        ( inventory_hostname == "localhost" ) or
+        ( ansible_connection == "chroot" ) or
+        ( not apt_apticron | bool )
+
+  tags:
+    - apt
+...

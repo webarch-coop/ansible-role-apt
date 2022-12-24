@@ -78,7 +78,7 @@
     - name: Update the cache when switching distros
       ansible.builtin.apt:
         update_cache: true
-      when: ( apt_distro_switch is defined ) and ( apt_distro_switch )
+      when: ( apt_distro_switch is defined ) and ( apt_distro_switch | bool )
 
     - name: When switching distros updates should not be done via Ansible
       block:
@@ -101,7 +101,11 @@
             state: present
             update_cache: false
 
-        - name: Packages present for servers with outgoing mail servers
+        - name: Include apticron tasks
+          ansible.builtin.include_tasks: apticron.yml
+          when: apt_apticron is defined
+
+        - name: Apticron present for servers with outgoing mail servers
           ansible.builtin.apt:
             pkg:
               - apticron
@@ -112,7 +116,7 @@
             - ansible_connection != "chroot"
             - apt_apticron | bool
 
-      when: ( apt_distro_switch is not defined ) or ( not apt_distro_switch )
+      when: ( apt_distro_switch is not defined ) or ( not apt_distro_switch | bool )
 
     - name: Include check for legacy .list file
       ansible.builtin.include_tasks: list_check.yml

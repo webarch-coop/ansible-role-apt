@@ -45,8 +45,7 @@
             update_cache: true
 
         - name: Apt clean
-          ansible.builtin.apt:
-            clean: true
+          ansible.builtin.include_tasks: apt_clean.yml
           when: ansible_version.full is version('2.13', '>=')
 
       when: >-

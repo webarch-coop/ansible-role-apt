@@ -1,0 +1,8 @@
+---
+- name: Apt clean
+  ansible.builtin.apt:
+    clean: true
+  when: ansible_version.full is version('2.13', '>=')
+  tags:
+    - apt
+...

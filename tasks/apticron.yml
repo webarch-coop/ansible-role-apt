@@ -39,11 +39,15 @@
             pkg:
               - apticron
             state: absent
-            clean: true
             purge: true
             autoremove: true
             autoclean: true
             update_cache: true
+
+        - name: Apt clean
+          ansible.builtin.apt:
+            clean: true
+          when: ansible_version.full >= "2.13"
 
       when: >-
         ( inventory_hostname == "localhost" ) or

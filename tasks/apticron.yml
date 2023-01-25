@@ -47,7 +47,7 @@
         - name: Apt clean
           ansible.builtin.apt:
             clean: true
-          when: ansible_version.full >= "2.13"
+          when: ansible_version.full is version('2.13', '>=')
 
       when: >-
         ( inventory_hostname == "localhost" ) or

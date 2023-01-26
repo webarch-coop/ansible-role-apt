@@ -2,9 +2,9 @@
 
 [![pipeline status](https://git.coop/webarch/apt/badges/master/pipeline.svg)](https://git.coop/webarch/apt/-/commits/master)
 
-This role contains an Ansible role for configuring `apt` [sources.list](https://wiki.debian.org/SourcesList) files on Debian and Ubuntu.
+This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) file on Debian and Ubuntu.
 
-See also the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster.
+See also the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster and the [localhost repo](https://git.coop/webarch/localhost) which can be used with this role to configure the `sources.list` file locally.
 
 ## Role variables
 
@@ -34,11 +34,11 @@ A required list of strings for the Debian components that should be be enabled, 
 
 ### apt_debian_sources_absent
 
-A optional list of files in `/etc/apt/sources.list.d/` that should be deleted, `apt_debian_sources_absent` defaults toi a empty list, `[]`.
+A optional list of files in `/etc/apt/sources.list.d/` that should be deleted, `apt_debian_sources_absent` defaults to an empty list, `[]`.
 
 ### apt_distro_switch
 
-A required boolean, set `apt_distro_switch` to true when switching distro, eg Bullseye to Bookworm.
+A required boolean, set `apt_distro_switch` to `True` when switching distro, eg Bullseye to Bookworm.
 
 ### apt_local_facts
 
@@ -58,6 +58,51 @@ A optional list of local fact files and their state, `apt_local_facts_files` def
 ```
 
 When `state` is set to `absent` the file `name` in `/etc/ansible/facts.d` will be deleted.
+
+The [bash.fact](files/bash.fact) script outputs the `$PATH` to Bash, this is `/bin/bash` on older servers and `/usr/bin/bash` on recent ones, in JSON format, for example:
+
+```bash
+bash /etc/ansible/facts.d/bash.fact | jq
+```
+```json
+{
+  "state": "present",
+  "path": "/bin/bash"
+}
+```
+
+The [dpkg.fact](files/dpkg.fact) script outputs the CPU architecture for use in `apt` configuration, this is generated using `dpkg --print-architecture`, also a list of installed packages generated using `dpkg --get-selections`, in JSON format, for example:
+
+```bash
+bash /etc/ansible/facts.d/dpkg.fact | jq
+```
+```json
+{
+  "state": "present",
+  "arch": "amd64",
+  "sel": [
+    "adduser",
+    "adwaita-icon-theme",
+    "ansible",
+    "zip",
+    "zlib1g:amd64",
+    "zlib1g-dev:amd64"
+  ]
+}
+```
+
+The [gpg.fact](files/gpg.fact) script outputs the version of `gpg`, this is generated using `gpg --version | head -n1 | gwak '( print $3 }'`, in JSON format, for example:
+
+Example output of the local fact files follows:
+```bash
+bash /etc/ansible/facts.d/gpg.fact | jq
+```
+```yaml
+{
+  "state": "present",
+  "version": "2.2.27"
+}
+```
 
 ### apt_local_facts_packages
 

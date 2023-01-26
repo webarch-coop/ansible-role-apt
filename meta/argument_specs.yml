@@ -1,0 +1,43 @@
+# Copyright 2019-2023 Chris Croome
+#
+# This file is part of the Webarchitects Ansible role.
+#
+# The Webarchitects Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+argument_specs:
+  local_facts:
+    author: Chris Croome
+    description: The local facts entry point for the Ansible role for configuring Debian and Ubuntu apt repos.
+    short_description: The local facts entry point apt role.
+    options:
+      apt_local_facts:
+        type: bool
+        required: false
+        description: Run the local fact tasks.
+      apt_local_facts_files:
+        type: list
+        required: false
+        description: A list of local fact files and their state.
+        elements: dict
+        options:
+          name:
+            type: str
+            required: true
+            description: The local fact file name.
+          state:
+            type: str
+            required: true
+            description: The local fact state.
+            choices:
+              - "absent"
+              - "present"
+      apt_local_facts_packages:
+        type: list
+        required: false
+        description: A list of .deb packages that are required by the local fact scripts.
+        elements: str
+...

@@ -12,9 +12,23 @@ apt_src: false
 apt_backports: true
 # Install apticron, when true this causes a outgoing mailserver to be installed
 apt_apticron: false
-# Paths for local_facts scripts
-apt_dpkg: /usr/bin/dpkg
-apt_gpg: /usr/bin/gpg
+# Install local fact scripts
+apt_local_facts: true
+# Local fact scripts
+apt_local_facts_files:
+  - name: bash.fact
+    state: present
+  - name: dpkg.fact
+    state: present
+  - name: gpg.fact
+    state: present
+apt_local_facts_pkgs:
+  - gawk
+  - bash
+  - coreutils
+  - dpkg
+  - gpg
+  - jo
 # ----------------
 # DEBIAN Variables
 # ----------------

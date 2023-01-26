@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Ansible managed
+
+# Copyright 2019-2023 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
+
+set -euo pipefail
+
+dpkg_path="$(type -p dpkg)"
+jo_path="$(type -p jo)"
+gawk_path="$(type -p gawk)"
+sort_path="$(type -p sort)"
+
+if [[ -f "${gawk_path}" && -f "${dpkg_path}" && -f "${jo_path}" && -f "${sort_path}" ]]; then
+  arch="$("${dpkg_path}" --print-architecture)"
+  # shellcheck disable=SC2016
+  mapfile -t sel < <( "${dpkg_path}" --get-selections | "${gawk_path}" '{ print $1 }' | "${sort_path}" )
+  "${jo_path}" state=present arch="${arch}" sel="$("${jo_path}" -a "${sel[@]}")"
+else
+  "${jo_path}" state=absent
+fi

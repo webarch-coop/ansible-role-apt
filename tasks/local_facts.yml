@@ -1,12 +1,24 @@
+# Copyright 2019-2023 Chris Croome
+#
+# This file is part of the Webarchitects Ansible role.
+#
+# The Webarchitects Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 - name: Ansible apt local facts
   block:
 
     - name: Required packages present
       ansible.builtin.apt:
-        pkg:
-          - jo
+        pkg: "{{ apt_local_facts_pkgs }}"
         state: present
+      when: >-
+        ( ( apt_local_facts_pkgs is defined ) and ( apt_local_facts_pkgs != [] ) ) and
+        ( ( ansible_local.dpkg.sel is not defined ) or
+        ( apt_local_facts_pkgs | ansible.builtin.difference(ansible_local.dpkg.sel) != [] ) )
 
     - name: Ansible facts.d directory present
       ansible.builtin.file:
@@ -17,46 +29,68 @@
         owner: root
         group: root
 
-    - name: Ansible local facts scripts present
-      ansible.builtin.template:
-        src: "{{ script }}.j2"
-        dest: "/etc/ansible/facts.d/{{ script }}"
+    - name: Ansible local facts files absent
+      ansible.builtin.file:
+        path: "/etc/ansible/facts.d/{{ apt_fact_file }}"
+        state: absent
+      loop: "{{ apt_local_facts_absent }}"
+      loop_control:
+        loop_var: apt_fact_file
+      register: apt_local_facts_files_absent
+      when:
+        - apt_local_facts_absent is defined
+        - apt_local_facts_absent != []
+
+    - name: Ansible local facts files present
+      ansible.builtin.copy:
+        src: "{{ apt_fact_file }}"
+        dest: "/etc/ansible/facts.d/{{ apt_fact_file }}"
         mode: 0755
         owner: root
         group: root
-      loop:
-        - dpkg.fact
-        - gpg.fact
-        - bash.fact
+      loop: "{{ apt_local_facts_present }}"
       loop_control:
-        loop_var: script
+        loop_var: apt_fact_file
+      register: apt_local_facts_files_present
+      when:
+        - apt_local_facts_present is defined
+        - apt_local_facts_present != []
 
     - name: Re-read Ansible local facts
       ansible.builtin.setup:
         filter: ansible_local
+      when: >-
+        ( apt_local_facts_files_absent.changed | bool ) or
+        ( apt_local_facts_files_present.changed | bool )
 
     - name: Check that ansible_local facts are defined
       ansible.builtin.assert:
         that:
-          - ansible_local.dpkg is defined
-          - ansible_local.gpg is defined
-          - ansible_local.bash is defined
+          - ansible_local[apt_fact_name] is defined
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+      loop: "{{ apt_local_facts_names_present }}"
+      loop_control:
+        loop_var: apt_fact_name
+      when:
+        - apt_local_facts_names_present is defined
+        - apt_local_facts_names_present != []
 
     - name: Print Ansible local dpkg facts
       ansible.builtin.debug:
-        var: ansible_local.dpkg
-        verbosity: 2
+        var: ansible_local[apt_fact_name]
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+      loop: "{{ apt_local_facts_names_present }}"
+      loop_control:
+        loop_var: apt_fact_name
+      when:
+        - apt_local_facts_names_present is defined
+        - apt_local_facts_names_present != []
 
-    - name: Print Ansible local gpg facts
-      ansible.builtin.debug:
-        var: ansible_local.gpg
-        verbosity: 2
-
-    - name: Print Ansible local bash facts
-      ansible.builtin.debug:
-        var: ansible_local.bash
-        verbosity: 2
-
+  when:
+    - apt_local_facts is defined
+    - apt_local_facts | bool
+    - apt_local_facts_files is defined
+    - apt_local_facts_files != []
   tags:
     - apt
     - apt_local_facts

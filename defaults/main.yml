@@ -1,3 +1,12 @@
+# Copyright 2019-2023 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 # ---------------------------
 # DEBIAN and UBUNTU Variables
@@ -12,6 +21,8 @@ apt_src: false
 apt_backports: true
 # Install apticron, when true this causes a outgoing mailserver to be installed
 apt_apticron: false
+apt_apticron_pkgs:
+  - apticron
 # Install local fact scripts
 apt_local_facts: true
 # Local fact scripts
@@ -37,18 +48,15 @@ apt_debian_components:
   - contrib
   - non-free
 # Files in /etc/apt/sources.list.d/ that should be removed on Debian servers
-apt_debian_sources_absent:
-  - jessie-backports.list
-  - ftp_nl_debian_org_debian.list
-  - security_debian_org.list
+apt_debian_sources_absent: []
 # ----------------
 # UBUNTU Variables
 # ----------------
-apt_country: uk
+apt_ubuntu_country: uk
 apt_ubuntu_components:
   - main
   - restricted
   - universe
   - multiverse
-apt_partner: false
+apt_ubuntu_partner: false
 ...

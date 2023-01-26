@@ -1,9 +1,10 @@
 # {{ ansible_managed }}
+
 # Debian Jessie repos
-deb http://archive.debian.org/debian/ jessie {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb http://archive.debian.org/debian/ jessie {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
-deb http://archive.debian.org/debian/ jessie/updates {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb http://archive.debian.org/debian/ jessie/updates {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
-deb http://archive.debian.org/debian/ jessie-backports {% for comp in apt_debian_components %}{{ comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb http://archive.debian.org/debian/ jessie-backports {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
 # vim: ft=debsources

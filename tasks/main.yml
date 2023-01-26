@@ -1,9 +1,23 @@
+# Copyright 2019-2023 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 - name: Configure apt sources list for Debian and Ubuntu
   block:
 
     - name: Include local facts tasks
       ansible.builtin.include_tasks: local_facts.yml
+      when:
+        - apt_local_facts is defined
+        - apt_local_facts | bool
+        - apt_local_facts_files is defined
+        - apt_local_facts_files != []
       tags:
         - apt_local_facts
 
@@ -27,18 +41,21 @@
     - name: Print ansible_distribution_release
       ansible.builtin.debug:
         var: ansible_distribution_release
-        verbosity: 1
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
     - name: Print apt_distro
       ansible.builtin.debug:
-        msg: "apt_distro: {{ apt_distro }}"
-        verbosity: 1
+        var: apt_distro
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
       when: apt_distro is defined
 
     - name: Fail if the checked distro version doesn't match the specified value of apt_distro
       ansible.builtin.fail:
         msg: "The distro was detected as {{ ansible_distribution_release }} but you are asking for the server to be configured for {{ apt_distro }}."
-      when: ( apt_distro is defined ) and ( apt_distro != ansible_distribution_release ) and ( not apt_distro_switch )
+      when:
+        - apt_distro is defined
+        - apt_distro != ansible_distribution_release
+        - not apt_distro_switch | bool
 
     - name: Warning and tasks for switching distros
       block:
@@ -51,7 +68,9 @@
           ansible.builtin.command: apt-get --allow-releaseinfo-change update
           changed_when: true
 
-      when: apt_distro_switch
+      when:
+        - apt_distro_switch is defined
+        - apt_distro_switch | bool
 
     - name: Set apt_distro if not defined
       ansible.builtin.set_fact:

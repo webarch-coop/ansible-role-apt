@@ -40,4 +40,88 @@ argument_specs:
         required: false
         description: A list of .deb packages that are required by the local fact scripts.
         elements: str
+  main:
+    author: Chris Croome
+    description: The main entry point for the Ansible role for configuring Debian and Ubuntu apt repos.
+    short_description: The main entry point apt role.
+    options:
+      apt_apticron:
+        type: bool
+        required: true
+        description: Install apticron.
+      apt_apticron_pkgs:
+        type: list
+        required: false
+        description: A list of .deb packages to be installed when apt_apticron is True.
+        elements: str
+      apt_backports:
+        type: bool
+        required: true
+        description: Enable apt backports repos.
+      apt_debian_components:
+        type: list
+        required: true
+        description: A list of Debian components to be enabled.
+        elements: str
+        choices:
+          - "contrib"
+          - "main"
+          - "non-free"
+      apt_debian_sources_absent:
+        type: list
+        required: false
+        description: A list of files in /etc/apt/sources.list.d/ that should be absent on Debian servers.
+        elements: str
+      apt_distro_switch:
+        type: bool
+        required: true
+        description: Set to true if switching distro, eg Bullseye to Bookworm.
+      apt_local_facts:
+        type: bool
+        required: false
+        description: Run the local fact tasks.
+      apt_local_facts_files:
+        type: list
+        required: false
+        description: A list of local fact files and their state.
+        elements: dict
+        options:
+          name:
+            type: str
+            required: true
+            description: The local fact file name.
+          state:
+            type: str
+            required: true
+            description: The local fact state.
+            choices:
+              - "absent"
+              - "present"
+      apt_local_facts_packages:
+        type: list
+        required: false
+        description: A list of .deb packages that are required by the local fact scripts.
+        elements: str
+      apt_src:
+        type: bool
+        required: true
+        description: Set to true to enable apt source repos.
+      apt_ubuntu_components:
+        type: list
+        required: true
+        description: A list of Ubuntu components to be enabled.
+        elements: str
+        choices:
+          - "main"
+          - "multiverse"
+          - "restricted"
+          - "universe"
+      apt_ubuntu_country:
+        type: str
+        required: true
+        description: The country code for the Ubuntu mirrors to use.
+      apt_ubuntu_partner:
+        type: bool
+        required: true
+        description: Enable Ubuntu apt partner repos.
 ...

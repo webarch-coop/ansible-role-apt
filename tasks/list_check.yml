@@ -1,3 +1,12 @@
+# Copyright 2019-2023 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 - name: Check for .list files in /etc/apt/sources.list.d
   block:
@@ -10,11 +19,11 @@
 
     - name: List legacy apt list files
       ansible.builtin.debug:
-        var: file.path
+        var: apt_file.path
       loop: "{{ apt_list_files.files }}"
       loop_control:
-        loop_var: file
-        label: "{{ file.path | basename }}"
+        loop_var: apt_file
+        label: "{{ apt_file.path | basename }}"
       when: ( apt_list_files.matched >= 1 )
 
   tags:

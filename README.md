@@ -4,6 +4,22 @@
 
 This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) file on Debian and Ubuntu.
 
+## Usage
+
+In addition to the direct usage of this role it can be included by other roles to only configure the `local_facts`, for example to get the CPU Architecture and the version of `gpg`:
+
+```yaml
+- name: Include apt role local fact tasks if variables are not defined
+  ansible.builtin.include_role:
+    name: apt
+    tasks_from: local_facts.yml
+  when: >
+    ( ansible_local.dpkg.arch is not defined ) or
+    ( ansible_local.gpg.version is not defined )
+```
+
+The [Yarn Class Ansible role](https://git.coop/webarch/yarn) provides an example of this usage.
+
 See also the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster and the [localhost repo](https://git.coop/webarch/localhost) which can be used with this role to configure the `sources.list` file locally.
 
 ## Role variables

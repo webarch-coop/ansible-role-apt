@@ -13,7 +13,7 @@ In addition to the direct usage of this role it can be included by other roles t
   ansible.builtin.include_role:
     name: apt
     tasks_from: local_facts.yml
-  when: >
+  when: >-
     ( ansible_local.dpkg.arch is not defined ) or
     ( ansible_local.gpg.version is not defined )
 ```

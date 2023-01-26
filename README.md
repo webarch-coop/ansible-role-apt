@@ -6,7 +6,7 @@ This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.l
 
 ## Usage
 
-In addition to the direct usage of this role it can be included by other roles to only configure the `local_facts`, for example to get the CPU Architecture and the version of `gpg`:
+In addition to the direct usage of this role it can be included by other roles to only configure the `local_facts`, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
 
 ```yaml
 - name: Include apt role local fact tasks if variables are not defined
@@ -15,7 +15,8 @@ In addition to the direct usage of this role it can be included by other roles t
     tasks_from: local_facts.yml
   when: >-
     ( ansible_local.dpkg.arch is not defined ) or
-    ( ansible_local.gpg.version is not defined )
+    ( ansible_local.gpg.version is not defined ) or
+    ( ansible_local.bash.path is not defined )
 ```
 
 The [Yarn Class Ansible role](https://git.coop/webarch/yarn) provides an example of this usage.

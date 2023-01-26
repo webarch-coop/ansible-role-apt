@@ -91,9 +91,8 @@ bash /etc/ansible/facts.d/dpkg.fact | jq
 }
 ```
 
-The [gpg.fact](files/gpg.fact) script outputs the version of `gpg`, this is generated using `gpg --version | head -n1 | gwak '( print $3 }'`, in JSON format, for example:
+The [gpg.fact](files/gpg.fact) script outputs the version of `gpg`, this is generated using `gpg --version | head -n1 | gwak '{ print $3 }'`, in JSON format, for example:
 
-Example output of the local fact files follows:
 ```bash
 bash /etc/ansible/facts.d/gpg.fact | jq
 ```
@@ -106,7 +105,7 @@ bash /etc/ansible/facts.d/gpg.fact | jq
 
 ### apt_local_facts_packages
 
-A optional list of `.deb` packages that are required by the local fact scripts, packages lsted in `apt_local_facts_packages` will be installed, if absent, when `apt_local_facts` is `True`.
+A optional list of `.deb` packages that are required by the local fact scripts, packages listed in `apt_local_facts_packages` will be installed, if absent, when `apt_local_facts` is `True`.
 
 The default value of `apt_local_facts_packages` is:
 

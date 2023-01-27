@@ -8,7 +8,7 @@ See also the [upgrade role](https://git.coop/webarch/upgrade), the [Bullseye rol
 
 ## Usage
 
-In addition to the direct use of this role to configure the `/etc/apt/sources.list` file it can be included by other roles to configure `local_facts` needed when configuring other apt repos, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
+In addition to the direct use of this role to configure the `/etc/apt/sources.list` file it can be included by other roles to set `local_facts` that are needed when configuring other apt repos, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
 
 ```yaml
 - name: Include apt role local fact tasks if variables are not defined
@@ -21,7 +21,7 @@ In addition to the direct use of this role to configure the `/etc/apt/sources.li
     ( ansible_local.bash.path is not defined )
 ```
 
-The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an example of this usage in the [apt.yml](https://git.coop/webarch/yarn/-/blob/master/tasks/apt.yml) tasks, `ansible_local.bash.path` is used by the `gpg --dearmor` task, the `ansible_local.dpkg.arch` variable is used bu the [yarn.sources](https://git.coop/webarch/yarn/-/blob/master/templates/yarn.sources.j2) template and the `ansible_local.gpg.version` variables is used to conditionally include the `--with-fingerprint --with-subkey-fingerprint` options with `gpg`.
+The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an example of this usage in the [apt.yml](https://git.coop/webarch/yarn/-/blob/master/tasks/apt.yml) tasks, `ansible_local.bash.path` is used by the `gpg --dearmor` task, the `ansible_local.dpkg.arch` variable is used by the [yarn.sources](https://git.coop/webarch/yarn/-/blob/master/templates/yarn.sources.j2) template and the `ansible_local.gpg.version` variable is used to conditionally include the `--with-fingerprint --with-subkey-fingerprint` options for the `gpg --show-keys` command.
 
 ## Role variables
 

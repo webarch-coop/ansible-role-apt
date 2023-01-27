@@ -102,6 +102,11 @@ argument_specs:
         required: false
         description: A list of .deb packages that are required by the local fact scripts.
         elements: str
+      apt_pkgs:
+        type: list
+        required: false
+        description: A list of .deb packages that will be installed.
+        elements: str
       apt_src:
         type: bool
         required: true

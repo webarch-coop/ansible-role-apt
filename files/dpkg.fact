@@ -21,8 +21,8 @@ sort_path="$(type -p sort)"
 if [[ -f "${gawk_path}" && -f "${dpkg_path}" && -f "${jo_path}" && -f "${sort_path}" ]]; then
   arch="$("${dpkg_path}" --print-architecture)"
   # shellcheck disable=SC2016
-  mapfile -t sel < <( "${dpkg_path}" --get-selections | "${gawk_path}" '{ print $1 }' | "${sort_path}" )
-  "${jo_path}" state=present arch="${arch}" sel="$("${jo_path}" -a "${sel[@]}")"
+  mapfile -t installed < <( "${dpkg_path}" --get-selections | "${gawk_path}" '{ print $1 }' | "${sort_path}" )
+  "${jo_path}" state=present arch="${arch}" installed="$("${jo_path}" -a "${installed[@]}")"
 else
   "${jo_path}" state=absent
 fi

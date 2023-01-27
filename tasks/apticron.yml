@@ -26,8 +26,8 @@
             install_recommends: false
             update_cache: true
           when: >-
-            ( ( ansible_local.dpkg.sel is not defined ) or
-            ( apt_apticron_pkgs | ansible.builtin.difference(ansible_local.dpkg.sel) != [] ) )
+            ( ( ansible_local.dpkg.installed is not defined ) or
+            ( apt_apticron_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != [] ) )
 
       when:
         - inventory_hostname != "localhost"
@@ -58,15 +58,8 @@
             update_cache: true
           register: apt_apticron_absent
           when: >-
-            ( ( ansible_local.dpkg.sel is not defined ) or
-            ( apt_apticron_pkgs | ansible.builtin.intersect(ansible_local.dpkg.sel) != [] ) )
-
-        - name: Apt clean
-          ansible.builtin.include_tasks: apt_clean.yml
-          when:
-            - ansible_version.full is version('2.13', '>=')
-            - apt_apticron_absent.changed is defined
-            - apt_apticron_absent.changed | bool
+            ( ( ansible_local.dpkg.installed is not defined ) or
+            ( apt_apticron_pkgs | ansible.builtin.intersect(ansible_local.dpkg.installed) != [] ) )
 
       when: >-
         ( inventory_hostname == "localhost" ) or

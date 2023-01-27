@@ -34,12 +34,18 @@ apt_local_facts_files:
   - name: gpg.fact
     state: present
 apt_local_facts_pkgs:
-  - gawk
   - bash
   - coreutils
   - dpkg
+  - gawk
   - gpg
   - jo
+apt_pkgs:
+  - aptitude
+  - apt-listchanges
+  - apt-show-versions
+  - apt-utils
+  - needrestart
 # ----------------
 # DEBIAN Variables
 # ----------------

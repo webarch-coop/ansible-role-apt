@@ -4,9 +4,11 @@
 
 This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) file on Debian and Ubuntu.
 
+See also the [upgrade role](https://git.coop/webarch/upgrade), the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster and the [localhost repo](https://git.coop/webarch/localhost) which can be used with this role to configure the `sources.list` file locally.
+
 ## Usage
 
-In addition to the direct usage of this role it can be included by other roles to only configure the `local_facts`, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
+In addition to the direct usage of this role to configure the `/etc/apt/sources.list` file it can be included by other roles to configure `local_facts` needed when configuring other apt repos, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
 
 ```yaml
 - name: Include apt role local fact tasks if variables are not defined
@@ -19,9 +21,7 @@ In addition to the direct usage of this role it can be included by other roles t
     ( ansible_local.bash.path is not defined )
 ```
 
-The [Yarn Class Ansible role](https://git.coop/webarch/yarn) provides an example of this usage.
-
-See also the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster and the [localhost repo](https://git.coop/webarch/localhost) which can be used with this role to configure the `sources.list` file locally.
+The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an example of this usage in the [apt.yml](https://git.coop/webarch/yarn/-/blob/master/tasks/apt.yml) tasks, `ansible_local.bash.path` is used by the `gpg --dearmor` task, the `ansible_local.dpkg.arch` variable is used bu the [yarn.sources](https://git.coop/webarch/yarn/-/blob/master/templates/yarn.sources.j2) template and the `ansible_local.gpg.version` variables is used to conditionally include the `--with-fingerprint --with-subkey-fingerprint` options with `gpg`.
 
 ## Role variables
 
@@ -97,7 +97,7 @@ bash /etc/ansible/facts.d/dpkg.fact | jq
 {
   "state": "present",
   "arch": "amd64",
-  "sel": [
+  "installed": [
     "adduser",
     "adwaita-icon-theme",
     "ansible",
@@ -133,6 +133,18 @@ The default value of `apt_local_facts_packages` is:
 - dpkg
 - gpg
 - jo
+```
+
+### apt_pkgs
+
+A optional list of `.deb` packages that will be installed, by default `apt_pkgs` is set to:
+
+```yaml
+  - aptitude
+  - apt-listchanges
+  - apt-show-versions
+  - apt-utils
+  - needrestart
 ```
 
 ### apt_src

@@ -77,29 +77,22 @@
         apt_distro: "{{ ansible_distribution_release }}"
       when: apt_distro is not defined
 
-    - name: Load package information as facts
-      ansible.builtin.package_facts:
-        manager: apt
-
-    - name: Fail if ansible_facts.packages is not defined or empty
-      ansible.builtin.fail:
-        msg: The package_facts array is empty, this could be a result of the Ansible 2.8.x bug https://github.com/ansible/ansible/issues/56921
-      when: ( ansible_facts.packages is not defined ) or ( ansible_facts.packages == [] )
-
-    - name: Include Debian tasks
+    - name: Include Debian sources.list tasks
       ansible.builtin.include_tasks: debian.yml
       when: apt_distro is regex('^jessie|stretch|buster|bullseye|bookworm$')
 
-    - name: Include Ubuntu tasks
+    - name: Include Ubuntu sources.list tasks
       ansible.builtin.include_tasks: ubuntu.yml
       when: apt_distro is regex('^xenial|bionic|focal|jammy$')
 
     - name: Update the cache when switching distros
       ansible.builtin.apt:
         update_cache: true
-      when: ( apt_distro_switch is defined ) and ( apt_distro_switch | bool )
+      when: >-
+        ( apt_distro_switch is defined ) and
+        ( apt_distro_switch | bool )
 
-    - name: When switching distros updates should not be done via Ansible
+    - name: When switching distros updates should not be done using Ansible
       block:
 
         - name: Packages upgraded
@@ -111,31 +104,26 @@
 
         - name: Packages present
           ansible.builtin.apt:
-            pkg:
-              - aptitude
-              - apt-listchanges
-              - apt-show-versions
-              - apt-utils
-              - python3-apt
+            pkg: "{{ apt_pkgs }}"
             state: present
             update_cache: false
+          when: >-
+            ( ( apt_pkgs is defined ) and
+            ( apt_pkgs != [] ) ) and
+            ( ( ansible_local.dpkg.installed is not defined ) or
+            ( apt_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != [] ) )
 
         - name: Include apticron tasks
           ansible.builtin.include_tasks: apticron.yml
           when: apt_apticron is defined
 
-        - name: Apticron present for servers with outgoing mail servers
-          ansible.builtin.apt:
-            pkg:
-              - apticron
-            state: present
-            update_cache: false
-          when:
-            - inventory_hostname != "localhost"
-            - ansible_connection != "chroot"
-            - apt_apticron | bool
+        - name: Apt clean
+          ansible.builtin.include_tasks: apt_clean.yml
+          when: ansible_version.full is version('2.13', '>=')
 
-      when: ( apt_distro_switch is not defined ) or ( not apt_distro_switch | bool )
+      when: >-
+        ( apt_distro_switch is not defined ) or
+        ( not apt_distro_switch | bool )
 
     - name: Include check for legacy .list file
       ansible.builtin.include_tasks: list_check.yml

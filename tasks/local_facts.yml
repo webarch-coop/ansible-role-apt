@@ -17,8 +17,8 @@
         state: present
       when: >-
         ( ( apt_local_facts_pkgs is defined ) and ( apt_local_facts_pkgs != [] ) ) and
-        ( ( ansible_local.dpkg.sel is not defined ) or
-        ( apt_local_facts_pkgs | ansible.builtin.difference(ansible_local.dpkg.sel) != [] ) )
+        ( ( ansible_local.dpkg.installed is not defined ) or
+        ( apt_local_facts_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != [] ) )
 
     - name: Ansible facts.d directory present
       ansible.builtin.file:

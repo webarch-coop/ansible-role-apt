@@ -18,7 +18,7 @@ jo_path="$(type -p jo)"
 gawk_path="$(type -p gawk)"
 sort_path="$(type -p sort)"
 
-if [[ -f "${gawk_path}" && -f "${dpkg_path}" && -f "${jo_path}" && -f "${sort_path}" ]]; then
+if [[ -e "${gawk_path}" && -e "${dpkg_path}" && -e "${jo_path}" && -e "${sort_path}" ]]; then
   arch="$("${dpkg_path}" --print-architecture)"
   # shellcheck disable=SC2016
   mapfile -t installed < <( "${dpkg_path}" --get-selections | "${gawk_path}" '{ print $1 }' | "${sort_path}" )

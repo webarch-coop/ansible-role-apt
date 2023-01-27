@@ -78,7 +78,7 @@
     - name: Print Ansible local dpkg facts
       ansible.builtin.debug:
         var: ansible_local[apt_fact_name]
-        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
       loop: "{{ apt_local_facts_names_present }}"
       loop_control:
         loop_var: apt_fact_name

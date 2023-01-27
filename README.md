@@ -8,7 +8,7 @@ See also the [upgrade role](https://git.coop/webarch/upgrade), the [Bullseye rol
 
 ## Usage
 
-In addition to the direct usage of this role to configure the `/etc/apt/sources.list` file it can be included by other roles to configure `local_facts` needed when configuring other apt repos, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
+In addition to the direct use of this role to configure the `/etc/apt/sources.list` file it can be included by other roles to configure `local_facts` needed when configuring other apt repos, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
 
 ```yaml
 - name: Include apt role local fact tasks if variables are not defined

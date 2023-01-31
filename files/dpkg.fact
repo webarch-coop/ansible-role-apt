@@ -16,12 +16,13 @@ set -euo pipefail
 dpkg_path="$(type -p dpkg)"
 jo_path="$(type -p jo)"
 gawk_path="$(type -p gawk)"
+grep_path="$(type -p grep)"
 sort_path="$(type -p sort)"
 
-if [[ -e "${gawk_path}" && -e "${dpkg_path}" && -e "${jo_path}" && -e "${sort_path}" ]]; then
+if [[ -e "${dpkg_path}" && -e "${jo_path}" && -e "${gawk_path}" && -e "${grep_path}" && -e "${sort_path}" ]]; then
   arch="$("${dpkg_path}" --print-architecture)"
   # shellcheck disable=SC2016
-  mapfile -t installed < <( "${dpkg_path}" --get-selections | "${gawk_path}" '{ print $1 }' | "${sort_path}" )
+  mapfile -t installed < <( "${dpkg_path}" --get-selections | "${grep_path}" '[[:space:]]install$' | "${gawk_path}" '{ print $1 }' | "${sort_path}" )
   "${jo_path}" state=present arch="${arch}" installed="$("${jo_path}" -a "${installed[@]}")"
 else
   "${jo_path}" state=absent

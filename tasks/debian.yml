@@ -32,7 +32,7 @@
       ansible.builtin.template:
         src: "debian_{{ apt_distro }}.list.j2"
         dest: /etc/apt/sources.list
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
         backup: true
@@ -42,7 +42,7 @@
       ansible.builtin.template:
         src: templates/apt.conf.j2
         dest: /etc/apt.conf
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
         backup: true

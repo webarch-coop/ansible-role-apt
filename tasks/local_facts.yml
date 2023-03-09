@@ -25,7 +25,7 @@
         path: /etc/ansible/facts.d
         recurse: true
         state: directory
-        mode: 0755
+        mode: "0755"
         owner: root
         group: root
 
@@ -45,7 +45,7 @@
       ansible.builtin.copy:
         src: "{{ apt_fact_file }}"
         dest: "/etc/ansible/facts.d/{{ apt_fact_file }}"
-        mode: 0755
+        mode: "0755"
         owner: root
         group: root
       loop: "{{ apt_local_facts_present }}"

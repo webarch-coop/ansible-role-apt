@@ -44,7 +44,7 @@
           ansible.builtin.copy:
             src: apticron.pref
             dest: /etc/apt/preferences.d/apticron.pref
-            mode: 0644
+            mode: "0644"
             owner: root
             group: root
 

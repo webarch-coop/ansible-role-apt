@@ -16,8 +16,12 @@ set -euo pipefail
 bash_path=$(type -p bash)
 jo_path=$(type -p jo)
 
-if [[ -e "${bash_path}" ]]; then
+if [[ -e "${bash_path}" && -e "${jo_path}" ]]
+then
   "${jo_path}" state=present path="${bash_path}"
-else
+elif [[ -e "${jo_path}" ]]
+then
   "${jo_path}" state=absent
+else
+  echo '{"state":"absent"}'
 fi

@@ -18,10 +18,14 @@ gpg_path=$(type -p gpg)
 head_path=$(type -p head)
 jo_path=$(type -p jo)
 
-if [[ -e "${gawk_path}" && -e "${gpg_path}" && -e "${head_path}" && -e "${jo_path}" ]]; then
+if [[ -e "${gawk_path}" && -e "${gpg_path}" && -e "${head_path}" && -e "${jo_path}" ]]
+then
   # shellcheck disable=SC2016
   version=$("${gpg_path}" --version | "${head_path}" -n1 | "${gawk_path}" '{ print $3 }')
   "${jo_path}" state=present version="${version}"
-else
+elif [[ -e "${jo_path}" ]]
+then
   "${jo_path}" state=absent
+else
+  echo '{"state":"absent"}'
 fi

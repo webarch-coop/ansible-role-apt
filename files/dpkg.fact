@@ -19,11 +19,15 @@ gawk_path="$(type -p gawk)"
 grep_path="$(type -p grep)"
 sort_path="$(type -p sort)"
 
-if [[ -e "${dpkg_path}" && -e "${jo_path}" && -e "${gawk_path}" && -e "${grep_path}" && -e "${sort_path}" ]]; then
+if [[ -e "${dpkg_path}" && -e "${jo_path}" && -e "${gawk_path}" && -e "${grep_path}" && -e "${sort_path}" ]]
+then
   arch="$("${dpkg_path}" --print-architecture)"
   # shellcheck disable=SC2016
   mapfile -t installed < <( "${dpkg_path}" --get-selections | "${grep_path}" '[[:space:]]install$' | "${gawk_path}" '{ print $1 }' | "${sort_path}" )
   "${jo_path}" state=present arch="${arch}" installed="$("${jo_path}" -a "${installed[@]}")"
-else
+elif [[ -e "${jo_path}" ]]
+then
   "${jo_path}" state=absent
+else
+  echo '{"state":"absent"}'
 fi

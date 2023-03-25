@@ -67,6 +67,7 @@ argument_specs:
           - "contrib"
           - "main"
           - "non-free"
+          - "non-free-firmware"
       apt_debian_sources_absent:
         type: list
         required: false

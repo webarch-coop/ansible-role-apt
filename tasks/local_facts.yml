@@ -56,7 +56,7 @@
         - apt_local_facts_present is defined
         - apt_local_facts_present != []
 
-    - name: Re-read Ansible local facts
+    - name: Re-read Ansible local facts  # noqa: no-handler
       ansible.builtin.setup:
         filter: ansible_local
       when: >-

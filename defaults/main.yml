@@ -31,6 +31,8 @@ apt_local_facts_files:
     state: present
   - name: dpkg.fact
     state: present
+  - name: dpkg_arch.fact
+    state: absent
   - name: gpg.fact
     state: present
 apt_local_facts_pkgs:

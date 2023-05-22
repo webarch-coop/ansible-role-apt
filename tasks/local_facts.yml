@@ -15,6 +15,7 @@
       ansible.builtin.apt:
         pkg: "{{ apt_local_facts_pkgs }}"
         state: present
+        update_cache: true
       when: >-
         ( ( apt_local_facts_pkgs is defined ) and ( apt_local_facts_pkgs != [] ) ) and
         ( ( ansible_local.dpkg.installed is not defined ) or

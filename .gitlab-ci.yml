@@ -50,7 +50,7 @@ bookworm:
   script:
     - molecule test
 bullseye:
-  image: debian:bullseye
+  image: debian:bullseye-backports
   stage: bullseye
   script:
     - molecule test

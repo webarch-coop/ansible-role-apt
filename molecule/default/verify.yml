@@ -66,8 +66,12 @@
 
     - name: Find all files in /etc/apt/sources.list.d
       ansible.builtin.find:
-        path: /etc/apt/sources.list.d
+        paths: /etc/apt/sources.list.d
       register: molecule_apt_sources_list_d
+
+    - name: Debug the results from finding all files in /etc/apt/sources.list.d
+      ansible.builtin.debug:
+        var: molecule_apt_sources_list_d
 
     - name: Debug the paths of all files in /etc/apt/sources.list.d
       ansible.builtin.debug:

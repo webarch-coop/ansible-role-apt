@@ -29,6 +29,7 @@ before_script:
   - pipx ensurepath
   - source ~/.profile
   - printenv PATH
+  - ansible-galaxy --version
   - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
   - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
   - git clone ${CI_PROJECT_URL}.git

@@ -25,7 +25,7 @@ before_script:
   - su - ansible
   - cd
   - pipx install --include-deps molecule
-  - pipx inject --include-deps --include-apps molecule ansible==7.3.0
+  - pipx inject --include-deps --include-apps molecule ansible==7.3.0 jc==1.23.3 jmespath==1.0.1
   - echo 'export PATH="/root/.local/bin:${PATH}"' >> ~/.bashrc
   - source ~/.profile
   - printenv PATH

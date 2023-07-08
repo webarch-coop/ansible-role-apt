@@ -26,11 +26,10 @@ before_script:
   - cd
   - pipx install --include-deps molecule
   - pipx inject --include-deps --include-apps molecule ansible==7.3.0
-  - pipx ensurepath
-  - cat ~/.profile
-  - cat ~/.bashrc
+  - echo 'export PATH="/root/.local/bin:${PATH}"' >> ~/.bashrc
   - source ~/.profile
   - printenv PATH
+  - which ansible-galaxy
   - ansible-galaxy --version
   - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
   - cd builds/${CI_PROJECT_ROOT_NAMESPACE}

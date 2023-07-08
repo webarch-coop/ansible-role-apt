@@ -38,8 +38,9 @@
             var: molecule_apt_line
           loop: "{{ molecule_apt_sources_list_contents.split('\n') }}"
           loop_control:
-            loop_var: molecule_apt_line
+            extended: true
             label: "{{ ansible_loop.index }}"
+            loop_var: molecule_apt_line
 
       when: molecule_apt_sources_list.stat.exists | bool
 
@@ -65,8 +66,9 @@
             var: molecule_apt_line
           loop: "{{ molecule_apt_sources_debian_contents.split('\n') }}"
           loop_control:
-            loop_var: molecule_apt_line
+            extended: true
             label: "{{ ansible_loop.index }}"
+            loop_var: molecule_apt_line
 
       when: molecule_apt_sources_debian.stat.exists | bool
 

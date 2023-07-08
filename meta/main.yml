@@ -19,7 +19,7 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        # - trixy
+        # - trixie
         - bookworm
         - bullseye
         - buster

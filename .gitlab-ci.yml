@@ -33,15 +33,15 @@ before_script:
   - git clone ${CI_PROJECT_URL}.git
   - cd ${CI_PROJECT_NAME}
 stages:
-  - trixy
+  - trixie
   - bookworm
   - bullseye
   - buster
   - jammy
   - focal
-trixy:
-  image: debian:trixy
-  stage: trixy
+trixie:
+  image: debian:trixie
+  stage: trixie
   script:
     - molecule test
 bookworm:

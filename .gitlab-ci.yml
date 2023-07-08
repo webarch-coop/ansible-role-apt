@@ -28,6 +28,7 @@ before_script:
   - pipx inject --include-deps --include-apps molecule ansible==7.3.0
   - pipx ensurepath
   - cat ~/.profile
+  - cat ~/.bashrc
   - source ~/.profile
   - printenv PATH
   - ansible-galaxy --version

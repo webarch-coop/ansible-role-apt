@@ -76,7 +76,7 @@
     - name: Debug the paths of all files in /etc/apt/sources.list.d
       ansible.builtin.debug:
         var: molecule_apt_file.path
-      loop: "{{ molecule_apt_sources_list_d }}"
+      loop: "{{ molecule_apt_sources_list_d.files }}"
       loop_control:
         extended: true
         label: "{{ ansible_loop.index }}"

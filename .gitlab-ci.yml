@@ -1,15 +1,72 @@
+# Copyright 2019-2023 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-image: registry.git.coop/webarch/containers/images/ansible:0.23.0
 variables:
-  PY_COLORS: "1"
+  ANSIBLE_DIFF_ALWAYS: "1"
+  ANSIBLE_DISPLAY_SKIPPED_HOSTS: "0"
   ANSIBLE_FORCE_COLOR: "1"
+  GIT_STRATEGY: none
+  MOLECULE_VERBOSITY: "2"
+  PY_COLORS: "1"
 before_script:
-  - chmod 700 $(pwd)
+  - apt-get update -qq
+  - apt-get dist-upgrade -qqy
+  - apt-get install -qqy ansible git pipx python3-apt python3-pip sudo
+  - useradd -m -U ansible
+  - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+  - chmod 700 /home/ansible
+  - su - ansible
+  - cd
+  - pipx install --include-deps molecule
+  - pipx inject --include-deps --include-apps molecule ansible==7.3.0
+  - pipx ensurepath
+  - source ~/.profile
+  - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+  - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+  - git clone ${CI_PROJECT_URL}.git
+  - cd ${CI_PROJECT_NAME}
 stages:
-  - lint
-lint:
-  stage: lint
+  - trixy
+  - bookworm
+  - bullseye
+  - buster
+  - jammy
+  - focal
+trixy:
+  image: debian:trixy
+  stage: trixy
   script:
-    - molecule lint
-# vim: syntax=yaml
+    - molecule test
+bookworm:
+  image: debian:bookworm
+  stage: bookworm
+  script:
+    - molecule test
+bullseye:
+  image: debian:bullseye
+  stage: bullseye
+  script:
+    - molecule test
+buster:
+  image: debian:buster
+  stage: buster
+  script:
+    - molecule test
+jammy:
+  image: ubuntu:jammy
+  stage: jammy
+  script:
+    - molecule test
+focal:
+  image: ubuntu:focal
+  stage: focal
+  script:
+    - molecule test
 ...

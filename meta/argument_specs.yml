@@ -45,6 +45,10 @@ argument_specs:
     description: The main entry point for the Ansible role for configuring Debian and Ubuntu apt repos.
     short_description: The main entry point apt role.
     options:
+      apt:
+        type: bool
+        required: true
+        description: Run the tasks in this role.
       apt_apticron:
         type: bool
         required: true

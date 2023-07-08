@@ -8,12 +8,27 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-dependency:
-  name: galaxy
-platforms:
-  - name: instance
-provisioner:
-  name: ansible
-verifier:
-  name: ansible
+- name: Verify as root
+  become: true
+  connection: local
+  gather_facts: true
+  hosts:
+    - localhost
+  tasks:
+
+    - name: Run apt-get update  # noqa: no-changed-when
+      ansible.builtin.command: apt-get update
+      register: molecule_apt_get_update
+
+    - name: Debug the results from apt-get update
+      ansible.builtin.debug:
+        var: molecule_apt_get_update
+
+    - name: Run apt-get upgrade -y  # noqa: no-changed-when
+      ansible.builtin.command: apt-get upgrade -y
+      register: molecule_apt_get_upgrade
+
+    - name: Debug the results from apt-get upgrade -y
+      ansible.builtin.debug:
+        var: molecule_apt_get_upgrade
 ...

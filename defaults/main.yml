@@ -11,6 +11,8 @@
 # ---------------------------
 # DEBIAN and UBUNTU Variables
 # ---------------------------
+# Set apt to true for the tasks in this role to be run
+apt: false
 # Set apt_distro_switch to true if switching distro, eg stretch to buster
 apt_distro_switch: false
 # Set apt_src to true to enable source code repos

@@ -8,12 +8,21 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-dependency:
-  name: galaxy
-platforms:
-  - name: instance
-provisioner:
-  name: ansible
-verifier:
-  name: ansible
+- name: Run as root
+  become: true
+  connection: local
+  gather_facts: true
+  hosts:
+    - localhost
+  tasks:
+
+    - name: Debug ansible_effective_user_id
+      ansible.builtin.debug:
+        var: ansible_effective_user_id
+
+    - name: Include apt role as root
+      ansible.builtin.include_role:
+        name: apt
+      vars:  # noqa var-naming[no-role-prefix]
+        apt: true
 ...

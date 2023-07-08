@@ -31,16 +31,12 @@
 
         - name: Decode the base64 encoded version of /etc/apt/sources.list
           ansible.builtin.set_fact:
-            molecule_apt_sources_list_contents: "{{ molecule_apt_sources_list_b64encoded['content'] | b64decode | trim }}"
+            molecule_apt_sources_list_content: "{{ molecule_apt_sources_list_b64encoded['content'] | b64decode | trim }}"
+            molecule_apt_sources_list_content_lines: "{{ molecule_apt_sources_list_b64encoded['content'] | b64decode | trim | split('\n') }}"
 
-        - name: Print the contents of the /etc/apt/sources.list
+        - name: Print the contents of the /etc/apt/sources.list lines
           ansible.builtin.debug:
-            var: molecule_apt_line
-          loop: "{{ molecule_apt_sources_list_contents.split('\n') }}"
-          loop_control:
-            extended: true
-            label: "{{ ansible_loop.index }}"
-            loop_var: molecule_apt_line
+            var: molecule_apt_sources_list_content_lines
 
       when: molecule_apt_sources_list.stat.exists | bool
 
@@ -59,16 +55,12 @@
 
         - name: Decode the base64 encoded version of /etc/apt/sources.list
           ansible.builtin.set_fact:
-            molecule_apt_sources_debian_contents: "{{ molecule_apt_sources_debian_b64encoded['content'] | b64decode | trim }}"
+            molecule_apt_sources_debian_content: "{{ molecule_apt_sources_debian_b64encoded['content'] | b64decode | trim }}"
+            molecule_apt_sources_debian_content_lines: "{{ molecule_apt_sources_debian_b64encoded['content'] | b64decode | trim | split('\n') }}"
 
-        - name: Print the contents of the /etc/apt/sources.list
+        - name: Print the contents of the /etc/apt/sources.list lines
           ansible.builtin.debug:
-            var: molecule_apt_line
-          loop: "{{ molecule_apt_sources_debian_contents.split('\n') }}"
-          loop_control:
-            extended: true
-            label: "{{ ansible_loop.index }}"
-            loop_var: molecule_apt_line
+            var: molecule_apt_sources_debian_content_lines
 
       when: molecule_apt_sources_debian.stat.exists | bool
 
@@ -77,9 +69,14 @@
         path: /etc/apt/sources.list.d
       register: molecule_apt_sources_list_d
 
-    - name: Debug the results of finding all files in /etc/apt/sources.list.d
+    - name: Debug the paths of all files in /etc/apt/sources.list.d
       ansible.builtin.debug:
-        var: molecule_apt_sources_list_d
+        var: molecule_apt_file.path
+      loop: "{{ molecule_apt_sources_list_d }}"
+      loop_control:
+        extended: true
+        label: "{{ ansible_loop.index }}"
+        loop_var: molecule_apt_file
 
     - name: Run apt-get update  # noqa: no-changed-when
       ansible.builtin.command: apt-get update

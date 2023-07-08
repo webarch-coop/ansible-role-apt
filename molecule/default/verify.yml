@@ -69,9 +69,9 @@
         paths: /etc/apt/sources.list.d
       register: molecule_apt_sources_list_d
 
-    - name: Debug the results from finding all files in /etc/apt/sources.list.d
-      ansible.builtin.debug:
-        var: molecule_apt_sources_list_d
+    # - name: Debug the results from finding all files in /etc/apt/sources.list.d
+    #   ansible.builtin.debug:
+    #     var: molecule_apt_sources_list_d
 
     - name: Set a fact for the paths of all the files in /etc/apt/sources.list.d
       ansible.builtin.set_fact:
@@ -84,6 +84,7 @@
     - name: Run apt-get update  # noqa: no-changed-when
       ansible.builtin.command: apt-get update
       register: molecule_apt_get_update
+      changed_when: false
 
     - name: Debug the results from apt-get update
       ansible.builtin.debug:
@@ -92,6 +93,7 @@
     - name: Run apt-get upgrade -y  # noqa: no-changed-when
       ansible.builtin.command: apt-get upgrade -y
       register: molecule_apt_get_upgrade
+      changed_when: ( "0 upgraded" not in molecule_apt_get_upgrade.stdout )
 
     - name: Debug the results from apt-get upgrade -y
       ansible.builtin.debug:

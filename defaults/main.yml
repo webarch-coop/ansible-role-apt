@@ -57,6 +57,7 @@ apt_debian_components:
   - main
   - contrib
   - non-free
+  # - non-free-firmware
 # Files in /etc/apt/sources.list.d/ that should be removed on Debian servers
 apt_debian_sources_absent: []
 # ----------------

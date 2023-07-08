@@ -28,6 +28,7 @@ before_script:
   - pipx inject --include-deps --include-apps molecule ansible==7.3.0
   - pipx ensurepath
   - source ~/.profile
+  - printenv PATH
   - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
   - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
   - git clone ${CI_PROJECT_URL}.git

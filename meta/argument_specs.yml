@@ -35,7 +35,7 @@ argument_specs:
             choices:
               - "absent"
               - "present"
-      apt_local_facts_packages:
+      apt_local_facts_pkgs:
         type: list
         required: false
         description: A list of .deb packages that are required by the local fact scripts.
@@ -94,6 +94,11 @@ argument_specs:
         type: bool
         required: false
         description: Run the local fact tasks.
+      apt_local_facts_absent:
+        type: list
+        elements: str
+        required: false
+        description: An internal list of local fact files that should be absent.
       apt_local_facts_files:
         type: list
         required: false
@@ -111,11 +116,21 @@ argument_specs:
             choices:
               - "absent"
               - "present"
-      apt_local_facts_packages:
+      apt_local_facts_names_present:
+        type: list
+        elements: str
+        required: false
+        description: An internal list of local fact file names.
+      apt_local_facts_pkgs:
         type: list
         required: false
         description: A list of .deb packages that are required by the local fact scripts.
         elements: str
+      apt_local_facts_present:
+        type: list
+        elements: str
+        required: false
+        description: An internal list of local fact files that should be present.
       apt_pkgs:
         type: list
         required: false

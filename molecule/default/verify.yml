@@ -93,7 +93,7 @@
     - name: Run apt-get upgrade -y  # noqa: no-changed-when
       ansible.builtin.command: apt-get upgrade -y
       register: molecule_apt_get_upgrade
-      changed_when: ( "0 upgraded" not in molecule_apt_get_upgrade.stdout )
+      changed_when: ("0 upgraded" not in molecule_apt_get_upgrade.stdout)
 
     - name: Debug the results from apt-get upgrade -y
       ansible.builtin.debug:

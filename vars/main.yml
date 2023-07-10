@@ -8,6 +8,11 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
+# https://docs.ansible.com/ansible/latest/playbook_guide/complex_data_manipulation.html
+aptvarnames: "{{ q('varnames', '^apt_') | sort }}"
+apthostvars: "{{ dict(aptvarnames | list | zip(q('vars', *aptvarnames))) }}"
+
 apt_local_facts_absent: "{{ apt_local_facts_files | community.general.json_query('[?state==`absent`].name') }}"
 apt_local_facts_present: "{{ apt_local_facts_files | community.general.json_query('[?state==`present`].name') }}"
 apt_local_facts_names_present: "{{ apt_local_facts_files | community.general.json_query('[?state==`present`].name') | map('regex_replace', '[.]fact$') }}"
+...

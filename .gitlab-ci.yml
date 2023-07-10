@@ -16,20 +16,22 @@ variables:
   APT_JC: "1.23.3"
   APT_JMESPATH: "1.0.1"
   APT_MOLECULE: "5.1.0"
+  DEBIAN_FRONTEND: noninteractive
   GIT_STRATEGY: none
   MOLECULE_VERBOSITY: "2"
   PIPX_BIN_DIR: "/usr/local/bin"
   PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"
 before_script:
-  - apt-get update -qq
-  - apt-get dist-upgrade -qqy
-  - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
+  - echo 'export DEBIAN_FRONTEND="${DEBIAN_FRONTEND}"' >> ~/.bashrc
   - echo 'export PIPX_BIN_DIR="${PIPX_BIN_DIR}"' >> ~/.bashrc
   - echo 'export PIPX_HOME="${PIPX_HOME}"' >> ~/.bashrc
   - source ~/.profile
   - whoami
   - pwd
+  - apt-get update -qq
+  - apt-get dist-upgrade -qqy
+  - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv
   - python3 --version
   - pipx --version
   - pipx install --include-deps molecule==${APT_MOLECULE}

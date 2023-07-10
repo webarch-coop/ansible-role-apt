@@ -62,16 +62,25 @@ argument_specs:
         type: bool
         required: true
         description: Enable apt backports repos.
-      apt_debian_components:
+      apt_debian:
         type: list
+        elements: dict
         required: true
-        description: A list of Debian components to be enabled.
-        elements: str
-        choices:
-          - "contrib"
-          - "main"
-          - "non-free"
-          - "non-free-firmware"
+        description: A list of Debian versions and components.
+        options:
+          components:
+            type: list
+            elements: str
+            required: true
+            choices:
+              - contrib
+              - main
+              - non-free
+              - non-free-firmware
+          version:
+            type: str
+            required: true
+            description: The Debian / Ubuntu verson name.
       apt_debian_sources_absent:
         type: list
         required: false
@@ -134,4 +143,8 @@ argument_specs:
         type: bool
         required: true
         description: Enable Ubuntu apt partner repos.
+      apt_verify:
+        type: bool
+        required: true
+        description: Verify all variables that start with apt_ using the argment spec.
 ...

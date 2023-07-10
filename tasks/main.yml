@@ -18,6 +18,10 @@
 - name: Configure apt sources list for Debian and Ubuntu
   block:
 
+    - name: Include verify variables tasks
+      ansible.builtin.include_tasks: verify.yml
+      when: apy_verify | bool
+
     - name: Include local facts tasks
       ansible.builtin.include_tasks: local_facts.yml
       when:
@@ -28,22 +32,15 @@
       tags:
         - apt_local_facts
 
-    - name: Python packages present for Debian
-      block:
+    - name: Package python3-apt present
+      ansible.builtin.apt:
+        pkg: python3-apt
 
-        - name: Package python3-apt present
-          ansible.builtin.apt:
-            pkg: python3-apt
-          when: ansible_distribution_release is not regex('^jessie|stretch$')
-
-        - name: Package python-apt present for Debian Stretch and Jessie
-          ansible.builtin.apt:
-            pkg:
-              - apt-transport-https
-              - python-apt
-          when: ansible_distribution_release is regex('^jessie|stretch$')
-
-      when: ansible_distribution == "Debian"
+    - name: Check that the distro version is supported
+      ansible.builtin.assert:
+        that:
+          - ansible_distribution_release is regex(^buster|bullseye|bookworm|trixy|jammy$)
+        quiet: "{% if ansible_check_mode or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
     - name: Print ansible_distribution_release
       ansible.builtin.debug:

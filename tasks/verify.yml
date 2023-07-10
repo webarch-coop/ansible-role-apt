@@ -8,24 +8,25 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-- name: Run as root
-  connection: local
-  gather_facts: true
-  hosts:
-    - localhost
-  tasks:
+- name: Verify variables
+  block:
 
-    - name: Debug ansible_effective_user_id
+    - name: Debug the hostvars variable names that start with apt_
       ansible.builtin.debug:
-        var: ansible_effective_user_id
+        var: aptvarnames
+        verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
 
-    - name: Include apt role as root
-      ansible.builtin.include_role:
-        name: apt
-      vars:  # noqa var-naming[no-role-prefix]
-        apt: true
-        apt_pkgs:
-          - apt-listchanges
-          - apt-utils
-          - aptitude
+    - name: Debug the hostvars variable names that start with apt_
+      ansible.builtin.debug:
+        var: apthostvars
+        verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
+
+    - name: Check apt_ variables using meta/argument_specs.yml
+      ansible.builtin.validate_argument_spec:
+        argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yml') | from_yaml)['argument_specs']['main']['options'] }}"
+        provided_arguments: "{{ apthostvars }}"
+
+  when: apt_verify | bool
+  tags:
+    - apt
 ...

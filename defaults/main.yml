@@ -45,10 +45,10 @@ apt_local_facts_pkgs:
   - gpg
   - jo
 apt_pkgs:
-  - aptitude
   - apt-listchanges
   - apt-show-versions
   - apt-utils
+  - aptitude
   - needrestart
 # ----------------
 # DEBIAN Variables
@@ -58,8 +58,32 @@ apt_debian_components:
   - contrib
   - non-free
   # - non-free-firmware
+apt_debian:
+  - version: trixy
+    components:
+      - main
+      - contrib
+      - non-free
+      - non-free-firmware
+  - version: bookworm
+    components:
+      - main
+      - contrib
+      - non-free
+      - non-free-firmware
+  - version: bullseye
+    components:
+      - main
+      - contrib
+      - non-free
+  - version: buster
+    components:
+      - main
+      - contrib
+      - non-free
 # Files in /etc/apt/sources.list.d/ that should be removed on Debian servers
-apt_debian_sources_absent: []
+apt_debian_sources_absent:
+  - backports.list
 # ----------------
 # UBUNTU Variables
 # ----------------

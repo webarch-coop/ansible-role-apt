@@ -22,6 +22,17 @@
         - apt_debian_sources_absent is defined
         - apt_debian_sources_absent != []
 
+    - name: Set a fact for the Debian components
+      ansible.builtin.set_fact:
+        apt_debian_components: "{{ apt_debian | community.general.json_query(apt_debian_components_jmespath_query) }}"
+      vars:
+        apt_debian_components_jmespath_query: "[?version=='{{ apt_distro }}'].components|[]"
+
+    - name: Print the components to be enabled
+      ansible.builtin.debug:
+        var: apt_debian_components
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
     # Debian servers from Gandi don't have /etc/apt/sources.list and have HTTPS enabled already
     - name: Stat /etc/apt/sources.list
       ansible.builtin.stat:

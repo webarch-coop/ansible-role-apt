@@ -18,8 +18,8 @@
 
     - name: "Decode the base64 encoded version of {{ apt_file }}"
       ansible.builtin.set_fact:
-        apt_file_content: "{{ molecule_apt_sources_list_b64encoded['content'] | b64decode | trim }}"
-        apt_file_content_lines: "{{ molecule_apt_sources_list_b64encoded['content'] | b64decode | trim | split('\n') }}"
+        apt_file_content: "{{ apt_file_contents_b64encoded['content'] | b64decode | trim }}"
+        apt_file_content_lines: "{{ apt_file_contents_b64encoded['content'] | b64decode | trim | split('\n') }}"
 
     - name: "Print the contents of {{ apt_file }}"
       ansible.builtin.debug:

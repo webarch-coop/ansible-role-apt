@@ -36,7 +36,7 @@ trixie:
     - source ~/.profile
     - python3 --version
     - pipx --version
-    - pipx install --include-deps molecule
+    - pipx install --include-deps molecule==5.1.0
     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
     - ls -lah /root/.local/bin
     - which ansible-galaxy
@@ -63,7 +63,7 @@ bookworm:
     - python3 --version
     - python3 --version
     - pipx --version
-    - pipx install --include-deps molecule
+    - pipx install --include-deps molecule==5.1.0
     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
     - ls -lah /root/.local/bin
     - which ansible-galaxy
@@ -90,7 +90,7 @@ bullseye:
     - python3 --version
     - python3 --version
     - pipx --version
-    - pipx install --include-deps molecule
+    - pipx install --include-deps molecule==5.1.0
     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
     - ls -lah /root/.local/bin
     - which ansible-galaxy
@@ -115,11 +115,8 @@ buster:
     - echo 'export PATH="/root/.local/bin:${PATH}"' >> ~/.bashrc
     - source ~/.profile
     - python3 --version
-    - python3 --version
     - pipx --version
-    - pipx install --include-deps molecule
-    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
-    - pipx install molecule
+    - pipx install molecule==5.1.0
     - pipx inject molecule ansible==5.10.0 jc==1.23.3 jmespath==1.0.1
     - ls -lah /root/.local/bin
     - which ansible-galaxy
@@ -146,7 +143,7 @@ jammy:
     - python3 --version
     - python3 --version
     - pipx --version
-    - pipx install --include-deps molecule
+    - pipx install --include-deps molecule==5.1.0
     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
     - ls -lah /root/.local/bin
     - which ansible-galaxy
@@ -173,7 +170,7 @@ focal:
     - python3 --version
     - python3 --version
     - pipx --version
-    - pipx install --include-deps molecule
+    - pipx install --include-deps molecule==5.1.0
     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
     - ls -lah /root/.local/bin
     - which ansible-galaxy

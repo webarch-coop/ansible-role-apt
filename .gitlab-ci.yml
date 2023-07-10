@@ -130,7 +130,7 @@ buster:
     - pipx list
     - ls -lah /usr/local/bin
     - ls -lah /opt/pipx/venvs
-    - pipx inject molecule ansible==5.10.0 jc==1.23.3 jmespath==1.0.1
+    - pipx inject molecule==3.6.1 ansible==5.10.0 jc==1.23.3 jmespath==1.0.1
     - pipx list
     - which ansible-galaxy
     - ansible-galaxy --version

@@ -20,7 +20,7 @@
 
     - name: Include verify variables tasks
       ansible.builtin.include_tasks: verify.yml
-      when: apy_verify | bool
+      when: apt_verify | bool
 
     - name: Include local facts tasks
       ansible.builtin.include_tasks: local_facts.yml

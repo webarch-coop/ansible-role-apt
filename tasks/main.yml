@@ -32,6 +32,9 @@
       tags:
         - apt_local_facts
 
+    - name: Include checks
+      ansible.builtin.include_tasks: checks.yml
+
     - name: Package python3-apt present
       ansible.builtin.apt:
         pkg: python3-apt

@@ -20,7 +20,7 @@
       ansible.builtin.assert:
         that:
           - ansible_distribution_release is regex('^stretch|buster|bullseye|bookworm|trixy|jammy$')
-        quiet: "{% if ansible_check_mode or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
     - name: Print apt_distro
       ansible.builtin.debug:
@@ -65,7 +65,9 @@
       ansible.builtin.include_tasks: check_file.yml
       vars:
         apt_file: /etc/apt/sources.list
-      when: apt_sources_list.stat.exists | bool
+      when:
+        - ( ansible_check_mode | bool ) or ( ansible_verbosity >= 1 )
+        - apt_sources_list.stat.exists | bool
 
     - name: Find all files in /etc/apt/sources.list.d
       ansible.builtin.find:
@@ -86,7 +88,9 @@
       loop_control:
         loop_var: apt_file
         label: "{{ apt_file | basename }}"
-      when: apt_sources_list_d_paths != []
+      when:
+        - ( ansible_check_mode | bool ) or ( ansible_verbosity >= 1 )
+        - apt_sources_list_d_paths != []
 
   tags:
     - apt

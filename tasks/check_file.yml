@@ -13,7 +13,7 @@
 
     - name: "Slurp {{ apt_file }}"
       ansible.builtin.slurp:
-        src: apt_file
+        src: "{{ apt_file }}"
       register: apt_file_contents_b64encoded
 
     - name: "Decode the base64 encoded version of {{ apt_file }}"

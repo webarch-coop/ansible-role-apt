@@ -50,14 +50,10 @@ apt_pkgs:
   - apt-utils
   - aptitude
   - needrestart
+apt_verify: true
 # ----------------
 # DEBIAN Variables
 # ----------------
-apt_debian_components:
-  - main
-  - contrib
-  - non-free
-  # - non-free-firmware
 apt_debian:
   - version: trixy
     components:

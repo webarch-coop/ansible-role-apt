@@ -55,7 +55,7 @@ apt_verify: true
 # DEBIAN Variables
 # ----------------
 apt_debian:
-  - version: trixy
+  - version: trixie
     components:
       - main
       - contrib

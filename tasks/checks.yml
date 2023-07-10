@@ -19,7 +19,7 @@
     - name: Check that the distro version is supported
       ansible.builtin.assert:
         that:
-          - ansible_distribution_release is regex('^stretch|buster|bullseye|bookworm|trixy|jammy$')
+          - ansible_distribution_release is regex('^stretch|buster|bullseye|bookworm|trixie|jammy$')
         quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
     - name: Print apt_distro

@@ -24,4 +24,6 @@
         name: apt
       vars:  # noqa var-naming[no-role-prefix]
         apt: true
+        apt_debian_sources_absent:
+          - backports.list
 ...

@@ -9,7 +9,6 @@
 # You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 - name: Run as root
-  become: true
   connection: local
   gather_facts: true
   hosts:

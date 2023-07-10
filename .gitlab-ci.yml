@@ -34,7 +34,7 @@ before_script:
   - pipx --version
   - pipx install --include-deps molecule==${APT_MOLECULE}
   - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} jc==${APT_JC} jmespath==${APT_JMESPATH}
-  - ls -lah /home/ansible/.local/bin
+  - ls -lah /usr/local/bin
   - which ansible-galaxy
   - ansible-galaxy --version
   - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}

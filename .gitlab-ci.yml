@@ -28,7 +28,7 @@ before_script:
   - source ~/.profile
   - printenv PATH
   - pipx install molecule
-  - pipx inject molecule ansible==7.3.0 jc==1.23.3 jmespath==1.0.1
+  - pipx inject molecule ansible==6.7.0 jc==1.23.3 jmespath==1.0.1
   - ls -lah /root/.local/bin
   - which ansible-galaxy
   - ansible-galaxy --version

@@ -23,15 +23,8 @@ before_script:
   - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
   - chmod 700 /home/ansible
   - su - ansible
-  - cd
   - echo 'export PATH="/root/.local/bin:${PATH}"' >> ~/.bashrc
   - source ~/.profile
-  - printenv PATH
-  - pipx install molecule
-  - pipx inject molecule ansible==6.7.0 jc==1.23.3 jmespath==1.0.1
-  - ls -lah /root/.local/bin
-  - which ansible-galaxy
-  - ansible-galaxy --version
   - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
   - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
   - git clone ${CI_PROJECT_URL}.git
@@ -45,31 +38,81 @@ stages:
   - jammy
 trixie:
   image: debian:trixie
+  before_script:
+    - python3 --version
+    - pipx --version
+    - pipx install --include-deps molecule
+    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+    - ls -lah /root/.local/bin
+    - which ansible-galaxy
+    - ansible-galaxy --version
   stage: trixie
   script:
     - molecule test
 bookworm:
   image: debian:bookworm
+  before_script:
+    - python3 --version
+    - pipx --version
+    - pipx install --include-deps molecule
+    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+    - ls -lah /root/.local/bin
+    - which ansible-galaxy
+    - ansible-galaxy --version
   stage: bookworm
   script:
     - molecule test
 bullseye:
   image: debian:bullseye-backports
+  before_script:
+    - python3 --version
+    - pipx --version
+    - pipx install --include-deps molecule
+    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+    - ls -lah /root/.local/bin
+    - which ansible-galaxy
+    - ansible-galaxy --version
   stage: bullseye
   script:
     - molecule test
 buster:
   image: debian:buster
+  before_script:
+    - python3 --version
+    - pipx --version
+    - pipx install --include-deps molecule
+    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+    - pipx install molecule
+    - pipx inject molecule ansible==5.10.0 jc==1.23.3 jmespath==1.0.1
+    - ls -lah /root/.local/bin
+    - which ansible-galaxy
+    - ansible-galaxy --version
   stage: buster
   script:
     - molecule test
 jammy:
   image: ubuntu:jammy
+  before_script:
+    - python3 --version
+    - pipx --version
+    - pipx install --include-deps molecule
+    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+    - ls -lah /root/.local/bin
+    - which ansible-galaxy
+    - ansible-galaxy --version
   stage: jammy
   script:
     - molecule test
 focal:
   image: ubuntu:focal
+  before_script:
+    - python3 --version
+    - pipx --version
+    - pipx install --include-deps molecule
+    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+    - ls -lah /root/.local/bin
+    - which ansible-galaxy
+    - ansible-galaxy --version
   stage: focal
   script:
     - molecule test

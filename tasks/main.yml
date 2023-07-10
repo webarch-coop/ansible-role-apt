@@ -39,7 +39,7 @@
     - name: Check that the distro version is supported
       ansible.builtin.assert:
         that:
-          - ansible_distribution_release is regex(^buster|bullseye|bookworm|trixy|jammy$)
+          - ansible_distribution_release is regex('^buster|bullseye|bookworm|trixy|jammy$')
         quiet: "{% if ansible_check_mode or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
     - name: Print ansible_distribution_release

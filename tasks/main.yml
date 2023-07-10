@@ -39,7 +39,7 @@
     - name: Check that the distro version is supported
       ansible.builtin.assert:
         that:
-          - ansible_distribution_release is regex('^buster|bullseye|bookworm|trixy|jammy$')
+          - ansible_distribution_release is regex('^stretch|buster|bullseye|bookworm|trixy|jammy$')
         quiet: "{% if ansible_check_mode or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
     - name: Print ansible_distribution_release
@@ -96,11 +96,11 @@
 
     - name: Include Debian sources.list tasks
       ansible.builtin.include_tasks: debian.yml
-      when: apt_distro is regex('^jessie|stretch|buster|bullseye|bookworm$')
+      when: ansible_distribution == "Debian"
 
     - name: Include Ubuntu sources.list tasks
       ansible.builtin.include_tasks: ubuntu.yml
-      when: apt_distro is regex('^xenial|bionic|focal|jammy$')
+      when: ansible_distribution == "Ubuntu"
 
     - name: Update the cache when switching distros
       ansible.builtin.apt:

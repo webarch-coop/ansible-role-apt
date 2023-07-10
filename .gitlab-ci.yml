@@ -121,15 +121,8 @@ buster:
     - apt-get update -qq
     - apt-get dist-upgrade -qqy
     - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
-    - useradd -m -U ansible
-    - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-    - chmod 700 /home/ansible
-    - su - ansible
-    - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
-    - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
-    - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
-    - whoami
-    - pwd
+    - echo 'export PIPX_BIN_DIR="/usr/local/bin"' >> ~/.bashrc
+    - echo 'export PIPX_HOME="/opt/pipx"' >> ~/.bashrc
     - python3 --version
     - pipx --version
     - pipx install molecule==3.6.1

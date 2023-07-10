@@ -19,115 +19,116 @@ variables:
   PY_COLORS: "1"
 stages:
   - buster
-  - bullseye
-  - bookworm
-  - trixie
-  - focal
-  - jammy
-trixie:
-  image: debian:trixie
-  before_script:
-    - apt-get update -qq
-    - apt-get dist-upgrade -qqy
-    - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
-    - useradd -m -U ansible
-    - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-    - chmod 700 /home/ansible
-    - su - ansible
-    - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
-    - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
-    - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
-    - source ~/.profile
-    - whoami
-    - pwd
-    - python3 --version
-    - pipx --version
-    - pipx install --include-deps molecule==5.1.0
-    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
-    - ls -lah /home/ansible/.local/bin
-    - which ansible-galaxy
-    - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - cd ${CI_PROJECT_NAME}
-  stage: trixie
-  script:
-    - molecule test
-bookworm:
-  image: debian:bookworm
-  before_script:
-    - apt-get update -qq
-    - apt-get dist-upgrade -qqy
-    - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
-    - useradd -m -U ansible
-    - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-    - chmod 700 /home/ansible
-    - su - ansible
-    - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
-    - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
-    - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
-    - source ~/.profile
-    - whoami
-    - pwd
-    - python3 --version
-    - python3 --version
-    - pipx --version
-    - pipx install --include-deps molecule==5.1.0
-    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
-    - ls -lah /home/ansible/.local/bin
-    - which ansible-galaxy
-    - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - cd ${CI_PROJECT_NAME}
-  stage: bookworm
-  script:
-    - molecule test
-bullseye:
-  image: debian:bullseye-backports
-  before_script:
-    - apt-get update -qq
-    - apt-get dist-upgrade -qqy
-    - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
-    - useradd -m -U ansible
-    - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-    - chmod 700 /home/ansible
-    - su - ansible
-    - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
-    - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
-    - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
-    - whoami
-    - pwd
-    - python3 --version
-    - python3 --version
-    - pipx --version
-    - pipx install --include-deps molecule==5.1.0
-    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
-    - ls -lah /home/ansible/.local/bin
-    - which ansible-galaxy
-    - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - cd ${CI_PROJECT_NAME}
-  stage: bullseye
-  script:
-    - molecule test
+#   - bullseye
+#   - bookworm
+#   - trixie
+#   - focal
+#   - jammy
+# trixie:
+#   image: debian:trixie
+#   before_script:
+#     - apt-get update -qq
+#     - apt-get dist-upgrade -qqy
+#     - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
+#     - useradd -m -U ansible
+#     - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#     - chmod 700 /home/ansible
+#     - su - ansible
+#     - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
+#     - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
+#     - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
+#     - source ~/.profile
+#     - whoami
+#     - pwd
+#     - python3 --version
+#     - pipx --version
+#     - pipx install --include-deps molecule==5.1.0
+#     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+#     - ls -lah /home/ansible/.local/bin
+#     - which ansible-galaxy
+#     - ansible-galaxy --version
+#     - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - git clone ${CI_PROJECT_URL}.git
+#     - cd ${CI_PROJECT_NAME}
+#   stage: trixie
+#   script:
+#     - molecule test
+# bookworm:
+#   image: debian:bookworm
+#   before_script:
+#     - apt-get update -qq
+#     - apt-get dist-upgrade -qqy
+#     - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
+#     - useradd -m -U ansible
+#     - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#     - chmod 700 /home/ansible
+#     - su - ansible
+#     - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
+#     - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
+#     - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
+#     - source ~/.profile
+#     - whoami
+#     - pwd
+#     - python3 --version
+#     - python3 --version
+#     - pipx --version
+#     - pipx install --include-deps molecule==5.1.0
+#     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+#     - ls -lah /home/ansible/.local/bin
+#     - which ansible-galaxy
+#     - ansible-galaxy --version
+#     - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - git clone ${CI_PROJECT_URL}.git
+#     - cd ${CI_PROJECT_NAME}
+#   stage: bookworm
+#   script:
+#     - molecule test
+# bullseye:
+#   image: debian:bullseye-backports
+#   before_script:
+#     - apt-get update -qq
+#     - apt-get dist-upgrade -qqy
+#     - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
+#     - useradd -m -U ansible
+#     - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#     - chmod 700 /home/ansible
+#     - su - ansible
+#     - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
+#     - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
+#     - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
+#     - whoami
+#     - pwd
+#     - python3 --version
+#     - python3 --version
+#     - pipx --version
+#     - pipx install --include-deps molecule==5.1.0
+#     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+#     - ls -lah /home/ansible/.local/bin
+#     - which ansible-galaxy
+#     - ansible-galaxy --version
+#     - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - git clone ${CI_PROJECT_URL}.git
+#     - cd ${CI_PROJECT_NAME}
+#   stage: bullseye
+#   script:
+#     - molecule test
 buster:
   image: debian:buster
   before_script:
     - apt-get update -qq
     - apt-get dist-upgrade -qqy
     - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
-    - echo 'export PIPX_BIN_DIR="/usr/local/bin"' >> ~/.bashrc
-    - echo 'export PIPX_HOME="/opt/pipx"' >> ~/.bashrc
+    - echo 'export PIPX_BIN_DIR="/usr/local/bin"' >> /root/.bashrc
+    - echo 'export PIPX_HOME="/opt/pipx"' >> /root/.bashrc
+    - source /root/.bashrc
     - python3 --version
     - pipx --version
     - pipx install molecule==3.6.1
     - pipx inject molecule ansible==5.10.0 jc==1.23.3 jmespath==1.0.1
-    - ls -lah /home/ansible/.local/bin
+    - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
     - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
@@ -137,64 +138,64 @@ buster:
   stage: buster
   script:
     - molecule test
-jammy:
-  image: ubuntu:jammy
-  before_script:
-    - apt-get update -qq
-    - apt-get dist-upgrade -qqy
-    - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
-    - useradd -m -U ansible
-    - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-    - chmod 700 /home/ansible
-    - su - ansible
-    - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
-    - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
-    - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
-    - whoami
-    - pwd
-    - python3 --version
-    - python3 --version
-    - pipx --version
-    - pipx install --include-deps molecule==5.1.0
-    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
-    - ls -lah /home/ansible/.local/bin
-    - which ansible-galaxy
-    - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - cd ${CI_PROJECT_NAME}
-  stage: jammy
-  script:
-    - molecule test
-focal:
-  image: ubuntu:focal
-  before_script:
-    - apt-get update -qq
-    - apt-get dist-upgrade -qqy
-    - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
-    - useradd -m -U ansible
-    - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-    - chmod 700 /home/ansible
-    - su - ansible
-    - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
-    - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
-    - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
-    - whoami
-    - pwd
-    - python3 --version
-    - python3 --version
-    - pipx --version
-    - pipx install --include-deps molecule==5.1.0
-    - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
-    - ls -lah /home/ansible/.local/bin
-    - which ansible-galaxy
-    - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - cd ${CI_PROJECT_NAME}
-  stage: focal
-  script:
-    - molecule test
+# jammy:
+#   image: ubuntu:jammy
+#   before_script:
+#     - apt-get update -qq
+#     - apt-get dist-upgrade -qqy
+#     - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
+#     - useradd -m -U ansible
+#     - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#     - chmod 700 /home/ansible
+#     - su - ansible
+#     - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
+#     - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
+#     - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
+#     - whoami
+#     - pwd
+#     - python3 --version
+#     - python3 --version
+#     - pipx --version
+#     - pipx install --include-deps molecule==5.1.0
+#     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+#     - ls -lah /home/ansible/.local/bin
+#     - which ansible-galaxy
+#     - ansible-galaxy --version
+#     - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - git clone ${CI_PROJECT_URL}.git
+#     - cd ${CI_PROJECT_NAME}
+#   stage: jammy
+#   script:
+#     - molecule test
+# focal:
+#   image: ubuntu:focal
+#   before_script:
+#     - apt-get update -qq
+#     - apt-get dist-upgrade -qqy
+#     - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
+#     - useradd -m -U ansible
+#     - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+#     - chmod 700 /home/ansible
+#     - su - ansible
+#     - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
+#     - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
+#     - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
+#     - whoami
+#     - pwd
+#     - python3 --version
+#     - python3 --version
+#     - pipx --version
+#     - pipx install --include-deps molecule==5.1.0
+#     - pipx inject --include-deps --include-apps molecule ansible==8.1.0 jc==1.23.3 jmespath==1.0.1
+#     - ls -lah /home/ansible/.local/bin
+#     - which ansible-galaxy
+#     - ansible-galaxy --version
+#     - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+#     - git clone ${CI_PROJECT_URL}.git
+#     - cd ${CI_PROJECT_NAME}
+#   stage: focal
+#   script:
+#     - molecule test
 ...

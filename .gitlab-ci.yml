@@ -51,7 +51,7 @@ stages:
   - bullseye
   - bookworm
   - trixie
-  - focal
+  - jammy
 trixie:
   image: debian:trixie
   stage: trixie

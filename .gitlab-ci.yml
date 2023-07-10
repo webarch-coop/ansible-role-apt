@@ -127,7 +127,9 @@ buster:
     - python3 --version
     - pipx --version
     - pipx install molecule==3.6.1
+    - pipx list
     - pipx inject molecule ansible==5.10.0 jc==1.23.3 jmespath==1.0.1
+    - pipx list
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version

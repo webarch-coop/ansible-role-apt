@@ -24,11 +24,11 @@ before_script:
   - chmod 700 /home/ansible
   - su - ansible
   - cd
-  - pipx install --include-deps molecule
-  - pipx inject --include-deps --include-apps molecule ansible==7.3.0 jc==1.23.3 jmespath==1.0.1
   - echo 'export PATH="/root/.local/bin:${PATH}"' >> ~/.bashrc
   - source ~/.profile
   - printenv PATH
+  - pipx install --include-deps molecule
+  - pipx inject --include-deps --include-apps molecule ansible==7.3.0 jc==1.23.3 jmespath==1.0.1
   - which ansible-galaxy
   - ansible-galaxy --version
   - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
@@ -36,12 +36,12 @@ before_script:
   - git clone ${CI_PROJECT_URL}.git
   - cd ${CI_PROJECT_NAME}
 stages:
-  - trixie
-  - bookworm
-  - bullseye
   - buster
-  - jammy
+  - bullseye
+  - bookworm
+  - trixie
   - focal
+  - jammy
 trixie:
   image: debian:trixie
   stage: trixie

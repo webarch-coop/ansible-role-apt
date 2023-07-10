@@ -26,4 +26,9 @@
         apt: true
         apt_debian_sources_absent:
           - backports.list
+        apt_pkgs:
+          - aptitude
+          - apt-listchanges
+          - apt-utils
+          - needrestart
 ...

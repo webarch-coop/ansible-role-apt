@@ -18,24 +18,18 @@ variables:
   APT_MOLECULE: "5.1.0"
   GIT_STRATEGY: none
   MOLECULE_VERBOSITY: "2"
-  PIPX_BIN_DIR: "/home/ansible/.local/bin"
-  PIPX_HOME: "/home/ansible/.local/pipx"
+  PIPX_BIN_DIR: "/usr/local/bin"
+  PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"
 before_script:
   - apt-get update -qq
   - apt-get dist-upgrade -qqy
   - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv sudo
-  - useradd -m -U ansible
-  - echo "ansible ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-  - chmod 700 /home/ansible
-  - su - ansible
-  - echo 'export PATH="/home/ansible/.local/bin:${PATH}"' >> ~/.bashrc
-  - echo 'export PIPX_BIN_DIR="/home/ansible/.local/bin"' >> ~/.bashrc
-  - echo 'export PIPX_HOME="/home/ansible/.local/pipx"' >> ~/.bashrc
+  - echo 'export PIPX_BIN_DIR="${PIPX_BIN_DIR}"' >> ~/.bashrc
+  - echo 'export PIPX_HOME="${PIPX_HOME}"' >> ~/.bashrc
   - source ~/.profile
   - whoami
   - pwd
-  - python3 --version
   - python3 --version
   - pipx --version
   - pipx install --include-deps molecule==${APT_MOLECULE}

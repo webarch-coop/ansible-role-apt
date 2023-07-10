@@ -116,7 +116,7 @@ buster:
     - source ~/.profile
     - python3 --version
     - pipx --version
-    - pipx install molecule==5.1.0
+    - pipx install molecule==3.6.1
     - pipx inject molecule ansible==5.10.0 jc==1.23.3 jmespath==1.0.1
     - ls -lah /root/.local/bin
     - which ansible-galaxy

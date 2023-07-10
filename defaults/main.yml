@@ -77,6 +77,16 @@ apt_debian:
       - main
       - contrib
       - non-free
+  - version: stretch
+    components:
+      - main
+      - contrib
+      - non-free
+  - version: jessie
+    components:
+      - main
+      - contrib
+      - non-free
 # Files in /etc/apt/sources.list.d/ that should be removed on Debian servers
 apt_debian_sources_absent:
   - backports.list

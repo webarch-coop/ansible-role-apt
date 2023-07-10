@@ -25,41 +25,58 @@ The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an examp
 
 ## Role variables
 
+Set `apt` to `true` for the tasks in this role to be run. it defaults to `false`.
+
 See the [defaults/main.yml](defaults/main.yml) file for the default variables, the [vars/main.yml](vars/main.yml) file for the preset variables and the [meta/argument_specs.yml](meta/argument_specs.yml) file for the variable specification.
 
 ### apt_apticron
 
-A required boolean, when `apt_apticron` is true packages listed in `apt_apticron_pkgs` will be installed, by default this causes a outgoing mailserver to be installed so this needs to be false for servers that have other applications listening on `SMTP` ports, `apt_apticron` defaults to `False`.
+A required boolean, when `apt_apticron` is true packages listed in `apt_apticron_pkgs` will be installed, by default this causes a outgoing mailserver to be installed so this needs to be false for servers that have other applications listening on `SMTP` ports, `apt_apticron` defaults to `false`.
 
 ### apt_apticron_pkgs
 
-A optional list of `.deb` packages to be installed when `apt_apticron` is `True`, by default `apt_apticron_pkgs` is a list containing one package name, `apticron`.
+A optional list of `.deb` packages to be installed when `apt_apticron` is `true`, by default `apt_apticron_pkgs` is a list containing one package name, `apticron`.
 
 ### apt_backports
 
-A required boolean, when `apt_backports` is true the [Debian backports](https://backports.debian.org/) / [Ubuntu backports](https://help.ubuntu.com/community/UbuntuBackports) `apt` repos will be enabled, `apt_backports` defaults to `True`.
+A required boolean, when `apt_backports` is true the [Debian backports](https://backports.debian.org/) / [Ubuntu backports](https://help.ubuntu.com/community/UbuntuBackports) `apt` repos will be enabled, `apt_backports` defaults to `true`.
 
-### apt_debian_components
+### apt_debian
 
-A required list of strings for the Debian components that should be be enabled, `apt_debian_components` defaults to:
+A list of debian versions and components, for example:
 
 ```yaml
-- "contrib"
-- "main"
-- "non-free"
+apt_debian:
+  - version: bookworm
+    components:
+      - main
+      - contrib
+      - non-free
+      - non-free-firmware
+  - version: bullseye
+    components:
+      - main
+      - contrib
+      - non-free
+
 ```
 
 ### apt_debian_sources_absent
 
-A optional list of files in `/etc/apt/sources.list.d/` that should be deleted, `apt_debian_sources_absent` defaults to an empty list, `[]`.
+A optional list of files in `/etc/apt/sources.list.d/` that should be deleted, `apt_debian_sources_absent` defaults to remove the `backports.list` file as backports are added to the main `sources.list` by this role:
+
+```yaml
+apt_debian_sources_absent:
+  - backports.list
+```
 
 ### apt_distro_switch
 
-A required boolean, set `apt_distro_switch` to `True` when switching distro, eg Bullseye to Bookworm.
+A required boolean, set `apt_distro_switch` to `true` when switching distro, eg Bullseye to Bookworm.
 
 ### apt_local_facts
 
-A optional boolean, when `apt_local_facts` is `True` the list of files in the `apt_local_facts_files` array will be processed, to install or remove [files/](files/) from the `/etc/ansible/facts.d` directory.
+A optional boolean, when `apt_local_facts` is `true` the list of files in the `apt_local_facts_files` array will be processed, to install or remove [files/](files/) from the `/etc/ansible/facts.d` directory.
 
 ### apt_local_facts_files
 
@@ -81,6 +98,7 @@ The [bash.fact](files/bash.fact) script outputs the `$PATH` to Bash, this is `/b
 ```bash
 bash /etc/ansible/facts.d/bash.fact | jq
 ```
+
 ```json
 {
   "state": "present",
@@ -93,6 +111,7 @@ The [dpkg.fact](files/dpkg.fact) script outputs the CPU architecture for use in 
 ```bash
 bash /etc/ansible/facts.d/dpkg.fact | jq
 ```
+
 ```json
 {
   "state": "present",
@@ -113,6 +132,7 @@ The [gpg.fact](files/gpg.fact) script outputs the version of `gpg`, this is gene
 ```bash
 bash /etc/ansible/facts.d/gpg.fact | jq
 ```
+
 ```yaml
 {
   "state": "present",
@@ -122,7 +142,7 @@ bash /etc/ansible/facts.d/gpg.fact | jq
 
 ### apt_local_facts_packages
 
-A optional list of `.deb` packages that are required by the local fact scripts, packages listed in `apt_local_facts_packages` will be installed, if absent, when `apt_local_facts` is `True`.
+A optional list of `.deb` packages that are required by the local fact scripts, packages listed in `apt_local_facts_packages` will be installed, if absent, when `apt_local_facts` is `true`.
 
 The default value of `apt_local_facts_packages` is:
 
@@ -149,7 +169,7 @@ A optional list of `.deb` packages that will be installed, by default `apt_pkgs`
 
 ### apt_src
 
-A required boolean, set `apt_src` to `True` to enable apt source repos, it defaults to `False`.
+A required boolean, set `apt_src` to `true` to enable apt source repos, it defaults to `false`.
 
 ### apt_ubuntu_components
 
@@ -168,7 +188,7 @@ A required string for country code for the Ubuntu mirrors to use, `apt_ubuntu_co
 
 ### apt_ubuntu_partner
 
-A required boolean, when `apt_ubuntu_partner` is `True` Ubuntu partner apt repos will be enabled, it defaults to `False`.
+A required boolean, when `apt_ubuntu_partner` is `true` Ubuntu partner apt repos will be enabled, it defaults to `false`.
 
 ## Repository
 

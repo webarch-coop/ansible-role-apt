@@ -33,12 +33,6 @@
         var: apt_debian_components
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
-    # Debian servers from Gandi don't have /etc/apt/sources.list and have HTTPS enabled already
-    - name: Stat /etc/apt/sources.list
-      ansible.builtin.stat:
-        path: "/etc/apt/sources.list"
-      register: apt_sources_list
-
     - name: File /etc/apt/sources.list in place
       ansible.builtin.template:
         src: "debian_{{ apt_distro }}.list.j2"
@@ -47,6 +41,7 @@
         owner: root
         group: root
         backup: true
+      # Debian servers from Gandi don't have /etc/apt/sources.list and have HTTPS enabled already
       when: apt_sources_list.stat.exists | bool
 
     - name: File /etc/apt.conf in place

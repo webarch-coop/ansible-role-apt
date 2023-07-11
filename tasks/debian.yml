@@ -57,7 +57,7 @@
           ansible.builtin.command: >-
             mv
             /etc/apt/sources.list.d/debian.sources
-            /etc/apt/sources.list.d/.debian.sources.{{ ansible_date_time.iso8601_basic_short }}.ansible.save"
+            /etc/apt/sources.list.d/.debian.sources.{{ ansible_date_time.iso8601_basic_short }}.ansible.save
           changed_when: true
           when:
             - apt_sources_list is defined

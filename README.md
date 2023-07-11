@@ -4,6 +4,8 @@
 
 This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) file on Debian and Ubuntu.
 
+This role has been tested on Debian Trixy, Bookworm, Bullseye and Buster and Ubuntu Jammy.
+
 See also the [upgrade role](https://git.coop/webarch/upgrade), the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster and the [localhost repo](https://git.coop/webarch/localhost) which can be used with this role to configure the `sources.list` file locally.
 
 ## Usage

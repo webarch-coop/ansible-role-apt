@@ -56,18 +56,18 @@ argument_specs:
       apt_apticron_pkgs:
         type: list
         required: false
-        description: A list of .deb packages to be installed when apt_apticron is True.
+        description: A list of .deb packages to be installed when apt_apticron is true.
         elements: str
-      apt_backports:
-        type: bool
-        required: true
-        description: Enable apt backports repos.
       apt_debian:
         type: list
         elements: dict
         required: true
         description: A list of Debian versions and components.
         options:
+          backports:
+            type: bool
+            required: true
+            description: Enable backports repo.
           components:
             type: list
             elements: str
@@ -77,10 +77,25 @@ argument_specs:
               - main
               - non-free
               - non-free-firmware
-          version:
+          domain:
+            type: str
+            required: true
+            description: The irepo domain name.
+          format:
+            type: str
+            required: true
+            description: The file format for the sources file.
+            choices:
+              - list
+              - sources
+          name:
             type: str
             required: true
             description: The Debian / Ubuntu verson name.
+          src:
+            type: bool
+            required: true
+            description: Enable src repos.
       apt_debian_sources_absent:
         type: list
         required: false
@@ -136,10 +151,10 @@ argument_specs:
         required: false
         description: A list of .deb packages that will be installed.
         elements: str
-      apt_src:
+      apt_ubuntu_backports:
         type: bool
         required: true
-        description: Set to true to enable apt source repos.
+        description: Enable Ubuntu apt backports repos.
       apt_ubuntu_components:
         type: list
         required: true
@@ -158,6 +173,10 @@ argument_specs:
         type: bool
         required: true
         description: Enable Ubuntu apt partner repos.
+      apt_ubuntu_src:
+        type: bool
+        required: true
+        description: Set to true to enable Ubuntu apt source repos.
       apt_verify:
         type: bool
         required: true

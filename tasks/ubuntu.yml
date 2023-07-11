@@ -13,7 +13,7 @@
 
     - name: /etc/apt/sources.list in place
       ansible.builtin.template:
-        src: templates/ubuntu_sources.list.j2
+        src: templates/ubuntu.list.j2
         dest: /etc/apt/sources.list
         mode: "0644"
         owner: root

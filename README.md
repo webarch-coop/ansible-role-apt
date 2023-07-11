@@ -39,37 +39,35 @@ A required boolean, when `apt_apticron` is true packages listed in `apt_apticron
 
 A optional list of `.deb` packages to be installed when `apt_apticron` is `true`, by default `apt_apticron_pkgs` is a list containing one package name, `apticron`.
 
-### apt_backports
-
-A required boolean, when `apt_backports` is true the [Debian backports](https://backports.debian.org/) / [Ubuntu backports](https://help.ubuntu.com/community/UbuntuBackports) `apt` repos will be enabled, `apt_backports` defaults to `true`.
-
 ### apt_debian
 
-A list of debian versions and components, for example:
+A list of debian files, versions and components, for example:
 
 ```yaml
 apt_debian:
-  - version: bookworm
+  - name: bookworm
+    file: /etc/apt/sources.list.d/debian.sources
+    files_absent:
+      - /etc/apt/sources.list
+      - /etc/apt/sources.list.d/backports.list
     components:
       - main
       - contrib
       - non-free
       - non-free-firmware
-  - version: bullseye
+    backports: true
+    src: false
+    domain: deb.debian.org
+  - name: bullseye
+    file: /etc/apt/sources.list
+    files_absent: []
     components:
       - main
       - contrib
       - non-free
-
-```
-
-### apt_debian_sources_absent
-
-A optional list of files in `/etc/apt/sources.list.d/` that should be deleted, `apt_debian_sources_absent` defaults to remove the `backports.list` file as backports are added to the main `sources.list` by this role:
-
-```yaml
-apt_debian_sources_absent:
-  - backports.list
+    backports: true
+    src: false
+    domain: deb.debian.org
 ```
 
 ### apt_distro_switch

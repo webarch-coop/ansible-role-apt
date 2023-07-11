@@ -67,11 +67,12 @@ argument_specs:
           backports:
             type: bool
             required: true
-            description: Enable backports repo.
+            description: Enable backports repo for this version of Debian.
           components:
             type: list
             elements: str
             required: true
+            description: A list of components for this version of Debian.
             choices:
               - contrib
               - main
@@ -80,27 +81,24 @@ argument_specs:
           domain:
             type: str
             required: true
-            description: The irepo domain name.
-          format:
+            description: The repo domain name for this version of Debian.
+          file:
             type: str
             required: true
-            description: The file format for the sources file.
-            choices:
-              - list
-              - sources
+            description: Path to the apt list or sources file for this version of Debian.
+          files_absent:
+            type: list
+            elements: str
+            required: false
+            description: A list of files that should be absent for this version of Debian.
           name:
             type: str
             required: true
-            description: The Debian / Ubuntu verson name.
+            description: The Debian / Ubuntu version name.
           src:
             type: bool
             required: true
-            description: Enable src repos.
-      apt_debian_sources_absent:
-        type: list
-        required: false
-        description: A list of files in /etc/apt/sources.list.d/ that should be absent on Debian servers.
-        elements: str
+            description: Enable src repos for this version of Debian.
       apt_distro_switch:
         type: bool
         required: true

@@ -50,55 +50,60 @@ apt_verify: true
 # ----------------
 apt_debian:
   - name: trixie
+    file: /etc/apt/sources.list.d/debian.sources
+    files_absent:
+      - /etc/apt/sources.list
+      - /etc/apt/sources.list.d/backports.list
     components:
       - main
       - contrib
       - non-free
       - non-free-firmware
-    format: sources
-    src: false
     backports: true
+    src: false
     domain: deb.debian.org
   - name: bookworm
+    file: /etc/apt/sources.list.d/debian.sources
+    files_absent:
+      - /etc/apt/sources.list
+      - /etc/apt/sources.list.d/backports.list
     components:
       - main
       - contrib
       - non-free
       - non-free-firmware
-    format: sources
-    src: false
     backports: true
+    src: false
     domain: deb.debian.org
   - name: bullseye
+    file: /etc/apt/sources.list
+    files_absent: []
     components:
       - main
       - contrib
       - non-free
-    format: list
-    src: false
     backports: true
+    src: false
     domain: deb.debian.org
   - name: buster
+    file: /etc/apt/sources.list
+    files_absent: []
     components:
       - main
       - contrib
       - non-free
-    format: list
-    src: false
     backports: true
+    src: false
     domain: deb.debian.org
 #   - name: stretch
+#     file: /etc/apt/sources.list
 #     components:
 #       - main
 #       - contrib
 #       - non-free
-#     format: list
-#     src: false
 #     backports: true
+#     src: false
 #     domain: archive.debian.org
-# Files in /etc/apt/sources.list.d/ that should be removed on Debian servers
-apt_debian_sources_absent:
-  - backports.list
 # ----------------
 # UBUNTU Variables
 # ----------------

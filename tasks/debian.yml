@@ -11,94 +11,61 @@
 - name: Debian tasks
   block:
 
-    - name: Various /etc/apt/sources.list.d/ files absent
-      ansible.builtin.file:
-        path: "/etc/apt/sources.list.d/{{ apt_sources_file }}"
-        state: absent
-      loop: "{{ apt_debian_sources_absent }}"
-      loop_control:
-        loop_var: apt_sources_file
-      when:
-        - apt_debian_sources_absent is defined
-        - apt_debian_sources_absent != []
-
     - name: Set facts for the Debian version
       ansible.builtin.set_fact:
         apt_debian_backports: "{{ apt_debian | community.general.json_query(apt_debian_backports_jmespath_query) }}"
         apt_debian_components: "{{ apt_debian | community.general.json_query(apt_debian_components_jmespath_query) }}"
         apt_debian_domain: "{{ apt_debian | community.general.json_query(apt_debian_domain_jmespath_query) }}"
+        apt_debian_file: "{{ apt_debian | community.general.json_query(apt_debian_file_jmespath_query) }}"
+        apt_debian_files_absent: "{{ apt_debian | community.general.json_query(apt_debian_files_absent_jmespath_query) }}"
         apt_debian_format: "{{ apt_debian | community.general.json_query(apt_debian_format_jmespath_query) }}"
         apt_debian_src: "{{ apt_debian | community.general.json_query(apt_debian_src_jmespath_query) }}"
       vars:
         apt_debian_backports_jmespath_query: "[?name=='{{ apt_distro }}'].backports|[0]"
         apt_debian_components_jmespath_query: "[?name=='{{ apt_distro }}'].components|[]"
         apt_debian_domain_jmespath_query: "[?name=='{{ apt_distro }}'].domain|[0]"
+        apt_debian_file_jmespath_query: "[?name=='{{ apt_distro }}'].file|[0]"
+        apt_debian_files_absent_jmespath_query: "[?name=='{{ apt_distro }}'].files_absent|[]"
         apt_debian_format_jmespath_query: "[?name=='{{ apt_distro }}'].format|[0]"
         apt_debian_src_jmespath_query: "[?name=='{{ apt_distro }}'].src|[0]"
 
-    - name: Print the components to be enabled
-      ansible.builtin.debug:
-        var: apt_debian_components
-        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+    - name: Directory /etc/apt/sources.list.d present
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
 
-    - name: Use /etc/apt/sources.list
-      block:
-
-        - name: File /etc/apt/sources.list in place
-          ansible.builtin.template:
-            src: "debian.list.j2"
-            dest: /etc/apt/sources.list
-            mode: "0644"
-            owner: root
-            group: root
-            backup: true
-
-        - name: File /etc/apt/sources.list.d/debian.sources absent
-          ansible.builtin.command: >-
-            mv
-            /etc/apt/sources.list.d/debian.sources
-            /etc/apt/sources.list.d/.debian.sources.{{ ansible_date_time.iso8601_basic_short }}.ansible.save
-          changed_when: true
-          when:
-            - apt_sources_list is defined
-            - apt_sources_list.stat.exists | bool
-
-      when: apt_debian_format == "list"
-
-    - name: Use /etc/apt/sources.list.d/debian.sources
-      block:
-
-        - name: File /etc/apt/sources.list.d/debian.sources in place
-          ansible.builtin.template:
-            src: "debian.sources.j2"
-            dest: /etc/apt/sources.list.d/debian.sources.j2
-            mode: "0644"
-            owner: root
-            group: root
-            backup: true
-
-        - name: File /etc/apt/sources.list absent
-          ansible.builtin.command: >-
-            mv
-            /etc/apt/sources.list
-            /etc/apt/.sources.list.{{ ansible_date_time.iso8601_basic_short }}.ansible.save
-          changed_when: true
-          when:
-            - apt_sources_list_d_paths is defined
-            - ( "debian.sources" in apt_sources_list_d_paths )
-
-      when: apt_debian_format == "sources"
-
-    - name: File /etc/apt/sources.list in place
+    - name: "Sources list file in place {{ apt_debian_file }}"
       ansible.builtin.template:
-        src: "debian_{{ apt_distro }}.list.j2"
+        src: debian.list.j2
         dest: /etc/apt/sources.list
         mode: "0644"
         owner: root
         group: root
         backup: true
-      # Debian servers from Gandi don't have /etc/apt/sources.list and have HTTPS enabled already
-      when: apt_sources_list.stat.exists | bool
+      when: apt_debian_file is regex('[.]list$')
+
+    - name: "Sources file in place {{ apt_debian_file }}"
+      ansible.builtin.template:
+        src: debian.sources.j2
+        dest: /etc/apt/sources.list.d/debian.sources.j2
+        mode: "0644"
+        owner: root
+        group: root
+        backup: true
+      when: apt_debian_file is regex('[.]sources$')
+
+    - name: Include files absent tasks
+      ansible.builtin.include_tasks: file_absent.yml
+      loop: "{{ apt_debian_files_absent }}"
+      loop_control:
+        loop_var: apt_file_absent
+        label: "{{ apt_file_absent | basename }}"
+      when:
+        - apt_debian_files_absent is defined
+        - apt_debian_files_absent != []
 
     - name: File /etc/apt.conf in place
       ansible.builtin.template:

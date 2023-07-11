@@ -1,6 +1,7 @@
 # {{ ansible_managed }}
 
 # Ubuntu {{ apt_distro }} repos
+
 deb http://{{ apt_ubuntu_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }} {% for apt_comp in apt_ubuntu_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
 deb http://{{ apt_ubuntu_country }}.archive.ubuntu.com/ubuntu {{ apt_distro }}-updates {% for apt_comp in apt_ubuntu_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}

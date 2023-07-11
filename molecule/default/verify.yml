@@ -94,6 +94,7 @@
       ansible.builtin.command: apt-get upgrade -y
       register: molecule_apt_get_upgrade
       changed_when: ("0 upgraded" not in molecule_apt_get_upgrade.stdout)
+      failed_when: molecule_apt_get_upgrade.stderr | length > 0
 
     - name: Debug the results from apt-get upgrade -y
       ansible.builtin.debug:

@@ -82,7 +82,7 @@
       ansible.builtin.debug:
         var: apt_sources_list_d_paths
 
-    - name: Include slurp and debug tasks for fikles found in /etc/apt/sources.list.d
+    - name: Include slurp and debug tasks for files found in /etc/apt/sources.list.d
       ansible.builtin.include_tasks: check_file.yml
       loop: "{{ apt_sources_list_d_paths }}"
       loop_control:

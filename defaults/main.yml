@@ -77,7 +77,8 @@ apt_debian:
     domain: deb.debian.org
   - name: bullseye
     file: /etc/apt/sources.list
-    files_absent: []
+    files_absent:
+      - /etc/apt/sources.list.d/backports.list
     components:
       - main
       - contrib

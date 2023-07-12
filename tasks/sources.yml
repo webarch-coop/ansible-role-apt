@@ -87,7 +87,7 @@
     - name: The Signed-By GPG public keys ring needs to exist
       ansible.builtin.assert:
         that:
-          - apt_signed_by_path.stat.exists | true
+          - apt_signed_by_path.stat.exists | bool
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: "Directory /etc/apt/sources.list.d present for {{ apt_distro }}"

@@ -2,28 +2,11 @@
 
 [![pipeline status](https://git.coop/webarch/apt/badges/master/pipeline.svg)](https://git.coop/webarch/apt/-/commits/master)
 
-This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) file on Debian and Ubuntu LTS.
+This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) or the [DEB822-style format](https://manpages.debian.org/bookworm/apt/sources.list.5.en.html#DEB822-STYLE_FORMAT) file on Debian and Ubuntu LTS.
 
 This role has been automatically tested using [GitLab CI](.gitlab-ci.yml) and [Molecule](molecule/default/molecule.yml) on Debian Trixie, Bookworm, Bullseye and Ubuntu Jammy, it should also work on Debian Buster and Ubuntu Focal but it hasn't been tested on these versions as the version of Python is too old for the latest versions of Ansible and Molecule to be used to run the tests.
 
 See also the [upgrade role](https://git.coop/webarch/upgrade), the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster and the [localhost repo](https://git.coop/webarch/localhost) which can be used with this role to configure the `sources.list` file locally.
-
-## Usage
-
-In addition to the direct use of this role to configure the `/etc/apt/sources.list` file it can be included by other roles to set `local_facts` that are needed when configuring other apt repos, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
-
-```yaml
-- name: Include apt role local fact tasks if variables are not defined
-  ansible.builtin.include_role:
-    name: apt
-    tasks_from: local_facts.yml
-  when: >-
-    ( ansible_local.dpkg.arch is not defined ) or
-    ( ansible_local.gpg.version is not defined ) or
-    ( ansible_local.bash.path is not defined )
-```
-
-The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an example of this usage in the [apt.yml](https://git.coop/webarch/yarn/-/blob/master/tasks/apt.yml) tasks, `ansible_local.bash.path` is used by the `gpg --dearmor` task, the `ansible_local.dpkg.arch` variable is used by the [yarn.sources](https://git.coop/webarch/yarn/-/blob/master/templates/yarn.sources.j2) template and the `ansible_local.gpg.version` variable is used to conditionally include the `--with-fingerprint --with-subkey-fingerprint` options for the `gpg --show-keys` command.
 
 ## Role variables
 
@@ -172,6 +155,23 @@ apt_sources:
     https: false
     signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 ```
+
+## Usage
+
+In addition to the direct use of this role to configure the `/etc/apt/sources.list` file it can be included by other roles to set `local_facts` that are needed when configuring other apt repos, for example to get the `$PATH` for Bash, the CPU Architecture and the version of `gpg`:
+
+```yaml
+- name: Include apt role local fact tasks if variables are not defined
+  ansible.builtin.include_role:
+    name: apt
+    tasks_from: local_facts.yml
+  when: >-
+    ( ansible_local.dpkg.arch is not defined ) or
+    ( ansible_local.gpg.version is not defined ) or
+    ( ansible_local.bash.path is not defined )
+```
+
+The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an example of this usage in the [apt.yml](https://git.coop/webarch/yarn/-/blob/master/tasks/apt.yml) tasks, `ansible_local.bash.path` is used by the `gpg --dearmor` task, the `ansible_local.dpkg.arch` variable is used by the [yarn.sources](https://git.coop/webarch/yarn/-/blob/master/templates/yarn.sources.j2) template and the `ansible_local.gpg.version` variable is used to conditionally include the `--with-fingerprint --with-subkey-fingerprint` options for the `gpg --show-keys` command.
 
 ## Repository
 

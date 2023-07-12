@@ -8,9 +8,6 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-# ---------------------------
-# DEBIAN and UBUNTU Variables
-# ---------------------------
 # Set apt to true for the tasks in this role to be run
 apt: false
 # Set apt_distro_switch to true if switching distro, eg buster to bullseye

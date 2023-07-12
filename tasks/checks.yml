@@ -11,15 +11,21 @@
 - name: Apt checks
   block:
 
+    - name: Print ansible_distribution
+      ansible.builtin.debug:
+        var: ansible_distribution
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
     - name: Print ansible_distribution_release
       ansible.builtin.debug:
         var: ansible_distribution_release
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
-    - name: Check that the distro version is supported
+    - name: Check that the distro and version is supported
       ansible.builtin.assert:
         that:
-          - ansible_distribution_release is regex('^buster|bullseye|bookworm|trixie|jammy$')
+          - ansible_distribution is regex('^Debian|Ubuntu$')
+          - ansible_distribution_release is regex('^buster|bullseye|bookworm|trixie|focal|jammy$')
         quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
     - name: Print apt_distro

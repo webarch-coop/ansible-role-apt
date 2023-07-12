@@ -98,7 +98,7 @@
         owner: root
         group: root
         backup: true
-      vers:
+      vars:
         apt_file_dest: "/etc/apt/sources.list.d/{{ ansible_distribution | lower }}.sources"
       when: apt_file == apt_file_dest
 

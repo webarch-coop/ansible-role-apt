@@ -39,6 +39,16 @@
       ansible.builtin.apt:
         pkg: python3-apt
 
+    - name: Debian packages present
+      ansible.builtin.apt:
+        pkg: debian-archive-keyring
+      when: ansible_distribution == "Debian"
+
+    - name: Ubuntu packages present
+      ansible.builtin.apt:
+        pkg: ubuntu-keyring
+      when: ansible_distribution == "Ubuntu"
+
     - name: Include sources config tasks
       ansible.builtin.include_tasks: sources.yml
 

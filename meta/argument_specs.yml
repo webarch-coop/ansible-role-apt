@@ -58,47 +58,58 @@ argument_specs:
         required: false
         description: A list of .deb packages to be installed when apt_apticron is true.
         elements: str
-      apt_debian:
+      apt_sources:
         type: list
         elements: dict
         required: true
-        description: A list of Debian versions and components.
+        description: A list of versions and components.
         options:
           backports:
             type: bool
             required: true
-            description: Enable backports repo for this version of Debian.
+            description: Enable backports repo.
           components:
             type: list
             elements: str
             required: true
-            description: A list of components for this version of Debian.
+            description: A list of components.
             choices:
               - contrib
               - main
+              - multiverse
               - non-free
               - non-free-firmware
+              - restricted
+              - universe
           domain:
             type: str
             required: true
-            description: The repo domain name for this version of Debian.
+            description: The repo domain name.
           file:
             type: str
             required: true
-            description: Path to the apt list or sources file for this version of Debian.
+            description: Path to the apt list or sources file.
           files_absent:
             type: list
             elements: str
             required: false
-            description: A list of files that should be absent for this version of Debian.
+            description: A list of files that should be absent.
+          https:
+            type: bool
+            required: true
+            description: Enable HTTPS for repo URLS.
           name:
             type: str
             required: true
-            description: The Debian / Ubuntu version name.
+            description: The distro version name.
+          signed_by:
+            type: str
+            required: true
+            description: A file system path to the repo signing keys file.
           src:
             type: bool
             required: true
-            description: Enable src repos for this version of Debian.
+            description: Enable src repos.
       apt_distro_switch:
         type: bool
         required: true
@@ -149,47 +160,6 @@ argument_specs:
         required: false
         description: A list of .deb packages that will be installed.
         elements: str
-      apt_ubuntu:
-        type: list
-        elements: dict
-        required: true
-        description: A list of Ubuntu versions and components.
-        options:
-          backports:
-            type: bool
-            required: true
-            description: Enable backports repo for this version of Ubuntu.
-          components:
-            type: list
-            elements: str
-            required: true
-            description: A list of components for this version of Ubuntu.
-            choices:
-              - main
-              - multiverse
-              - restricted
-              - universe
-          domain:
-            type: str
-            required: true
-            description: The repo domain name for this version of Ubuntu.
-          file:
-            type: str
-            required: true
-            description: Path to the apt list or sources file for this version of Ubuntu.
-          files_absent:
-            type: list
-            elements: str
-            required: false
-            description: A list of files that should be absent for this version of Ubuntu.
-          name:
-            type: str
-            required: true
-            description: The Ubuntu / Ubuntu version name.
-          src:
-            type: bool
-            required: true
-            description: Enable src repos for this version of Ubuntu.
       apt_verify:
         type: bool
         required: true

@@ -2,9 +2,9 @@
 
 [![pipeline status](https://git.coop/webarch/apt/badges/master/pipeline.svg)](https://git.coop/webarch/apt/-/commits/master)
 
-This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) file on Debian and Ubuntu.
+This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) file on Debian and Ubuntu LTS.
 
-This role has been tested on Debian Trixy, Bookworm, Bullseye and Buster and Ubuntu Jammy.
+This role has been automatically tested using [GitLab CI](.gitlab-ci.yml) and [Molecule](molecule/default/molecule.yml) on Debian Trixie, Bookworm, Bullseye and Ubuntu Jammy, it should also work on Debian Buster and Ubuntu Focal but it hasn't been tested on these versions as the version of Python is too old for the latest versions of Ansible and Molecule to be used to run the tests.
 
 See also the [upgrade role](https://git.coop/webarch/upgrade), the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster and the [localhost repo](https://git.coop/webarch/localhost) which can be used with this role to configure the `sources.list` file locally.
 
@@ -38,38 +38,6 @@ A required boolean, when `apt_apticron` is true packages listed in `apt_apticron
 ### apt_apticron_pkgs
 
 A optional list of `.deb` packages to be installed when `apt_apticron` is `true`, by default `apt_apticron_pkgs` is a list containing one package name, `apticron`.
-
-### apt_debian
-
-A list of Debian files, versions and components, for example:
-
-```yaml
-apt_debian:
-  - name: bookworm
-    file: /etc/apt/sources.list.d/debian.sources
-    files_absent:
-      - /etc/apt/sources.list
-      - /etc/apt/sources.list.d/backports.list
-    components:
-      - main
-      - contrib
-      - non-free
-      - non-free-firmware
-    backports: true
-    src: false
-    domain: deb.debian.org
-  - name: bullseye
-    file: /etc/apt/sources.list
-    files_absent:
-      - /etc/apt/sources.list.d/backports.list
-    components:
-      - main
-      - contrib
-      - non-free
-    backports: true
-    src: false
-    domain: deb.debian.org
-```
 
 ### apt_distro_switch
 
@@ -168,13 +136,28 @@ A optional list of `.deb` packages that will be installed, by default `apt_pkgs`
   - needrestart
 ```
 
-### apt_ubuntu
+### apt_sources
 
-A list of Ubuntu files, versions and components, for example:
+The main configuration list for the sources, for example:
 
 ```yaml
 
-apt_ubuntu:
+apt_sources:
+  - name: bookworm
+    file: /etc/apt/sources.list.d/debian.sources
+    files_absent:
+      - /etc/apt/sources.list
+      - /etc/apt/sources.list.d/backports.list
+    components:
+      - main
+      - contrib
+      - non-free
+      - non-free-firmware
+    backports: true
+    src: false
+    domain: deb.debian.org
+    https: true
+    signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
   - name: jammy
     file: /etc/apt/sources.list
     files_absent: []
@@ -186,17 +169,8 @@ apt_ubuntu:
     backports: true
     src: false
     domain: uk.archive.ubuntu.com
-  - name: focal
-    file: /etc/apt/sources.list
-    files_absent: []
-    components:
-      - main
-      - restricted
-      - universe
-      - multiverse
-    backports: true
-    src: false
-    domain: uk.archive.ubuntu.com
+    https: false
+    signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 ```
 
 ## Repository

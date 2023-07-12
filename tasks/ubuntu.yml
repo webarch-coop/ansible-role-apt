@@ -52,7 +52,7 @@
         group: root
 
     - name: Only Ubuntu .list files are supported .sources are not currently supported
-      ansible.abuiltn.assert:
+      ansible.builtin.assert:
         that:
           - apt_ubuntu_file is regex('[.]list$')
           - apt_ubuntu_file is not regex('[.]sources$')

@@ -52,7 +52,7 @@
         group: root
 
     - name: Only .list and .sources files are supported
-      ansible.abuiltn.assert:
+      ansible.builtin.assert:
         that:
           - apt_debian_file is regex('[.][list|sources]$')
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"

@@ -31,17 +31,38 @@
 
     - name: "Debug Ubuntu version facts for {{ apt_distro }}"
       ansible.builtin.debug:
-        msg: "{{ apt_ubuntu_variable }}"
-      loop:
-        - apt_ubuntu_backports
-        - apt_ubuntu_components
-        - apt_ubuntu_domain
-        - apt_ubuntu_file
-        - apt_ubuntu_files_absent
-        - apt_ubuntu_format
-        - apt_ubuntu_src
-      loop_control:
-        loop_var: apt_ubuntu_variable
+        var: apt_ubuntu_backports
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Ubuntu version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_ubuntu_components
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Ubuntu version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_ubuntu_domain
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Ubuntu version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_ubuntu_file
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Ubuntu version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_ubuntu_files_absent
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Ubuntu version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_ubuntu_format
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Ubuntu version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_ubuntu_src
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
     - name: "Directory /etc/apt/sources.list.d present for {{ apt_distro }}"
       ansible.builtin.file:

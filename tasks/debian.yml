@@ -31,17 +31,38 @@
 
     - name: "Debug Debian version facts for {{ apt_distro }}"
       ansible.builtin.debug:
-        msg: "{{ apt_debian_variable }}"
-      loop:
-        - apt_debian_backports
-        - apt_debian_components
-        - apt_debian_domain
-        - apt_debian_file
-        - apt_debian_files_absent
-        - apt_debian_format
-        - apt_debian_src
-      loop_control:
-        loop_var: apt_debian_variable
+        var: apt_debian_backports
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Debian version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_debian_components
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Debian version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_debian_domain
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Debian version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_debian_file
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Debian version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_debian_files_absent
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Debian version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_debian_format
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug Debian version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_debian_src
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
     - name: "Directory /etc/apt/sources.list.d present for {{ apt_distro }}"
       ansible.builtin.file:

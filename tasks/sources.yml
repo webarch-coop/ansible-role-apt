@@ -84,6 +84,11 @@
         path: apt_signed_by
       register: apt_signed_by_path
 
+    - name: "Debug stat {{ apt_signed_by }}"
+      ansible.builtin.debug:
+        var: apt_signed_by_path
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
     - name: The Signed-By GPG public keys ring needs to exist
       ansible.builtin.assert:
         that:

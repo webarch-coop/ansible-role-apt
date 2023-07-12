@@ -18,6 +18,7 @@
         apt_domain: "{{ apt_sources | community.general.json_query(apt_domain_jmespath_query) }}"
         apt_file: "{{ apt_sources | community.general.json_query(apt_file_jmespath_query) }}"
         apt_files_absent: "{{ apt_sources | community.general.json_query(apt_files_absent_jmespath_query) }}"
+        apt_https: "{{ apt_sources | community.general.json_query(apt_https_jmespath_query) }}"
         apt_signed_by: "{{ apt_sources | community.general.json_query(apt_signed_by_jmespath_query) }}"
         apt_src: "{{ apt_sources | community.general.json_query(apt_src_jmespath_query) }}"
       vars:
@@ -26,6 +27,7 @@
         apt_domain_jmespath_query: "[?name=='{{ apt_distro }}'].domain|[0]"
         apt_file_jmespath_query: "[?name=='{{ apt_distro }}'].file|[0]"
         apt_files_absent_jmespath_query: "[?name=='{{ apt_distro }}'].files_absent|[]"
+        apt_https_jmespath_query: "[?name=='{{ apt_distro }}'].https|[0]"
         apt_signed_by_jmespath_query: "[?name=='{{ apt_distro }}'].src|[0]"
         apt_src_jmespath_query: "[?name=='{{ apt_distro }}'].src|[0]"
 
@@ -52,6 +54,11 @@
     - name: "Debug version facts for {{ apt_distro }}"
       ansible.builtin.debug:
         var: apt_files_absent
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: "Debug version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_https
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
     - name: "Debug version facts for {{ apt_distro }}"

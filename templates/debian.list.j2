@@ -2,25 +2,25 @@
 
 # Debian {{ apt_distro }} repos
 
-deb https://deb.debian.org/debian {{ apt_distro }} {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb https://{{ apt_debian_domain }}/debian {{ apt_distro }} {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% if apt_debian_src %}
-deb-src https://deb.debian.org/debian {{ apt_distro }} {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb-src https://{{ apt_debian_domain }}/debian {{ apt_distro }} {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% endif %}
 
-deb https://deb.debian.org/debian {{ apt_distro }}-updates {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb https://{{ apt_debian_domain }}/debian {{ apt_distro }}-updates {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% if apt_debian_src %}
-deb-src https://deb.debian.org/debian {{ apt_distro }}-updates {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb-src https://{{ apt_debian_domain }}/debian {{ apt_distro }}-updates {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% endif %}
 
-deb https://deb.debian.org/debian-security {{ apt_distro }}-security {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb https://{{ apt_debian_domain }}/debian-security {{ apt_distro }}-security {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% if apt_debian_src %}
-deb-src https://deb.debian.org/debian-security {{ apt_distro }}-security {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb-src https://{{ apt_debian_domain }}/debian-security {{ apt_distro }}-security {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% endif %}
 
 {% if apt_debian_backports %}
-deb https://deb.debian.org/debian {{ apt_distro }}-backports {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb https://{{ apt_debian_domain }}/debian {{ apt_distro }}-backports {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% if apt_debian_src %}
-deb-src https://deb.debian.org/debian {{ apt_distro }}-backports {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb-src https://{{ apt_debian_domain }}/debian {{ apt_distro }}-backports {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% endif %}
 {% endif %}
 

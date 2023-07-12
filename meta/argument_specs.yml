@@ -149,32 +149,47 @@ argument_specs:
         required: false
         description: A list of .deb packages that will be installed.
         elements: str
-      apt_ubuntu_backports:
-        type: bool
-        required: true
-        description: Enable Ubuntu apt backports repos.
-      apt_ubuntu_components:
+      apt_ubuntu:
         type: list
+        elements: dict
         required: true
-        description: A list of Ubuntu components to be enabled.
-        elements: str
-        choices:
-          - "main"
-          - "multiverse"
-          - "restricted"
-          - "universe"
-      apt_ubuntu_country:
-        type: str
-        required: true
-        description: The country code for the Ubuntu mirrors to use.
-      apt_ubuntu_partner:
-        type: bool
-        required: true
-        description: Enable Ubuntu apt partner repos.
-      apt_ubuntu_src:
-        type: bool
-        required: true
-        description: Set to true to enable Ubuntu apt source repos.
+        description: A list of Ubuntu versions and components.
+        options:
+          backports:
+            type: bool
+            required: true
+            description: Enable backports repo for this version of Ubuntu.
+          components:
+            type: list
+            elements: str
+            required: true
+            description: A list of components for this version of Ubuntu.
+            choices:
+              - main
+              - multiverse
+              - restricted
+              - universe
+          domain:
+            type: str
+            required: true
+            description: The repo domain name for this version of Ubuntu.
+          file:
+            type: str
+            required: true
+            description: Path to the apt list or sources file for this version of Ubuntu.
+          files_absent:
+            type: list
+            elements: str
+            required: false
+            description: A list of files that should be absent for this version of Ubuntu.
+          name:
+            type: str
+            required: true
+            description: The Ubuntu / Ubuntu version name.
+          src:
+            type: bool
+            required: true
+            description: Enable src repos for this version of Ubuntu.
       apt_verify:
         type: bool
         required: true

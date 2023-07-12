@@ -99,14 +99,27 @@ apt_debian:
 # ----------------
 # UBUNTU Variables
 # ----------------
-apt_ubuntu_backports: true
-apt_ubuntu_country: uk
-apt_ubuntu_components:
-  - main
-  - restricted
-  - universe
-  - multiverse
-apt_ubuntu_partner: false
-# Set apt_src to true to enable source code repos
-apt_ubuntu_src: false
+apt_ubuntu:
+  - name: jammy
+    file: /etc/apt/sources.list
+    files_absent: []
+    components:
+      - main
+      - restricted
+      - universe
+      - multiverse
+    backports: true
+    src: false
+    domain: uk.archive.ubuntu.com
+  - name: focal
+    file: /etc/apt/sources.list
+    files_absent: []
+    components:
+      - main
+      - restricted
+      - universe
+      - multiverse
+    backports: true
+    src: false
+    domain: uk.archive.ubuntu.com
 ...

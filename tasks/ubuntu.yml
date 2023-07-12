@@ -11,16 +11,77 @@
 - name: Ubuntu tasks
   block:
 
-    - name: /etc/apt/sources.list in place
+    - name: "Set facts for the Ubuntu version {{ apt_distro }}"
+      ansible.builtin.set_fact:
+        apt_ubuntu_backports: "{{ apt_ubuntu | community.general.json_query(apt_ubuntu_backports_jmespath_query) }}"
+        apt_ubuntu_components: "{{ apt_ubuntu | community.general.json_query(apt_ubuntu_components_jmespath_query) }}"
+        apt_ubuntu_domain: "{{ apt_ubuntu | community.general.json_query(apt_ubuntu_domain_jmespath_query) }}"
+        apt_ubuntu_file: "{{ apt_ubuntu | community.general.json_query(apt_ubuntu_file_jmespath_query) }}"
+        apt_ubuntu_files_absent: "{{ apt_ubuntu | community.general.json_query(apt_ubuntu_files_absent_jmespath_query) }}"
+        apt_ubuntu_format: "{{ apt_ubuntu | community.general.json_query(apt_ubuntu_format_jmespath_query) }}"
+        apt_ubuntu_src: "{{ apt_ubuntu | community.general.json_query(apt_ubuntu_src_jmespath_query) }}"
+      vars:
+        apt_ubuntu_backports_jmespath_query: "[?name=='{{ apt_distro }}'].backports|[0]"
+        apt_ubuntu_components_jmespath_query: "[?name=='{{ apt_distro }}'].components|[]"
+        apt_ubuntu_domain_jmespath_query: "[?name=='{{ apt_distro }}'].domain|[0]"
+        apt_ubuntu_file_jmespath_query: "[?name=='{{ apt_distro }}'].file|[0]"
+        apt_ubuntu_files_absent_jmespath_query: "[?name=='{{ apt_distro }}'].files_absent|[]"
+        apt_ubuntu_format_jmespath_query: "[?name=='{{ apt_distro }}'].format|[0]"
+        apt_ubuntu_src_jmespath_query: "[?name=='{{ apt_distro }}'].src|[0]"
+
+    - name: "Debug Ubuntu version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_ubuntu_variable
+      loop:
+        - apt_ubuntu_backports
+        - apt_ubuntu_components
+        - apt_ubuntu_domain
+        - apt_ubuntu_file
+        - apt_ubuntu_files_absent
+        - apt_ubuntu_format
+        - apt_ubuntu_src
+      loop_control:
+        loop_var: apt_ubuntu_variable
+
+    - name: "Directory /etc/apt/sources.list.d present for {{ apt_distro }}"
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+
+    - name: "Sources list file in place {{ apt_ubuntu_file }}"
       ansible.builtin.template:
-        src: templates/ubuntu.list.j2
+        src: ubuntu.list.j2
         dest: /etc/apt/sources.list
         mode: "0644"
         owner: root
         group: root
         backup: true
+      when: apt_ubuntu_file is regex('[.]list$')
 
-    - name: /etc/apt.conf in place
+    - name: "Sources file in place {{ apt_ubuntu_file }}"
+      ansible.builtin.template:
+        src: ubuntu.sources.j2
+        dest: /etc/apt/sources.list.d/ubuntu.sources.j2
+        mode: "0644"
+        owner: root
+        group: root
+        backup: true
+      when: apt_ubuntu_file is regex('[.]sources$')
+
+    - name: Include files absent tasks
+      ansible.builtin.include_tasks: file_absent.yml
+      loop: "{{ apt_ubuntu_files_absent }}"
+      loop_control:
+        loop_var: apt_file_absent
+        label: "{{ apt_file_absent | basename }}"
+      when:
+        - apt_ubuntu_files_absent is defined
+        - apt_ubuntu_files_absent != []
+
+    - name: "File /etc/apt.conf in place for {{ apt_distro }}"
       ansible.builtin.template:
         src: templates/apt.conf.j2
         dest: /etc/apt.conf

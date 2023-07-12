@@ -11,7 +11,7 @@
 - name: Debian tasks
   block:
 
-    - name: Set facts for the Debian version
+    - name: "Set facts for the Debian version {{ apt_distro }}"
       ansible.builtin.set_fact:
         apt_debian_backports: "{{ apt_debian | community.general.json_query(apt_debian_backports_jmespath_query) }}"
         apt_debian_components: "{{ apt_debian | community.general.json_query(apt_debian_components_jmespath_query) }}"
@@ -29,7 +29,21 @@
         apt_debian_format_jmespath_query: "[?name=='{{ apt_distro }}'].format|[0]"
         apt_debian_src_jmespath_query: "[?name=='{{ apt_distro }}'].src|[0]"
 
-    - name: Directory /etc/apt/sources.list.d present
+    - name: "Debug Debian version facts for {{ apt_distro }}"
+      ansible.builtin.debug:
+        var: apt_debian_variable
+      loop:
+        - apt_debian_backports
+        - apt_debian_components
+        - apt_debian_domain
+        - apt_debian_file
+        - apt_debian_files_absent
+        - apt_debian_format
+        - apt_debian_src
+      loop_control:
+        loop_var: apt_debian_variable
+
+    - name: "Directory /etc/apt/sources.list.d present for {{ apt_distro }}"
       ansible.builtin.file:
         path: /etc/apt/sources.list.d
         state: directory
@@ -67,7 +81,7 @@
         - apt_debian_files_absent is defined
         - apt_debian_files_absent != []
 
-    - name: File /etc/apt.conf in place
+    - name: "File /etc/apt.conf in place for {{ apt_distro }}"
       ansible.builtin.template:
         src: templates/apt.conf.j2
         dest: /etc/apt.conf

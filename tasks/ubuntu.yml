@@ -54,8 +54,7 @@
     - name: Only Ubuntu .list files are supported .sources are not currently supported
       ansible.builtin.assert:
         that:
-          - apt_ubuntu_file is regex('[.]list$')
-          - apt_ubuntu_file is not regex('[.]sources$')
+          - apt_ubuntu_file == "/etc/apt/sources.list"
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: "Sources list file in place {{ apt_ubuntu_file }}"

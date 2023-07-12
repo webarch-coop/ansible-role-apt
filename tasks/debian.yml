@@ -53,8 +53,9 @@
 
     - name: Only .list and .sources files are supported
       ansible.builtin.assert:
-        that:
-          - apt_debian_file is regex('[.][list|sources]$')
+        that: >-
+          ( apt_debian_file == "/etc/apt/sources.list.d/debian.sources" ) or
+          ( apt_debian_file == "/etc/apt/sources.list" )
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
 
     - name: "Sources list file in place {{ apt_debian_file }}"
@@ -65,7 +66,7 @@
         owner: root
         group: root
         backup: true
-      when: apt_debian_file is regex('[.]list$')
+      when: apt_debian_file == "/etc/apt/sources.list"
 
     - name: "Sources file in place {{ apt_debian_file }}"
       ansible.builtin.template:
@@ -75,7 +76,7 @@
         owner: root
         group: root
         backup: true
-      when: apt_debian_file is regex('[.]sources$')
+      when: apt_debian_file == "/etc/apt/sources.list.d/debian.sources"
 
     - name: Include files absent tasks
       ansible.builtin.include_tasks: file_absent.yml

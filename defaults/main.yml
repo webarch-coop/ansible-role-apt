@@ -87,7 +87,8 @@ apt_debian:
     domain: deb.debian.org
   - name: buster
     file: /etc/apt/sources.list
-    files_absent: []
+    files_absent:
+      - /etc/apt/sources.list.d/backports.list
     components:
       - main
       - contrib
@@ -95,15 +96,6 @@ apt_debian:
     backports: true
     src: false
     domain: deb.debian.org
-#   - name: stretch
-#     file: /etc/apt/sources.list
-#     components:
-#       - main
-#       - contrib
-#       - non-free
-#     backports: true
-#     src: false
-#     domain: archive.debian.org
 # ----------------
 # UBUNTU Variables
 # ----------------

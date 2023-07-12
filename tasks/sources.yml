@@ -89,6 +89,19 @@
         var: apt_signed_by_path
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
+    - name: Debug
+      block:
+
+        - name: "List {{ apt_signed_by | dirname }}"
+          ansible.buitin.command: "ls -lah {{ apt_signed_by | dirname }}"
+          register: apt_signed_by_dir_ls
+
+        - name: "Debug contents of {{ apt_signed_by | dirname }}"
+          ansible.builtin.debug:
+            var: apt_signed_by_dir_ls.stdout_lines
+
+      when: not apt_signed_by_path.stat.exists | bool
+
     - name: The Signed-By GPG public keys ring needs to exist
       ansible.builtin.assert:
         that:

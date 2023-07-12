@@ -6,6 +6,7 @@ Types: deb
 URIs: https://{{ apt_debian_domain }}/debian
 Suites: {{ apt_distro }} {{ apt_distro }}-updates
 Components: {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 {% if apt_debian_src %}
 
@@ -13,6 +14,7 @@ Types: deb-src
 URIs: https://{{ apt_debian_domain }}/debian
 Suites: {{ apt_distro }} {{ apt_distro }}-updates
 Components: {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 {% endif %}
 
@@ -21,12 +23,14 @@ URIs: https://{{ apt_debian_domain }}/debian-security
 Suites: {{ apt_distro }}-security
 Components: {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
 {% if apt_debian_src %}
 
 Types: deb-src
 URIs: https://{{ apt_debian_domain }}/debian-security
 Suites: {{ apt_distro }}-security
 Components: {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 {% endif %}
 
@@ -35,6 +39,7 @@ Types: deb
 URIs: https://{{ apt_debian_domain }}/debian
 Suites: {{ apt_distro }}-backports
 Components: {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 {% if apt_debian_src %}
 
@@ -42,6 +47,7 @@ Types: deb-src
 URIs: https://{{ apt_debian_domain }}/debian
 Suites: {{ apt_distro }}-backports
 Components: {% for apt_comp in apt_debian_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 {% endif %}
 {% endif %}

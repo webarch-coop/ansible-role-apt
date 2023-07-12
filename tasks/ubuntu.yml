@@ -31,7 +31,7 @@
 
     - name: "Debug Ubuntu version facts for {{ apt_distro }}"
       ansible.builtin.debug:
-        var: apt_ubuntu_variable
+        msg: "{{ apt_ubuntu_variable }}"
       loop:
         - apt_ubuntu_backports
         - apt_ubuntu_components
@@ -51,6 +51,13 @@
         owner: root
         group: root
 
+    - name: Only Ubuntu .list files are supported .sources are not currently supported
+      ansible.abuiltn.assert:
+        that:
+          - apt_ubuntu_file is regex('[.]list$')
+          - apt_ubuntu_file is not regex('[.]sources$')
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
     - name: "Sources list file in place {{ apt_ubuntu_file }}"
       ansible.builtin.template:
         src: ubuntu.list.j2
@@ -61,15 +68,15 @@
         backup: true
       when: apt_ubuntu_file is regex('[.]list$')
 
-    - name: "Sources file in place {{ apt_ubuntu_file }}"
-      ansible.builtin.template:
-        src: ubuntu.sources.j2
-        dest: /etc/apt/sources.list.d/ubuntu.sources.j2
-        mode: "0644"
-        owner: root
-        group: root
-        backup: true
-      when: apt_ubuntu_file is regex('[.]sources$')
+    # - name: "Sources file in place {{ apt_ubuntu_file }}"
+    #   ansible.builtin.template:
+    #     src: ubuntu.sources.j2
+    #     dest: /etc/apt/sources.list.d/ubuntu.sources
+    #     mode: "0644"
+    #     owner: root
+    #     group: root
+    #     backup: true
+    #   when: apt_ubuntu_file is regex('[.]sources$')
 
     - name: Include files absent tasks
       ansible.builtin.include_tasks: file_absent.yml

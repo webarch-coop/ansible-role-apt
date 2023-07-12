@@ -31,7 +31,7 @@
 
     - name: "Debug Debian version facts for {{ apt_distro }}"
       ansible.builtin.debug:
-        var: apt_debian_variable
+        msg: "{{ apt_debian_variable }}"
       loop:
         - apt_debian_backports
         - apt_debian_components
@@ -51,6 +51,12 @@
         owner: root
         group: root
 
+    - name: Only .list and .sources files are supported
+      ansible.abuiltn.assert:
+        that:
+          - apt_debian_file is regex('[.][list|sources]$')
+        quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+
     - name: "Sources list file in place {{ apt_debian_file }}"
       ansible.builtin.template:
         src: debian.list.j2
@@ -64,7 +70,7 @@
     - name: "Sources file in place {{ apt_debian_file }}"
       ansible.builtin.template:
         src: debian.sources.j2
-        dest: /etc/apt/sources.list.d/debian.sources.j2
+        dest: /etc/apt/sources.list.d/debian.sources
         mode: "0644"
         owner: root
         group: root

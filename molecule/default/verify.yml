@@ -53,12 +53,12 @@
             src: /etc/apt/sources.list.d/debian.sources
           register: molecule_apt_sources_debian_b64encoded
 
-        - name: Decode the base64 encoded version of /etc/apt/sources.list
+        - name: Decode the base64 encoded version of /etc/apt/sources.list.d/debian.sources
           ansible.builtin.set_fact:
             molecule_apt_sources_debian_content: "{{ molecule_apt_sources_debian_b64encoded['content'] | b64decode | trim }}"
             molecule_apt_sources_debian_content_lines: "{{ molecule_apt_sources_debian_b64encoded['content'] | b64decode | trim | split('\n') }}"
 
-        - name: Print the contents of the /etc/apt/sources.list lines
+        - name: Print the contents of the /etc/apt/sources.list.d/debian.sources lines
           ansible.builtin.debug:
             var: molecule_apt_sources_debian_content_lines
 

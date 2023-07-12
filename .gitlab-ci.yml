@@ -29,9 +29,10 @@ before_script:
   - source ~/.profile
   - whoami
   - pwd
-  - apt-get update -qq
-  - apt-get dist-upgrade -qqy
-  - apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv
+  - DEBIAN_FRONTEND=noninteractive apt-get update -qq
+  - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -qqy
+  - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
+  - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible git pipx python3-apt python3-pip python3-venv
   - python3 --version
   - pipx --version
   - pipx install --include-deps molecule==${APT_MOLECULE}

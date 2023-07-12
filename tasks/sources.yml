@@ -93,12 +93,29 @@
       block:
 
         - name: "List {{ apt_signed_by | dirname }}"
-          ansible.buitin.command: "ls -lah {{ apt_signed_by | dirname }}"
+          ansible.builtin.command: "ls -lah {{ apt_signed_by | dirname }}"
+          changed_when: false
           register: apt_signed_by_dir_ls
 
         - name: "Debug contents of {{ apt_signed_by | dirname }}"
           ansible.builtin.debug:
             var: apt_signed_by_dir_ls.stdout_lines
+
+        - name: Run dpkg -L debian-archive-keyring
+          ansible.builtin.command: dpkg -L debian-archive-keyring
+          changed_when: false
+          register: apt_dpkg_l
+          when: ansible_distribution == "Debian"
+
+        - name: Run dpkg -L ubuntu-keyring
+          ansible.builtin.command: dpkg -L ubuntu-keyring
+          changed_when: false
+          register: apt_dpkg_l
+          when: ansible_distribution == "Ubuntu"
+
+        - name: Debug the results of dpkg -L
+          ansible.builtin.debug:
+            var: apt_dpkg_l.stdout_lines
 
       when: not apt_signed_by_path.stat.exists | bool
 

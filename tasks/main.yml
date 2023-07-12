@@ -39,13 +39,8 @@
       ansible.builtin.apt:
         pkg: python3-apt
 
-    - name: Include Debian sources.list tasks
-      ansible.builtin.include_tasks: debian.yml
-      when: ansible_distribution == "Debian"
-
-    - name: Include Ubuntu sources.list tasks
-      ansible.builtin.include_tasks: ubuntu.yml
-      when: ansible_distribution == "Ubuntu"
+    - name: Include sources config tasks
+      ansible.builtin.include_tasks: sources.yml
 
     - name: Update the cache when switching distros
       ansible.builtin.apt:

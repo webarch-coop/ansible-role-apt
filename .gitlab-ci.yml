@@ -45,10 +45,9 @@ before_script:
   - git clone ${CI_PROJECT_URL}.git
   - cd ${CI_PROJECT_NAME}
 stages:
-  - bullseye
-  - bookworm
   - trixie
-  - focal
+  - bookworm
+  - bullseye
   - jammy
 trixie:
   image: debian:trixie
@@ -68,11 +67,6 @@ bullseye:
 jammy:
   image: ubuntu:jammy
   stage: jammy
-  script:
-    - molecule test
-focal:
-  image: ubuntu:focal
-  stage: focal
   script:
     - molecule test
 ...

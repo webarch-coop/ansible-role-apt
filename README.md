@@ -41,7 +41,7 @@ A optional list of `.deb` packages to be installed when `apt_apticron` is `true`
 
 ### apt_debian
 
-A list of debian files, versions and components, for example:
+A list of Debian files, versions and components, for example:
 
 ```yaml
 apt_debian:
@@ -60,7 +60,8 @@ apt_debian:
     domain: deb.debian.org
   - name: bullseye
     file: /etc/apt/sources.list
-    files_absent: []
+    files_absent:
+      - /etc/apt/sources.list.d/backports.list
     components:
       - main
       - contrib
@@ -167,28 +168,36 @@ A optional list of `.deb` packages that will be installed, by default `apt_pkgs`
   - needrestart
 ```
 
-### apt_src
+### apt_ubuntu
 
-A required boolean, set `apt_src` to `true` to enable apt source repos, it defaults to `false`.
-
-### apt_ubuntu_components
-
-A required list of Ubuntu components to be enabled, `apt_ubuntu_components` defaults to:
+A list of Ubuntu files, versions and components, for example:
 
 ```yaml
-- "main"
-- "multiverse"
-- "restricted"
-- "universe"
+
+apt_ubuntu:
+  - name: jammy
+    file: /etc/apt/sources.list
+    files_absent: []
+    components:
+      - main
+      - restricted
+      - universe
+      - multiverse
+    backports: true
+    src: false
+    domain: uk.archive.ubuntu.com
+  - name: focal
+    file: /etc/apt/sources.list
+    files_absent: []
+    components:
+      - main
+      - restricted
+      - universe
+      - multiverse
+    backports: true
+    src: false
+    domain: uk.archive.ubuntu.com
 ```
-
-### apt_ubuntu_country
-
-A required string for country code for the Ubuntu mirrors to use, `apt_ubuntu_country` defaults to `uk`.
-
-### apt_ubuntu_partner
-
-A required boolean, when `apt_ubuntu_partner` is `true` Ubuntu partner apt repos will be enabled, it defaults to `false`.
 
 ## Repository
 

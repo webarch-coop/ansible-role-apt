@@ -1,0 +1,27 @@
+# {{ ansible_managed }}
+
+# {{ ansible_distribution }} {{ apt_distro }} repos
+
+deb http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}/ {{ apt_distro }} {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% if apt_src %}
+deb-src http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}/ {{ apt_distro }} {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% endif %}
+
+deb http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}/ {{ apt_distro }}-updates {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% if apt_src %}
+deb-src http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}/ {{ apt_distro }}-updates {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% endif %}
+
+deb http://security.ubuntu.com/{{ ansible_distribution | lower }}/ {{ apt_distro }}-security {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% if apt_src %}
+deb-src http://security.ubuntu.com/{{ ansible_distribution | lower }}/ {{ apt_distro }}-security {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% endif %}
+
+{% if apt_backports %}
+deb http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}/ {{ apt_distro }}-backports {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% if apt_src %}
+deb-src http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}/ {{ apt_distro }}-backports {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+{% endif %}
+{% endif %}
+
+# vim: ft=debsources

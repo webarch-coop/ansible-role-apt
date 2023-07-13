@@ -84,47 +84,6 @@
         path: "{{ apt_signed_by }}"
       register: apt_signed_by_path
 
-    - name: "Debug stat {{ apt_signed_by }}"
-      ansible.builtin.debug:
-        var: apt_signed_by_path
-        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
-
-    - name: Debug
-      block:
-
-        - name: "List {{ apt_signed_by | dirname }}"
-          ansible.builtin.command: "ls -lah {{ apt_signed_by | dirname }}"
-          changed_when: false
-          register: apt_signed_by_dir_ls
-
-        - name: "Debug contents of {{ apt_signed_by | dirname }}"
-          ansible.builtin.debug:
-            var: apt_signed_by_dir_ls.stdout_lines
-
-        - name: Run dpkg -L debian-archive-keyring
-          ansible.builtin.command: dpkg -L debian-archive-keyring
-          changed_when: false
-          register: apt_dpkg_l
-          when: ansible_distribution == "Debian"
-
-        - name: Run dpkg -L ubuntu-keyring
-          ansible.builtin.command: dpkg -L ubuntu-keyring
-          changed_when: false
-          register: apt_dpkg_l
-          when: ansible_distribution == "Ubuntu"
-
-        - name: Debug the results of dpkg -L
-          ansible.builtin.debug:
-            var: apt_dpkg_l.stdout
-          when: apt_dpkg_l.stdout is defined
-
-        - name: Debug the results of dpkg -L
-          ansible.builtin.debug:
-            var: apt_dpkg_l.stdout_lines
-          when: apt_dpkg_l.stdout_lines is defined
-
-      when: not apt_signed_by_path.stat.exists | bool
-
     - name: The Signed-By GPG public keys ring needs to exist
       ansible.builtin.assert:
         that:
@@ -141,7 +100,7 @@
 
     - name: "Sources list file in place {{ apt_file }}"
       ansible.builtin.template:
-        src: list.j2
+        src: "{{ ansible_distribution | lower }}.list.j2"
         dest: /etc/apt/sources.list
         mode: "0644"
         owner: root

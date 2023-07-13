@@ -45,10 +45,10 @@ before_script:
   - git clone ${CI_PROJECT_URL}.git
   - cd ${CI_PROJECT_NAME}
 stages:
-  - jammy
   - trixie
   - bookworm
   - bullseye
+  - jammy
 trixie:
   image: debian:trixie
   stage: trixie

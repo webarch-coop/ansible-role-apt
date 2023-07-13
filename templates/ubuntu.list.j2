@@ -12,9 +12,9 @@ deb http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_dist
 deb-src http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }} {{ apt_distro }}-updates {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% endif %}
 
-deb http://security.ubuntu.com/{{ ansible_distribution | lower }}-security {{ apt_distro }}-security {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb http://security.ubuntu.com/{{ ansible_distribution | lower }} {{ apt_distro }}-security {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% if apt_src %}
-deb-src http://security.ubuntu.com/{{ ansible_distribution | lower }}-security {{ apt_distro }}-security {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+deb-src http://security.ubuntu.com/{{ ansible_distribution | lower }} {{ apt_distro }}-security {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 {% endif %}
 
 {% if apt_backports %}

@@ -20,7 +20,9 @@
 
     - name: Include verify variables tasks
       ansible.builtin.include_tasks: verify.yml
-      when: apt_verify | bool
+      when:
+        - apt_verify | bool
+        - ansible_version.full is version('2.11', '>=')
 
     - name: Include local facts tasks
       ansible.builtin.include_tasks: local_facts.yml

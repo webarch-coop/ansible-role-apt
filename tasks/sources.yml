@@ -81,7 +81,7 @@
 
     - name: Check that the signed-by file exists
       ansible.builtin.stat:
-        path: apt_signed_by
+        path: "{{ apt_signed_by }}"
       register: apt_signed_by_path
 
     - name: "Debug stat {{ apt_signed_by }}"
@@ -115,7 +115,13 @@
 
         - name: Debug the results of dpkg -L
           ansible.builtin.debug:
+            var: apt_dpkg_l.stdout
+          when: apt_dpkg_l.stdout is defined
+
+        - name: Debug the results of dpkg -L
+          ansible.builtin.debug:
             var: apt_dpkg_l.stdout_lines
+          when: apt_dpkg_l.stdout_lines is defined
 
       when: not apt_signed_by_path.stat.exists | bool
 

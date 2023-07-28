@@ -110,6 +110,10 @@ argument_specs:
             type: bool
             required: true
             description: Enable src repos.
+      apt_distro:
+        type: str
+        required: false
+        description: The Debian distro that the server should be configured for.
       apt_distro_switch:
         type: bool
         required: true

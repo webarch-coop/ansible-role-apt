@@ -12,10 +12,11 @@ variables:
   ANSIBLE_DIFF_ALWAYS: "1"
   ANSIBLE_DISPLAY_SKIPPED_HOSTS: "0"
   ANSIBLE_FORCE_COLOR: "1"
-  APT_ANSIBLE: "8.1.0"
-  APT_JC: "1.23.3"
+  APT_ANSIBLE: "8.7.0"
+  APT_ANSIBLE_CORE: "2.15.8"
+  APT_JC: "1.23.6"
   APT_JMESPATH: "1.0.1"
-  APT_MOLECULE: "5.1.0"
+  APT_MOLECULE: "6.0.3"
   DEBIAN_FRONTEND: noninteractive
   GIT_STRATEGY: none
   MOLECULE_VERBOSITY: "2"
@@ -36,7 +37,7 @@ before_script:
   - python3 --version
   - pipx --version
   - pipx install --include-deps molecule==${APT_MOLECULE}
-  - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} jc==${APT_JC} jmespath==${APT_JMESPATH}
+  - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} jc==${APT_JC} jmespath==${APT_JMESPATH}
   - ls -lah /usr/local/bin
   - which ansible-galaxy
   - ansible-galaxy --version

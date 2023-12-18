@@ -22,9 +22,13 @@ A required boolean, when `apt_apticron` is true packages listed in `apt_apticron
 
 A optional list of `.deb` packages to be installed when `apt_apticron` is `true`, by default `apt_apticron_pkgs` is a list containing one package name, `apticron`.
 
+### apt_distro
+
+An optional string for the distro, if this is not set then it is automatically set to `ansible_distribution_release`, if `apt_distro_switch` is `true` and the disto is set to the next version then the apt sources will be updated in preperation for a manual`update` and `dist-upgrade`.
+
 ### apt_distro_switch
 
-A required boolean, set `apt_distro_switch` to `true` when switching distro, eg Bullseye to Bookworm.
+A required boolean, set `apt_distro_switch` to `true` when switching distro, eg Bullseye to Bookworm, it will update apt sources list for the server when `apt_distro` is also set to the new version.
 
 ### apt_local_facts
 

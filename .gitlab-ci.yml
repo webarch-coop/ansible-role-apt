@@ -14,12 +14,12 @@ variables:
   ANSIBLE_FORCE_COLOR: "1"
   APT_ANSIBLE: "8.7.0"
   APT_ANSIBLE_CORE: "2.15.8"
-  APT_JC: "1.23.6"
+  APT_JC: "1.24.0"
   APT_JMESPATH: "1.0.1"
   APT_MOLECULE: "6.0.3"
   DEBIAN_FRONTEND: noninteractive
   GIT_STRATEGY: none
-  MOLECULE_VERBOSITY: "2"
+  MOLECULE_VERBOSITY: "1"
   PIPX_BIN_DIR: "/usr/local/bin"
   PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"
@@ -30,6 +30,7 @@ before_script:
   - source ~/.profile
   - whoami
   - pwd
+  - chmod 700 $(pwd)
   - DEBIAN_FRONTEND=noninteractive apt-get update -qq
   - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -qqy
   - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
@@ -44,6 +45,7 @@ before_script:
   - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
   - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
   - git clone ${CI_PROJECT_URL}.git
+  - chmod 700 ${CI_PROJECT_NAME}
   - cd ${CI_PROJECT_NAME}
 stages:
   - trixie

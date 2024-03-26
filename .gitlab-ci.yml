@@ -52,6 +52,7 @@ stages:
   - bookworm
   - bullseye
   - jammy
+  - noble
 trixie:
   image: debian:trixie
   stage: trixie
@@ -70,6 +71,11 @@ bullseye:
 jammy:
   image: ubuntu:jammy
   stage: jammy
+  script:
+    - molecule test
+noble:
+  image: ubuntu:noble
+  stage: noble
   script:
     - molecule test
 ...

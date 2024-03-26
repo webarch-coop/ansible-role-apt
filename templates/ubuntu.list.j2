@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+# {# j2lint: disable=single-statement-per-line #}{{ ansible_managed }}
 
 # {{ ansible_distribution }} {{ apt_distro }} repos
 
@@ -19,9 +19,9 @@ deb-src http://security.ubuntu.com/{{ ansible_distribution | lower }}/ {{ apt_di
 
 {% if apt_backports %}
 deb http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}/ {{ apt_distro }}-backports {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
-{% if apt_src %}
+{%     if apt_src %}
 deb-src http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}/ {{ apt_distro }}-backports {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
-{% endif %}
+{%     endif %}
 {% endif %}
 
 # vim: ft=debsources

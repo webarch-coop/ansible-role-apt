@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+# {# j2lint: disable=single-statement-per-line #}{{ ansible_managed }}
 
 # {{ ansible_distribution }} {{ apt_distro }} repos
 
@@ -42,7 +42,7 @@ Suites: {{ apt_distro }}-backports
 Components: {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
 Signed-By: {{ apt_signed_by }}
-{% if apt_src %}
+{%     if apt_src %}
 
 Types: deb-src
 URIs: http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}
@@ -50,7 +50,7 @@ Suites: {{ apt_distro }}-backports
 Components: {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
 
 Signed-By: {{ apt_signed_by }}
-{% endif %}
+{%     endif %}
 {% endif %}
 
 # vim: ft=debsources

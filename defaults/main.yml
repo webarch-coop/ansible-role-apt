@@ -126,20 +126,7 @@ apt_sources:
     https: false
     signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
   - name: noble
-    file: /etc/apt/sources.list
-    files_absent: []
-    components:
-      - main
-      - restricted
-      - universe
-      - multiverse
-    backports: true
-    src: false
-    domain: uk.archive.ubuntu.com
-    https: false
-    signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-  - name: focal
-    file: /etc/apt/sources.list
+    file: /etc/apt/sources.list.d/ubuntu.sources
     files_absent: []
     components:
       - main

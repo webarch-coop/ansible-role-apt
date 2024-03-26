@@ -127,7 +127,8 @@ apt_sources:
     signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
   - name: noble
     file: /etc/apt/sources.list.d/ubuntu.sources
-    files_absent: []
+    files_absent:
+      - /etc/apt/sources.list
     components:
       - main
       - restricted

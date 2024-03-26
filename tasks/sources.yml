@@ -98,15 +98,15 @@
         owner: root
         group: root
 
-    - name: "Sources list file in place {{ apt_file }}"
-      ansible.builtin.template:
-        src: "{{ ansible_distribution | lower }}.list.j2"
-        dest: /etc/apt/sources.list
-        mode: "0644"
-        owner: root
-        group: root
-        backup: true
-      when: apt_file == "/etc/apt/sources.list"
+    # - name: "Sources list file in place {{ apt_file }}"
+    #   ansible.builtin.template:
+    #     src: "{{ ansible_distribution | lower }}.list.j2"
+    #     dest: /etc/apt/sources.list
+    #     mode: "0644"
+    #     owner: root
+    #     group: root
+    #     backup: true
+    #   when: apt_file == "/etc/apt/sources.list"
 
     - name: "Sources file in place for {{ ansible_distribution }}"
       ansible.builtin.deb822_repository:
@@ -126,6 +126,11 @@
           - restricted
           - universe
         signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+    - name: Include slurp and print file tasks
+      ansible.builtin.include_tasks: check_file.yml
+      vars:
+        apt_file: "/etc/apt/sources.list.d/{{ ansible_distribution | lower }}.sources"
 
     # - name: "Sources file in place {{ apt_file }}"
     #   ansible.builtin.template:

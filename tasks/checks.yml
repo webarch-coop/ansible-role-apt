@@ -1,4 +1,4 @@
-# Copyright 2019-2023 Chris Croome
+# Copyright 2019-2024 Chris Croome
 #
 # This file is part of the Webarchitects apt Ansible role.
 #
@@ -25,7 +25,7 @@
       ansible.builtin.assert:
         that:
           - ansible_distribution is regex('^Debian|Ubuntu$')
-          - ansible_distribution_release is regex('^buster|bullseye|bookworm|trixie|focal|jammy$')
+          - ansible_distribution_release in (apt_sources | community.general.json_query('[].name'))
         quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
     - name: Print apt_distro

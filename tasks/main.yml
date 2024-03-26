@@ -37,9 +37,12 @@
     - name: Include checks
       ansible.builtin.include_tasks: checks.yml
 
-    - name: Package python3-apt present
+    - name: Package python3-apt and python3-debian present
       ansible.builtin.apt:
-        pkg: python3-apt
+        pkg:
+          - python3-apt
+          - python3-debian
+        update_cache: true
 
     - name: Debian packages present
       ansible.builtin.apt:

@@ -108,17 +108,36 @@
         backup: true
       when: apt_file == "/etc/apt/sources.list"
 
-    - name: "Sources file in place {{ apt_file }}"
-      ansible.builtin.template:
-        src: sources.j2
-        dest: "{{ apt_file }}"
-        mode: "0644"
-        owner: root
-        group: root
-        backup: true
-      vars:
-        apt_file_dest: "/etc/apt/sources.list.d/{{ ansible_distribution | lower }}.sources"
-      when: apt_file == apt_file_dest
+    - name: "Sources file in place for {{ ansible_distribution }}"
+      ansible.builtin.deb822_repository:
+        name: "{{ ansible_distribution | lower }}"
+        types: deb
+        uris:
+          - http://archive.ubuntu.com/ubuntu/
+          - http://security.ubuntu.com/ubuntu/
+        suites:
+          - noble
+          - noble-backports
+          - noble-security
+          - noble-updates
+        components:
+          - main
+          - multiverse
+          - restricted
+          - universe
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+    # - name: "Sources file in place {{ apt_file }}"
+    #   ansible.builtin.template:
+    #     src: sources.j2
+    #     dest: "{{ apt_file }}"
+    #     mode: "0644"
+    #     owner: root
+    #     group: root
+    #     backup: true
+    #   vars:
+    #     apt_file_dest: "/etc/apt/sources.list.d/{{ ansible_distribution | lower }}.sources"
+    #   when: apt_file == apt_file_dest
 
     - name: Include files absent tasks
       ansible.builtin.include_tasks: file_absent.yml

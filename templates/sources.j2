@@ -5,7 +5,7 @@
 Types: deb
 URIs: http{% if apt_https | bool %}s{% endif %}://{{ apt_domain }}/{{ ansible_distribution | lower }}
 Suites: {{ apt_distro }} {{ apt_distro }}-updates
-Components: {% for apt_comp in apt_components %}{{ apt_comp }}{% if not loop.last %} {% endif %}{% endfor %}
+Components: {{ apt_comp | join(' ') }}
 
 Signed-By: {{ apt_signed_by }}
 {% if apt_src %}

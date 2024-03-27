@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+{% for apt_repo in apt_list.repos %}
+{{ apt_repo }}
+{% endfor %}
+
+# vim: ft=debsources

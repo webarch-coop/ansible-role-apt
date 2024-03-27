@@ -62,6 +62,88 @@
         apt_distro: "{{ ansible_distribution_release }}"
       when: apt_distro is not defined
 
+    - name: The apt_default_config, apt_lists and apt_sources variables should not be set for hosts
+      ansible.builtin.assert:
+        that:
+          - hostvars[inventory_hostname].apt_default_config is not defined
+          - hostvars[inventory_hostname].apt_lists is not defined
+          - hostvars[inventory_hostname].apt_sources is not defined
+        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+        fail_msg: "The internal variables apt_default_config, apt_lists and apt_sources should nto be set at a host level, use apt_config."
+
+    - name: Set a fact for the combined apt config when apt_config is not defined
+      ansible.builtin.set_fact:
+        apt_combined_config: "{{ apt_default_config }}"
+      when: apt_config is not defined
+
+    - name: Set a fact for the combined apt config when apt_config is defined
+      ansible.builtin.set_fact:
+        apt_combined_config: "{{ apt_config | ansible.builtin.combine(apt_default_config, recursive=true) }}"
+      when: apt_config is defined
+
+    - name: Print apt_combined_config
+      ansible.builtin.debug:
+        var: apt_combined_config
+        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
+
+    - name: Set a fact for the apt lists and sources config based on the apt_distro
+      ansible.builtin.set_fact:
+        apt_lists: "{{ apt_combined_config | community.general.json_query(apt_lists_json_query) }}"
+        apt_sources: "{{ apt_combined_config | community.general.json_query(apt_sources_json_query) }}"
+      vars:
+        apt_lists_json_query: "[?name=='{{ apt_distro }}'].lists|[0]"
+        apt_sources_json_query: "[?name=='{{ apt_distro }}'].sources|[0]"
+
+    - name: Print apt_lists
+      ansible.builtin.debug:
+        var: apt_lists
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: Print apt_sources
+      ansible.builtin.debug:
+        var: apt_sources
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: Check apt source variables
+      ansible.builtin.assert:
+        that:
+          - apt_source.types is defined
+          - apt_source.uris is defined
+          - apt_source.suites is defined
+          - apt_source.components is defined
+          - apt_source.signed_by is defined
+        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+      loop: "{{ apt_sources }}"
+      loop_control:
+        loop_var: apt_source
+      when:
+        - apt_sources is defined
+        - apt_sources != []
+        - apt_source.state is defined
+        - apt_source.state == "present"
+
+# WIP
+#    - name: Check keyrings
+#      when:
+#        - apt_sources is defined
+#        - apt_sources != []
+#        - apt_source | community.general.json_query('[].signed_by')
+
+    - name: Check the apt list variables
+      ansible.builtin.assert:
+        that:
+          - apt_list.path is ansible.builtin.regex('^[/]etc[/]apt[/]')
+          - apt_list.path is ansible.builtin.regex('[.]list$')
+        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+      loop: "{{ apt_lists }}"
+      loop_control:
+        loop_var: apt_list
+      when:
+        - apt_lists is defined
+        - apt_lists != []
+        - apt_list.state is defined
+        - apt_list.state == "present"
+
     - name: Stat /etc/apt/sources.list
       ansible.builtin.stat:
         path: "/etc/apt/sources.list"

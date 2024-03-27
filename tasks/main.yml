@@ -54,8 +54,8 @@
         pkg: ubuntu-keyring
       when: ansible_distribution == "Ubuntu"
 
-    - name: Include sources config tasks
-      ansible.builtin.include_tasks: sources.yml
+    - name: Include apt config tasks
+      ansible.builtin.include_tasks: config.yml
 
     - name: Update the cache when switching distros
       ansible.builtin.apt:

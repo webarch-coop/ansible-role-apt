@@ -11,16 +11,24 @@
 - name: File absent
   block:
 
+    - name: Debug apt_file_absent
+      ansible.builtin.debug:
+        var: apt_file_absent
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
     - name: "Stat {{ apt_file_absent }}"
       ansible.builtin.stat:
         path: "{{ apt_file_absent }}"
       register: apt_file_absent_path
 
     - name: "File absent {{ apt_file_absent }}"
-      ansible.builtin.command: >-
-        mv
-        {{ apt_file_absent }}
-        {{ apt_file_absent | ansible.builtin.dirname }}/.{{ apt_file_absent | basename }}.{{ ansible_date_time.iso8601_basic_short }}.ansible.save
-      changed_when: true
+      ansible.builtin.command:
+        cmd: >-
+          mv
+          {{ apt_file_absent }}
+          {{ apt_file_absent | ansible.builtin.dirname }}/.{{ apt_file_absent | ansible.builtin.basename }}.{{ ansible_date_time.iso8601_basic_short }}.ansible.save
+      args:
+        creates: "{{ apt_file_absent | ansible.builtin.dirname }}/.{{ apt_file_absent | ansible.builtin.basename }}.{{ ansible_date_time.iso8601_basic_short }}.ansible.save"
+        removes: "{{ apt_file_absent }}"
       when: apt_file_absent_path.stat.exists | bool
 ...

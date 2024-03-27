@@ -15,4 +15,204 @@ apthostvars: "{{ dict(aptvarnames | list | zip(q('vars', *aptvarnames))) }}"
 apt_local_facts_absent: "{{ apt_local_facts_files | community.general.json_query('[?state==`absent`].name') }}"
 apt_local_facts_present: "{{ apt_local_facts_files | community.general.json_query('[?state==`present`].name') }}"
 apt_local_facts_names_present: "{{ apt_local_facts_files | community.general.json_query('[?state==`present`].name') | map('regex_replace', '[.]fact$') }}"
+
+apt_default_config:
+  - name: noble
+    lists:
+      - path: /etc/apt/sources.list
+        state: absent
+    sources:
+      - name: ubuntu
+        state: present
+        types: deb
+        uris:
+          - http://archive.ubuntu.com/ubuntu/
+        suites:
+          - noble
+          - noble-backports
+          - noble-updates
+        components:
+          - main
+          - multiverse
+          - restricted
+          - universe
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+      - name: ubuntu-security
+        state: present
+        types: deb
+        uris:
+          - http://security.ubuntu.com/ubuntu/
+        suites:
+          - noble-security
+        components:
+          - main
+          - multiverse
+          - restricted
+          - universe
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+  - name: jammy
+    lists:
+      - path: /etc/apt/sources.list
+        state: absent
+    sources:
+      - name: ubuntu
+        state: present
+        types: deb
+        uris:
+          - http://archive.ubuntu.com/ubuntu/
+        suites:
+          - jammy
+          - jammy-backports
+          - jammy-updates
+        components:
+          - main
+          - multiverse
+          - restricted
+          - universe
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+      - name: ubuntu-security
+        state: present
+        types: deb
+        uris:
+          - http://security.ubuntu.com/ubuntu/
+        suites:
+          - jammy-security
+        components:
+          - main
+          - multiverse
+          - restricted
+          - universe
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+  - name: trixie
+    lists:
+      - path: /etc/apt/sources.list
+        state: absent
+    sources:
+      - name: debian
+        state: present
+        types: deb
+        uris:
+          - http://deb.debian.org/debian
+        suites:
+          - trixie
+        components:
+          - contrib
+          - main
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-backports
+        state: present
+        types: deb
+        uris:
+          - http://deb.debian.org/debian
+        suites:
+          - trixie-backports
+        components:
+          - contrib
+          - main
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-security
+        state: present
+        types: deb
+        uris:
+          - https://security.debian.org/debian-security
+        suites:
+          - trixie-security
+        components:
+          - contrib
+          - main
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-updates
+        state: present
+        types: deb
+        uris:
+          - http://deb.debian.org/debian
+        suites:
+          - trixie-updates
+        components:
+          - contrib
+          - main
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+  - name: bookworm
+    lists:
+      - path: /etc/apt/sources.list
+        state: absent
+    sources:
+      - name: debian
+        state: present
+        types: deb
+        uris:
+          - http://deb.debian.org/debian
+        suites:
+          - bookworm
+        components:
+          - contrib
+          - main
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-backports
+        state: present
+        types: deb
+        uris:
+          - http://deb.debian.org/debian
+        suites:
+          - bookworm-backports
+        components:
+          - contrib
+          - main
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-security
+        state: present
+        types: deb
+        uris:
+          - https://security.debian.org/debian-security
+        suites:
+          - bookworm-security
+        components:
+          - contrib
+          - main
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-updates
+        state: present
+        types: deb
+        uris:
+          - http://deb.debian.org/debian
+        suites:
+          - bookworm-updates
+        components:
+          - contrib
+          - main
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+  - name: bullseye
+    lists:
+      - path: /etc/apt/sources.list
+        state: present
+        repos:
+          - deb https://deb.debian.org/debian bullseye main contrib non-free
+          - deb https://deb.debian.org/debian bullseye-updates main contrib non-free
+          - deb https://security.debian.org/debian-security bullseye-security main contrib non-free
+          - deb https://deb.debian.org/debian bullseye-backports main contrib non-free
+  - name: buster
+    lists:
+      - path: /etc/apt/sources.list
+        state: present
+        repos:
+          - deb https://deb.debian.org/debian buster main contrib non-free
+          - deb https://deb.debian.org/debian buster-updates main contrib non-free
+          - deb https://deb.debian.org/debian-security buster/updates main contrib non-free
+          - deb https://deb.debian.org/debian buster-backports main contrib non-free
 ...

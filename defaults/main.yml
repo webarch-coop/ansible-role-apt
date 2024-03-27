@@ -16,35 +16,6 @@ apt_distro_switch: false
 apt_apticron: false
 apt_apticron_pkgs:
   - apticron
-apt_distro_sources:
-  - name: noble
-    sources:
-      - name: noble
-        types: deb
-        uris:
-          - http://archive.ubuntu.com/ubuntu/
-        suites:
-          - noble
-          - noble-backports
-          - noble-updates
-        components:
-          - main
-          - multiverse
-          - restricted
-          - universe
-        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-      - name: noble-security
-        types: deb
-        uris:
-          - http://security.ubuntu.com/ubuntu/
-        suites:
-          - noble-security
-        components:
-          - main
-          - multiverse
-          - restricted
-          - universe
-        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 # Install local fact scripts
 apt_local_facts: true
 # Local fact scripts

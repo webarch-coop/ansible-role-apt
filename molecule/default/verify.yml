@@ -72,7 +72,7 @@
       ansible.builtin.slurp:
         path: "{{ molecule_apt_sources_list_d_path }}"
       register: molecule_apt_sources_list_d_b64encoded
-      loop: "{{ molecule_apt_sources_list_d_paths }}"
+      loop: "{{ molecule_apt_sources_list_d_paths | default([]) }}"
       loop_control:
         loop_var: molecule_apt_sources_list_d_path
         label: "{{ molecule_apt_sources_list_d_path | ansible.builtin.basename }}"
@@ -84,7 +84,7 @@
     - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
       ansible.builtin.debug:
         msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode }}"
-      loop: "{{ molecule_apt_sources_list_d_path.results | community.general.json_query('[].content') }}"
+      loop: "{{ molecule_apt_sources_list_d_path.results | community.general.json_query('[].content') | default([]) }}"
       loop_control:
         extended: true
         loop_var: molecule_apt_sources_list_d_b64

@@ -123,41 +123,59 @@ A optional list of `.deb` packages that will be installed, by default `apt_pkgs`
   - needrestart
 ```
 
-### apt_sources
+### apt_config
 
-The main configuration list for the sources, for example:
+The main configuration list for `.list` files and also `.sources` file, the writing of the `.sources` files use the [ansible.builtin.deb822_repository module](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/deb822_repository_module.html), this is combined with the `apt_default_config` so you only need to list values that you want to differ, for example:
 
 ```yaml
-
-apt_sources:
-  - name: bookworm
-    file: /etc/apt/sources.list.d/debian.sources
-    files_absent:
-      - /etc/apt/sources.list
-      - /etc/apt/sources.list.d/backports.list
-    components:
-      - main
-      - contrib
-      - non-free
-      - non-free-firmware
-    backports: true
-    src: false
-    domain: deb.debian.org
-    https: true
-    signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+apt_config:
+  - name: noble
+    lists:
+      - path: /etc/apt/sources.list
+        state: absent
+    sources:
+      - name: ubuntu
+        state: present
+        types: deb
+        uris:
+          - http://archive.ubuntu.com/ubuntu/
+        suites:
+          - noble
+          - noble-backports
+          - noble-updates
+        components:
+          - main
+          - multiverse
+          - restricted
+          - universe
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+      - name: ubuntu-security
+        state: present
+        types: deb
+        uris:
+          - http://security.ubuntu.com/ubuntu/
+        suites:
+          - noble-security
+        components:
+          - main
+          - multiverse
+          - restricted
+          - universe
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
   - name: jammy
-    file: /etc/apt/sources.list
-    files_absent: []
-    components:
-      - main
-      - restricted
-      - universe
-      - multiverse
-    backports: true
-    src: false
-    domain: uk.archive.ubuntu.com
-    https: false
-    signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+    lists:
+      - path: /etc/apt/sources.list
+        state: present
+        repos:
+          - deb http://mirror.hetzner.de/ubuntu/packages/ jammy main restricted
+          - deb http://mirror.hetzner.de/ubuntu/packages/ jammy-updates main restricted
+          - deb http://mirror.hetzner.de/ubuntu/packages/ jammy universe
+          - deb http://mirror.hetzner.de/ubuntu/packages/ jammy-updates universe
+          - deb http://mirror.hetzner.de/ubuntu/packages/ jammy multiverse
+          - deb http://mirror.hetzner.de/ubuntu/packages/ jammy-updates multiverse
+          - deb http://security.ubuntu.com/ubuntu jammy-security main restricted
+          - deb http://security.ubuntu.com/ubuntu jammy-security universe
+          - deb http://security.ubuntu.com/ubuntu jammy-security multiverse
 ```
 
 ## Usage

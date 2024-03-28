@@ -73,7 +73,6 @@
             loop_var: molecule_apt_sources_list_d_path
             label: "{{ molecule_apt_sources_list_d_path | ansible.builtin.basename }}"
           register: molecule_apt_sources_list_d_b64encoded
-          failed_when: false
 
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
@@ -84,6 +83,12 @@
             loop_var: molecule_apt_sources_list_d_b64
             label: "{{ ansible_loop.index }}"
           when: molecule_apt_sources_list_d_path.results is defined
+
+      rescue:
+
+        - name: This failure is probably safe to ignore
+          ansible.builtin.debug:
+            msg: If the failure was caused by the list of files paths being empty it is safe to ignore it.
 
       when:
         - molecule_apt_sources_list_d_paths is defined

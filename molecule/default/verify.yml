@@ -56,7 +56,7 @@
 
     - name: Set a fact for the paths of all the files in /etc/apt/sources.list.d
       ansible.builtin.set_fact:
-        molecule_apt_sources_list_d_paths: "{{ molecule_apt_sources_list_d.files | community.general.json_query('[].path') }}"
+        molecule_apt_sources_list_d_paths: "{{ molecule_apt_sources_list_d.files | community.general.json_query('[].path') | default([]) }}"
 
     - name: Debug the paths of all files in /etc/apt/sources.list.d
       ansible.builtin.debug:
@@ -68,20 +68,22 @@
         - name: Slurp all the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.slurp:
             path: "{{ molecule_apt_sources_list_d_path }}"
-          register: molecule_apt_sources_list_d_b64encoded
-          loop: "{{ molecule_apt_sources_list_d_paths }}"
+          loop: "{{ molecule_apt_sources_list_d_paths | list }}"
           loop_control:
             loop_var: molecule_apt_sources_list_d_path
             label: "{{ molecule_apt_sources_list_d_path | ansible.builtin.basename }}"
+          register: molecule_apt_sources_list_d_b64encoded
+          failed_when: false
 
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
             msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode }}"
-          loop: "{{ molecule_apt_sources_list_d_path.results | community.general.json_query('[].content') }}"
+          loop: "{{ molecule_apt_sources_list_d_path.results | community.general.json_query('[].content') | list }}"
           loop_control:
             extended: true
             loop_var: molecule_apt_sources_list_d_b64
             label: "{{ ansible_loop.index }}"
+          when: molecule_apt_sources_list_d_path.results is defined
 
       when:
         - molecule_apt_sources_list_d_paths is defined

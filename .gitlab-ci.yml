@@ -21,7 +21,7 @@ variables:
   APT_PYTHON_DEBIAN: "0.1.49"
   DEBIAN_FRONTEND: noninteractive
   GIT_STRATEGY: none
-  MOLECULE_VERBOSITY: "1"
+  MOLECULE_VERBOSITY: "0"
   PIPX_BIN_DIR: "/usr/local/bin"
   PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"

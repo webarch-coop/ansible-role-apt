@@ -141,6 +141,7 @@
       loop: "{{ apt_lists }}"
       loop_control:
         loop_var: apt_list
+        label: "{{ apt_list.path | ansible.builtin.basename }}"
       when:
         - apt_list.state is defined
         - apt_list.state == "present"

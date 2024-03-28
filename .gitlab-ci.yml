@@ -46,7 +46,7 @@ trixie:
     - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -qqy
     - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
     # Debian Trixie doesn't currently contain the ansible package
-    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible-core git pipx python3-apt python3-debian python3-pip python3-venv
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible-core file git pipx python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
@@ -75,7 +75,7 @@ bookworm:
     - DEBIAN_FRONTEND=noninteractive apt-get update -qq
     - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -qqy
     - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
-    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible git pipx python3-apt python3-debian python3-pip python3-venv
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pipx python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
@@ -104,7 +104,7 @@ bullseye:
     - DEBIAN_FRONTEND=noninteractive apt-get update -qq
     - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -qqy
     - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
-    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible git pipx python3-apt python3-debian python3-pip python3-venv
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pipx python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
@@ -133,7 +133,7 @@ jammy:
     - DEBIAN_FRONTEND=noninteractive apt-get update -qq
     - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -qqy
     - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
-    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible git pipx python3-apt python3-debian python3-pip python3-venv
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pipx python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
@@ -162,7 +162,7 @@ noble:
     - DEBIAN_FRONTEND=noninteractive apt-get update -qq
     - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -qqy
     - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
-    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible git pipx python3-apt python3-debian python3-pip python3-venv
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pipx python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}

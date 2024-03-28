@@ -62,6 +62,11 @@
       ansible.builtin.debug:
         var: molecule_apt_sources_list_d_paths
 
+    - name: Warn that the next job will fail
+      ansible.builtin.debug:
+        msg: The next job will fail with 'NoneType' object is not iterable. this is safe to ignore.
+      when: molecule_apt_sources_list_d_paths == []
+
     - name: Slurp and print .list and .sources files in /etc/apt/sources.list.d
       block:
 

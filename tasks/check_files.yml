@@ -1,0 +1,56 @@
+# Copyright 2019-2024 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+- name: Apt .list and .sources file checks
+  block:
+
+    - name: Stat /etc/apt/sources.list
+      ansible.builtin.stat:
+        path: "/etc/apt/sources.list"
+      register: apt_sources_list
+
+    - name: Include slurp and debug tasks for /etc/apt/sources.list
+      ansible.builtin.include_tasks: check_file.yml
+      vars:
+        apt_file: /etc/apt/sources.list
+      when:
+        - ( ansible_check_mode | bool ) or ( ansible_verbosity >= 1 )
+        - apt_sources_list.stat.exists | bool
+
+    - name: Find all files in /etc/apt/sources.list.d that end in .list or .sources
+      ansible.builtin.find:
+        paths: /etc/apt/sources.list.d
+        recurse: false
+        patterns:
+          - '*.list'
+          - '*.sources'
+      register: apt_sources_list_d
+
+    - name: Set a fact for the paths of all the .list and .sources files in /etc/apt/sources.list.d
+      ansible.builtin.set_fact:
+        apt_sources_list_d_paths: "{{ apt_sources_list_d.files | community.general.json_query('[].path') }}"
+
+    - name: Debug the paths of all the .list and .sources files in /etc/apt/sources.list.d
+      ansible.builtin.debug:
+        var: apt_sources_list_d_paths
+
+    - name: Include slurp and debug tasks for the .list and .sources files found in /etc/apt/sources.list.d
+      ansible.builtin.include_tasks: check_file.yml
+      loop: "{{ apt_sources_list_d_paths }}"
+      loop_control:
+        loop_var: apt_file
+        label: "{{ apt_file | ansible.builtin.basename }}"
+      when:
+        - ( ansible_check_mode | bool ) or ( ansible_verbosity >= 1 )
+        - apt_sources_list_d_paths != []
+
+  tags:
+    - apt
+...

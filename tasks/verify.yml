@@ -21,9 +21,18 @@
         var: apthostvars
         verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
 
-    - name: Check apt_ variables using meta/argument_specs.yml
+    - name: Set a fact for the argument spec and internal argument spec
+      ansible.builtin.set_fact:
+        apt_argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yml') | from_yaml) }}"
+        apt_internal_argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/internal_argument_specs.yml') | from_yaml) }}"
+
+    - name: Set a fact for the combined argument spec and internal argument spec
+      ansible.builtin.set_fact:
+        apt_combined_argument_spec: "{{ apt_argument_spec | ansible.builtin.combine(apt_internal_argument_spec, recursive=true) }}"
+
+    - name: Check apt_ variables using the combined argument spec
       ansible.builtin.validate_argument_spec:
-        argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yml') | from_yaml)['argument_specs']['main']['options'] }}"
+        argument_spec: "{{ apt_combined_argument_spec['argument_specs']['main']['options'] }}"
         provided_arguments: "{{ apthostvars }}"
 
   when: apt_verify | bool

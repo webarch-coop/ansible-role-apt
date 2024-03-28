@@ -58,88 +58,6 @@ argument_specs:
         required: false
         description: A list of .deb packages to be installed when apt_apticron is true.
         elements: str
-      apt_combined_config:
-        type: list
-        required: false
-        description: The combination of the apt_config and the apt_default_config.
-        options:
-          lists:
-            type: list
-            required: false
-            description: Default apt lists config.
-            options:
-              path:
-                type: str
-                required: true
-                description: The apt list file path.
-              state:
-                type: str
-                required: true
-                description: The apt list file state.
-                choices:
-                  - absent
-                  - present
-          name:
-            type: str
-            required: true
-            description: The name of the Debian / Ubuntu LTS distro.
-            choices:
-              - bionic
-              - bookworm
-              - bullseye
-              - buster
-              - focal
-              - forky
-              - jammy
-              - jessie
-              - noble
-              - squeeze
-              - stretch
-              - trixie
-              - trusty
-              - wheezy
-              - xenial
-          sources:
-            type: list
-            required: false
-            description: A list of apt sources for the deb822_repository module.
-            options:
-              name:
-                type: str
-                required: true
-                description: Name of the repo. Specifically used for X-Repolib-Name and in naming the repository and signing key files.
-              state:
-                type: str
-                required: true
-                description: The apt list file state.
-                choices:
-                  - absent
-                  - present
-              types:
-                type: str
-                required: false
-                description: Which types of packages to look for from a given source; either binary deb or source code deb-src.
-                choices:
-                  - deb
-                  - deb-src
-              uris:
-                type: list
-                elements: str
-                required: false
-                description: The URIs must specify the base of the Debian distribution archive, from which APT finds the information it needs.
-              suites:
-                type: list
-                required: false
-                description: "Suite can specify an exact path in relation to the URI(s) provided, in which case the Components: must be omitted and suite must end with a slash (/). Alternatively, it may take the form of a distribution version (e.g. a version codename like disco or artful). If the suite does not specify a path, at least one component must be present."
-              components:
-                type: list
-                elements: str
-                required: false
-                description: Components specify different sections of one distribution version present in a Suite.
-              signed_by:
-                type: str
-                required: false
-                description: Either a URL to a GPG key, absolute path to a keyring file, one or more fingerprints of keys either in the trusted.gpg keyring or in the keyrings in the trusted.gpg.d/ directory, or an ASCII armored GPG public key block.
       apt_config:
         type: list
         required: false
@@ -222,140 +140,6 @@ argument_specs:
                 type: str
                 required: false
                 description: Either a URL to a GPG key, absolute path to a keyring file, one or more fingerprints of keys either in the trusted.gpg keyring or in the keyrings in the trusted.gpg.d/ directory, or an ASCII armored GPG public key block.
-      apt_default_config:
-        type: list
-        required: true
-        description: Default apt config for all supported distros.
-        options:
-          lists:
-            type: list
-            required: false
-            description: Default apt lists config.
-            options:
-              path:
-                type: str
-                required: true
-                description: The apt list file path.
-              state:
-                type: str
-                required: true
-                description: The apt list file state.
-                choices:
-                  - absent
-                  - present
-          name:
-            type: str
-            required: true
-            description: The name of the Debian / Ubuntu LTS distro.
-            choices:
-              - bionic
-              - bookworm
-              - bullseye
-              - buster
-              - focal
-              - forky
-              - jammy
-              - jessie
-              - noble
-              - squeeze
-              - stretch
-              - trixie
-              - trusty
-              - wheezy
-              - xenial
-          sources:
-            type: list
-            required: false
-            description: A list of apt sources for the deb822_repository module.
-            options:
-              name:
-                type: str
-                required: true
-                description: Name of the repo. Specifically used for X-Repolib-Name and in naming the repository and signing key files.
-              state:
-                type: str
-                required: true
-                description: The apt list file state.
-                choices:
-                  - absent
-                  - present
-              types:
-                type: str
-                required: false
-                description: Which types of packages to look for from a given source; either binary deb or source code deb-src.
-                choices:
-                  - deb
-                  - deb-src
-              uris:
-                type: list
-                elements: str
-                required: false
-                description: The URIs must specify the base of the Debian distribution archive, from which APT finds the information it needs.
-              suites:
-                type: list
-                required: false
-                description: "Suite can specify an exact path in relation to the URI(s) provided, in which case the Components: must be omitted and suite must end with a slash (/). Alternatively, it may take the form of a distribution version (e.g. a version codename like disco or artful). If the suite does not specify a path, at least one component must be present."
-              components:
-                type: list
-                elements: str
-                required: false
-                description: Components specify different sections of one distribution version present in a Suite.
-              signed_by:
-                type: str
-                required: false
-                description: Either a URL to a GPG key, absolute path to a keyring file, one or more fingerprints of keys either in the trusted.gpg keyring or in the keyrings in the trusted.gpg.d/ directory, or an ASCII armored GPG public key block.
-      apt_sources:
-        type: list
-        elements: dict
-        required: true
-        description: A list of versions and components.
-        options:
-          backports:
-            type: bool
-            required: true
-            description: Enable backports repo.
-          components:
-            type: list
-            elements: str
-            required: true
-            description: A list of components.
-            choices:
-              - contrib
-              - main
-              - multiverse
-              - non-free
-              - non-free-firmware
-              - restricted
-              - universe
-          domain:
-            type: str
-            required: true
-            description: The repo domain name.
-          file:
-            type: str
-            required: true
-            description: Path to the apt list or sources file.
-          files_absent:
-            type: list
-            elements: str
-            required: false
-            description: A list of files that should be absent.
-          https:
-            type: bool
-            required: true
-            description: Enable HTTPS for repo URLS.
-          name:
-            type: str
-            required: true
-            description: The distro version name.
-          signed_by:
-            type: str
-            required: true
-            description: A file system path to the repo signing keys file.
-          src:
-            type: bool
-            required: true
-            description: Enable src repos.
       apt_distro:
         type: str
         required: false
@@ -370,41 +154,14 @@ argument_specs:
         description: Run the local fact tasks.
       apt_local_facts_absent:
         type: list
+        required: false
+        description: A local fact scripts that should be absent.
         elements: str
-        required: false
-        description: An internal list of local fact files that should be absent.
-      apt_local_facts_files:
-        type: list
-        required: false
-        description: A list of local fact files and their state.
-        elements: dict
-        options:
-          name:
-            type: str
-            required: true
-            description: The local fact file name.
-          state:
-            type: str
-            required: true
-            description: The local fact state.
-            choices:
-              - "absent"
-              - "present"
-      apt_local_facts_names_present:
-        type: list
-        elements: str
-        required: false
-        description: An internal list of local fact file names.
       apt_local_facts_pkgs:
         type: list
         required: false
         description: A list of .deb packages that are required by the local fact scripts.
         elements: str
-      apt_local_facts_present:
-        type: list
-        elements: str
-        required: false
-        description: An internal list of local fact files that should be present.
       apt_pkgs:
         type: list
         required: false

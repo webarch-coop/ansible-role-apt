@@ -28,89 +28,24 @@
         group: root
         backup: true
 
-    - name: "List files in place for {{ ansible_distribution }}"
-      ansible.builtin.template:
-        src: sources.list.j2
-        dest: "{{ apt_list.path }}"
-        mode: "0644"
-        owner: root
-        group: root
-        backup: true
-      vars:
-        apt_file_dest: "/etc/apt/sources.list.d/{{ ansible_distribution | lower }}.sources"
-      loop: "{{ apt_lists }}"
-      loop_control:
-        loop_var: apt_list
-        label: "{{ apt_list.path | ansible.builtin.basename | ansible.builtin.regex_replace('[.]lists$') }}"
+    - name: "Include apt list file tasks for {{ apt_distro }}"
+      ansible.builtin.include_tasks: lists.yml
       when:
         - apt_lists is defined
         - apt_lists != []
         - apt_lists | length > 0
-        - apt_list.state is defined
-        - apt_list.state == "present"
 
-    - name: Include apt list files absent tasks
-      ansible.builtin.include_tasks: file_absent.yml
-      vars:
-        apt_file_absent: "{{ apt_lists_file_absent.path }}"
-      loop: "{{ apt_lists }}"
-      loop_control:
-        loop_var: apt_lists_file_absent
-        label: "{{ apt_lists_file_absent.path | ansible.builtin.basename | ansible.builtin.regex_replace('[.]lists$') }}"
-      when:
-        - apt_lists is defined
-        - apt_lists != []
-        - apt_lists | length > 0
-        - apt_lists_file_absent.path is defined
-        - apt_lists_file_absent.state is defined
-        - apt_lists_file_absent.state == "absent"
-
-    - name: "Sources file in place for {{ ansible_distribution }}"
-      ansible.builtin.deb822_repository:
-        allow_downgrade_to_insecure: false
-        allow_insecure: false
-        allow_weak: false
-        architectures: "{{ apt_architecture }}"
-        check_date: true
-        check_valid_until: true
-        components: "{{ apt_source.components }}"
-        enabled: true
-        name: "{{ apt_source.name }}"
-        signed_by: "{{ apt_source.signed_by }}"
-        suites: "{{ apt_source.suites }}"
-        types: "{{ apt_source.types }}"
-        uris: "{{ apt_source.uris }}"
-      loop: "{{ apt_sources }}"
-      loop_control:
-        loop_var: apt_source
-        label: "{{ apt_source.name }}"
+    - name: "Include sources file tasks for {{ apt_distro }}"
+      ansible.builtin.include_tasks: sources.yml
       when:
         - apt_sources is defined
         - apt_sources != []
         - apt_sources | length > 0
-        - apt_source.state is defined
-        - apt_source.state == "present"
 
-    - name: Include apt source files absent tasks
-      ansible.builtin.include_tasks: file_absent.yml
-      vars:
-        apt_file_absent: "/etc/apt/sources.list.d/{{ apt_sources_file_absent.name }}.sources"
-      loop: "{{ apt_sources }}"
-      loop_control:
-        loop_var: apt_sources_file_absent
-        label: "{{ apt_sources_file_absent.name }}"
-      when:
-        - apt_sources is defined
-        - apt_sources != []
-        - apt_sources | length > 0
-        - apt_sources_file_absent.name is defined
-        - apt_sources_file_absent.state is defined
-        - apt_sources_file_absent.state == "absent"
-
-    - name: Include the .list and .sources file checks
+    - name: "Include the .list and .sources file checks for {{ apt_distro }}"
       ansible.builtin.include_tasks: check_files.yml
 
-    - name: Update apt cache to check apt sources and list files
+    - name: "Update apt cache to check apt sources and list files for {{ apt_distro }}"
       ansible.builtin.apt:
         update_cache: true
 

@@ -1,0 +1,52 @@
+# Copyright 2019-2024 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+- name: Sources file tasks
+  block:
+
+    - name: "Sources file in place for {{ ansible_distribution }}"
+      ansible.builtin.deb822_repository:
+        allow_downgrade_to_insecure: false
+        allow_insecure: false
+        allow_weak: false
+        architectures: "{{ apt_architecture }}"
+        check_date: true
+        check_valid_until: true
+        components: "{{ apt_source.components }}"
+        enabled: true
+        name: "{{ apt_source.name }}"
+        signed_by: "{{ apt_source.signed_by }}"
+        suites: "{{ apt_source.suites }}"
+        types: "{{ apt_source.types }}"
+        uris: "{{ apt_source.uris }}"
+      when:
+        - apt_source.state is defined
+        - apt_source.state == "present"
+      loop: "{{ apt_sources }}"
+      loop_control:
+        loop_var: apt_source
+        label: "{{ apt_source.name }}"
+
+    - name: Include apt source files absent tasks
+      ansible.builtin.include_tasks: file_absent.yml
+      vars:
+        apt_file_absent: "/etc/apt/sources.list.d/{{ apt_sources_file_absent.name }}.sources"
+      when:
+        - apt_sources_file_absent.name is defined
+        - apt_sources_file_absent.state is defined
+        - apt_sources_file_absent.state == "absent"
+      loop: "{{ apt_sources }}"
+      loop_control:
+        loop_var: apt_sources_file_absent
+        label: "{{ apt_sources_file_absent.name }}"
+
+  tags:
+    - apt
+...

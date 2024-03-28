@@ -13,7 +13,7 @@ variables:
   ANSIBLE_DISPLAY_SKIPPED_HOSTS: "0"
   ANSIBLE_FORCE_COLOR: "1"
   APT_ANSIBLE: "8.7.0"
-  APT_ANSIBLE_CORE: "2.15.8"
+  APT_ANSIBLE_CORE: "2.15.10"
   APT_JC: "1.25.2"
   APT_JMESPATH: "1.0.1"
   # Newer versions of Molecule can't be installed on Bullseye as they require Python >= 3.10
@@ -21,7 +21,7 @@ variables:
   APT_PYTHON_DEBIAN: "0.1.49"
   DEBIAN_FRONTEND: noninteractive
   GIT_STRATEGY: none
-  MOLECULE_VERBOSITY: "1"
+  MOLECULE_VERBOSITY: "0"
   PIPX_BIN_DIR: "/usr/local/bin"
   PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"

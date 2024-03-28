@@ -125,56 +125,61 @@
         var: apt_sources
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
-    - name: Check apt source variables
-      ansible.builtin.assert:
-        that:
-          - apt_source.types is defined
-          - apt_source.uris is defined
-          - apt_source.suites is defined
-          - apt_source.components is defined
-          - apt_source.signed_by is defined
-        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
-      loop: "{{ apt_sources }}"
-      loop_control:
-        loop_var: apt_source
+    - name: Apt sources checks
+      block:
+
+        - name: Check apt source variables
+          ansible.builtin.assert:
+            that:
+              - apt_source.types is defined
+              - apt_source.uris is defined
+              - apt_source.suites is defined
+              - apt_source.components is defined
+              - apt_source.signed_by is defined
+            quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+          loop: "{{ apt_sources }}"
+          loop_control:
+            loop_var: apt_source
+          when:
+            - apt_sources is defined
+            - apt_sources != []
+
+        - name: Check apt sources signed_by keyrings
+          ansible.builtin.stat:
+            path: "{{ apt_key }}"
+            get_mime: true
+          loop: "{{ apt_sources | community.general.json_query('[].signed_by') | ansible.builtin.unique }}"
+          loop_control:
+            loop_var: apt_key
+            label: "{{ apt_key | ansible.builtin.basename }}"
+          register: apt_signed_by_paths
+          when:
+            - apt_key is ansible.builtin.regex('^[/]')
+            - apt_sources | community.general.json_query('[].signed_by') | ansible.builtin.unique != []
+
+        - name: Print apt_signed_by_paths.results
+          ansible.builtin.debug:
+            var: apt_signed_by_paths.results
+            verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
+          when: apt_signed_by_paths.results is defined
+
+        - name: All apt keyrings files need to exist and be of the MIME type application/pgp-keys
+          ansible.builtin.assert:
+            that:
+              - apt_signed_by_path.stat.exists | bool
+              - apt_signed_by_path.stat.mimetype == "application/pgp-keys"
+            quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+            fail_msg: "Apt signed_by keyring files need to exist."
+          loop: "{{ apt_signed_by_paths.results }}"
+          loop_control:
+            loop_var: apt_signed_by_path
+            label: "{{ apt_signed_by_path.invocation.module_args.path | ansible.builtin.basename }}"
+          when: apt_signed_by_paths.results is defned
+
       when:
         - apt_sources is defined
         - apt_sources != []
-        - apt_source.state is defined
-        - apt_source.state == "present"
-
-    - name: Check apt sources signed_by keyrings
-      ansible.builtin.stat:
-        path: "{{ apt_key }}"
-        get_mime: true
-      loop: "{{ apt_sources | community.general.json_query('[].signed_by') | ansible.builtin.unique }}"
-      loop_control:
-        loop_var: apt_key
-        label: "{{ apt_key | ansible.builtin.basename }}"
-      register: apt_signed_by_paths
-      when:
-        - apt_key is ansible.builtin.regex('^[/]')
-        - apt_sources | community.general.json_query('[].signed_by') | ansible.builtin.unique != []
-        - apt_sources is defined
-        - apt_sources != []
-
-    - name: Print apt_signed_by_paths.results
-      ansible.builtin.debug:
-        var: apt_signed_by_paths.results
-        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
-      when: apt_signed_by_paths is defined
-
-    - name: All apt keyrings files need to exist and be of the MIME type application/pgp-keys
-      ansible.builtin.assert:
-        that:
-          - apt_signed_by_path.stat.exists | bool
-          - apt_signed_by_path.stat.mimetype == "application/pgp-keys"
-        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
-        fail_msg: "Apt signed_by keyring files need to exist."
-      loop: "{{ apt_signed_by_paths.results }}"
-      loop_control:
-        loop_var: apt_signed_by_path
-        label: "{{ apt_signed_by_path.invocation.module_args.path | ansible.builtin.basename }}"
+        - apt_sources | length > 0
 
     - name: Check the apt list variables
       ansible.builtin.assert:
@@ -186,10 +191,11 @@
       loop_control:
         loop_var: apt_list
       when:
-        - apt_lists is defined
-        - apt_lists != []
         - apt_list.state is defined
         - apt_list.state == "present"
+        - apt_lists is defined
+        - apt_lists != []
+        - apt_lists | length > 0
 
     - name: Include the .list and .sources file checks
       ansible.builtin.include_tasks: check_files.yml

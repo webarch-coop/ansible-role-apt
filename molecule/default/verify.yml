@@ -45,41 +45,43 @@
         path: /etc/apt/sources.list.d/debian.sources
       register: molecule_apt_sources_debian
 
-    - name: Slurp and print /etc/apt/sources.list.d/debian.sources
-      block:
-
-        - name: Slurp /etc/apt/sources.list.d/debian.sources
-          ansible.builtin.slurp:
-            src: /etc/apt/sources.list.d/debian.sources
-          register: molecule_apt_sources_debian_b64encoded
-
-        - name: Decode the base64 encoded version of /etc/apt/sources.list.d/debian.sources
-          ansible.builtin.set_fact:
-            molecule_apt_sources_debian_content: "{{ molecule_apt_sources_debian_b64encoded['content'] | b64decode | trim }}"
-            molecule_apt_sources_debian_content_lines: "{{ molecule_apt_sources_debian_b64encoded['content'] | b64decode | trim | split('\n') }}"
-
-        - name: Print the contents of the /etc/apt/sources.list.d/debian.sources lines
-          ansible.builtin.debug:
-            var: molecule_apt_sources_debian_content_lines
-
-      when: molecule_apt_sources_debian.stat.exists | bool
-
-    - name: Find all files in /etc/apt/sources.list.d
+    - name: Find all .list and .sources files in /etc/apt/sources.list.d
       ansible.builtin.find:
         paths: /etc/apt/sources.list.d
+        recurse: false
+        patterns:
+          - '*.list'
+          - '*.sources'
       register: molecule_apt_sources_list_d
-
-    # - name: Debug the results from finding all files in /etc/apt/sources.list.d
-    #   ansible.builtin.debug:
-    #     var: molecule_apt_sources_list_d
 
     - name: Set a fact for the paths of all the files in /etc/apt/sources.list.d
       ansible.builtin.set_fact:
         molecule_apt_sources_list_d_paths: "{{ molecule_apt_sources_list_d.files | community.general.json_query('[].path') }}"
+      when:
+        - molecule_apt_sources_list_d.files | community.general.json_query('[].path') != []
 
     - name: Debug the paths of all files in /etc/apt/sources.list.d
       ansible.builtin.debug:
         var: molecule_apt_sources_list_d_paths
+      when:
+        - molecule_apt_sources_list_d_paths is defined
+
+    - name: Slurp all the .list and .sources files in /etc/apt/sources.list.d
+      ansible.builtin.slurp:
+        path: "{{ molecule_apt_sources_list_d_path }}"
+      register: molecule_apt_sources_list_d_b64encoded
+      loop: "{{ molecule_apt_sources_list_d_paths }}"
+      loop_control:
+        loop_var: molecule_apt_sources_list_d_path
+        label: "{{ molecule_apt_sources_list_d_path | ansible.builtin.basename }}"
+      when:
+        - molecule_apt_sources_list_d_paths is defined
+        - molecule_apt_sources_list_d_paths != []
+
+    - name: Debug molecule_apt_sources_list_d_b64encoded
+      ansible.builtin.debug:
+        var: molecule_apt_sources_list_d_b64encoded
+      when: molecule_apt_sources_list_d_b64encoded is defined
 
     - name: Run apt-get update  # noqa: no-changed-when
       ansible.builtin.command: apt-get update

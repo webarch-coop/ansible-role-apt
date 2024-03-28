@@ -65,6 +65,8 @@
         var: molecule_apt_sources_list_d_paths
       when:
         - molecule_apt_sources_list_d_paths is defined
+        - molecule_apt_sources_list_d_paths != []
+        - molecule_apt_sources_list_d_paths | length > 0
 
     - name: Slurp all the .list and .sources files in /etc/apt/sources.list.d
       ansible.builtin.slurp:
@@ -77,6 +79,7 @@
       when:
         - molecule_apt_sources_list_d_paths is defined
         - molecule_apt_sources_list_d_paths != []
+        - molecule_apt_sources_list_d_paths | length > 0
 
     - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
       ansible.builtin.debug:

@@ -146,6 +146,7 @@
     - name: Check apt sources signed_by keyrings
       ansible.builtin.stat:
         path: "{{ apt_key }}"
+        get_mime: true
       loop: "{{ apt_sources | community.general.json_query('[].signed_by') | ansible.builtin.unique }}"
       loop_control:
         loop_var: apt_key

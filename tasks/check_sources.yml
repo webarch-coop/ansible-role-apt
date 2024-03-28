@@ -57,7 +57,7 @@
       loop_control:
         loop_var: apt_signed_by_path
         label: "{{ apt_signed_by_path.invocation.module_args.path | ansible.builtin.basename }}"
-      when: apt_signed_by_paths.results is defned
+      when: apt_signed_by_paths.results is defined
 
   tags:
     - apt

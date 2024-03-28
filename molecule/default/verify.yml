@@ -79,6 +79,10 @@
             label: "{{ molecule_apt_sources_list_d_path | ansible.builtin.basename }}"
           register: molecule_apt_sources_list_d_b64encoded
 
+        - name: Debug molecule_apt_sources_list_d_path.results
+          ansible.builtin.debug:
+            var: molecule_apt_sources_list_d_path.results
+
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
             msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode }}"

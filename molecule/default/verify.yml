@@ -82,12 +82,14 @@
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
             msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode }}"
-          loop: "{{ molecule_apt_sources_list_d_path.results | community.general.json_query('[].content') | list }}"
+          loop: "{{ molecule_apt_sources_list_d_path.results | community.general.json_query('[].content')  }}"
           loop_control:
             extended: true
             loop_var: molecule_apt_sources_list_d_b64
             label: "{{ ansible_loop.index }}"
-          when: molecule_apt_sources_list_d_path.results is defined
+          when:
+            - molecule_apt_sources_list_d_path.results is defined
+            - molecule_apt_sources_list_d_path.results != []
 
       rescue:
 

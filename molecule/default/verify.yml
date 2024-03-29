@@ -62,11 +62,6 @@
       ansible.builtin.debug:
         var: molecule_apt_sources_list_d_paths
 
-    - name: Warn that the next job will fail
-      ansible.builtin.debug:
-        msg: The next job will fail with 'NoneType' object is not iterable. this is safe to ignore.
-      when: molecule_apt_sources_list_d_paths == []
-
     - name: Slurp and print .list and .sources files in /etc/apt/sources.list.d
       block:
 
@@ -82,15 +77,23 @@
         - name: Debug molecule_apt_sources_list_d_b64encoded.results
           ansible.builtin.debug:
             var: molecule_apt_sources_list_d_b64encoded
+            verbosity: 1
 
         - name: Debug
           ansible.builtin.debug:
-            msg: "{{ molecule_apt_sources_list_d_b64encoded.results | community.general.json_query('[].content') | map('ansible.builtin.b64decode') }}"
+            msg: >-
+              {{- molecule_apt_sources_list_d_b64encoded.results |
+              community.general.json_query('[].content') |
+              map('ansible.builtin.b64decode') |
+              ansible.builtin.split('\n') -}}
+          when:
+            - molecule_apt_sources_list_d_b64encoded.results is defined
+            - molecule_apt_sources_list_d_b64encoded.results != []
 
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
-            msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode }}"
-          loop: "{{ molecule_apt_sources_list_d_b64encoded.results | community.general.json_query('[].content')  }}"
+            msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode | ansible.builtin.split('\n') }}"
+          loop: "{{ molecule_apt_sources_list_d_b64encoded.results | community.general.json_query('[].content') | list }}"
           loop_control:
             extended: true
             loop_var: molecule_apt_sources_list_d_b64
@@ -98,12 +101,6 @@
           when:
             - molecule_apt_sources_list_d_b64encoded.results is defined
             - molecule_apt_sources_list_d_b64encoded.results != []
-
-      rescue:
-
-        - name: This failure is probably safe to ignore
-          ansible.builtin.debug:
-            msg: If the failure was caused by the list of files paths being empty it is safe to ignore it.
 
       when:
         - molecule_apt_sources_list_d_paths is defined

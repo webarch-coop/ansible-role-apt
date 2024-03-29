@@ -59,7 +59,7 @@
 
         - name: Fail due to apt-get update error
           ansible.builtin.fail:
-            var: apt_update_cache
+            msg: "{{ apt_update_cache }}"
 
   tags:
     - apt

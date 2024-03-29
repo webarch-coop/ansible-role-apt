@@ -79,21 +79,25 @@
             label: "{{ molecule_apt_sources_list_d_path | ansible.builtin.basename }}"
           register: molecule_apt_sources_list_d_b64encoded
 
-        - name: Debug molecule_apt_sources_list_d_path.results
+        - name: Debug molecule_apt_sources_list_d_b64encoded.results
           ansible.builtin.debug:
-            var: molecule_apt_sources_list_d_path.results
+            var: molecule_apt_sources_list_d_b64encoded
+
+        - name: Debug
+          ansible.builtin.debug:
+            msg: "{{ molecule_apt_sources_list_d_b64encoded.results | community.general.json_query('[].content') | map('ansible.builtin.b64decode') }}"
 
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
             msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode }}"
-          loop: "{{ molecule_apt_sources_list_d_path.results | community.general.json_query('[].content')  }}"
+          loop: "{{ molecule_apt_sources_list_d_b64encoded.results | community.general.json_query('[].content')  }}"
           loop_control:
             extended: true
             loop_var: molecule_apt_sources_list_d_b64
             label: "{{ ansible_loop.index }}"
           when:
-            - molecule_apt_sources_list_d_path.results is defined
-            - molecule_apt_sources_list_d_path.results != []
+            - molecule_apt_sources_list_d_b64encoded.results is defined
+            - molecule_apt_sources_list_d_b64encoded.results != []
 
       rescue:
 

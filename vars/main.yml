@@ -87,6 +87,8 @@ apt_default_config:
     lists:
       - path: /etc/apt/sources.list
         state: absent
+      - path: /etc/apt/sources.list.d/backports.list
+        state: absent
     sources:
       - name: debian
         state: present
@@ -143,6 +145,8 @@ apt_default_config:
   - name: bookworm
     lists:
       - path: /etc/apt/sources.list
+        state: absent
+      - path: /etc/apt/sources.list.d/backports.list
         state: absent
     sources:
       - name: debian

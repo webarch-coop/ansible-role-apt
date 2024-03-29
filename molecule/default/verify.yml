@@ -118,13 +118,22 @@
       ansible.builtin.debug:
         var: molecule_apt_get_update.stdout_lines
 
-    - name: Run apt-get upgrade -y  # noqa: no-changed-when
-      ansible.builtin.command: apt-get upgrade -y
+    - name: Run apt-get -sqq upgrade  # noqa: no-changed-when
+      ansible.builtin.command: apt-get -sqq upgrade
       register: molecule_apt_get_upgrade
       changed_when: ("0 upgraded" not in molecule_apt_get_upgrade.stdout)
       failed_when: molecule_apt_get_upgrade.stderr | length > 0
 
-    - name: Debug the results from apt-get upgrade -y
+    - name: Debug molecule_apt_get_upgrade.stdout_lines
       ansible.builtin.debug:
         var: molecule_apt_get_upgrade.stdout_lines
+        verbosity: 1
+
+    - name: Set a fcat for the results of apt-get -sqq upgrade
+      ansible.builtin.set_fact:
+        molecule_upgrade: "{{ molecule_apt_get_upgrade.stdout | community.general.jc('apt_get_sqq') }}"
+
+    - name: Debug the results from apt-get upgrade -y
+      ansible.builtin.debug:
+        var: molecule_upgrade
 ...

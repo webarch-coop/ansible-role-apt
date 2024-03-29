@@ -94,7 +94,7 @@
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
             # msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode | ansible.builtin.split('\n') }}"
-            msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode | community.genetal.jc('ini') }}"
+            msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode | community.general.jc('ini') }}"
           loop: "{{ molecule_apt_sources_list_d_b64encoded.results | community.general.json_query('[].content') | list }}"
           loop_control:
             extended: true

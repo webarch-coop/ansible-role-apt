@@ -79,21 +79,8 @@
             var: molecule_apt_sources_list_d_b64encoded
             verbosity: 1
 
-        - name: Debug
-          ansible.builtin.debug:
-            msg: >-
-              {{- molecule_apt_sources_list_d_b64encoded.results |
-              community.general.json_query('[].content') |
-              map('ansible.builtin.b64decode') |
-              map('ansible.builtin.split', '\n') -}}
-            verbosity: 1
-          when:
-            - molecule_apt_sources_list_d_b64encoded.results is defined
-            - molecule_apt_sources_list_d_b64encoded.results != []
-
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
-            # msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode | ansible.builtin.split('\n') }}"
             msg: "{{ molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode | community.general.jc('ini') }}"
           loop: "{{ molecule_apt_sources_list_d_b64encoded.results | community.general.json_query('[].content') | list }}"
           loop_control:

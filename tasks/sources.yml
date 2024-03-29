@@ -47,6 +47,10 @@
         loop_var: apt_sources_file_absent
         label: "{{ apt_sources_file_absent.name }}"
 
+  when:
+    - apt_sources is defined
+    - apt_sources != []
+    - apt_sources | length > 0
   tags:
     - apt
 ...

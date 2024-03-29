@@ -85,7 +85,7 @@
               {{- molecule_apt_sources_list_d_b64encoded.results |
               community.general.json_query('[].content') |
               map('ansible.builtin.b64decode') |
-              ansible.builtin.split('\n') -}}
+              map('ansible.builtin.split', '\n') -}}
           when:
             - molecule_apt_sources_list_d_b64encoded.results is defined
             - molecule_apt_sources_list_d_b64encoded.results != []

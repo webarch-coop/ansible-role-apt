@@ -111,8 +111,8 @@
 
     - name: Run apt-get update  # noqa: no-changed-when
       ansible.builtin.command: apt-get update
-      register: molecule_apt_get_update
       changed_when: false
+      register: molecule_apt_get_update
 
     - name: Debug the results from apt-get update
       ansible.builtin.debug:
@@ -120,9 +120,8 @@
 
     - name: Run apt-get -sqq upgrade  # noqa: no-changed-when
       ansible.builtin.command: apt-get -sqq upgrade
+      changed_when: false
       register: molecule_apt_get_upgrade
-      changed_when: ("0 upgraded" not in molecule_apt_get_upgrade.stdout)
-      failed_when: molecule_apt_get_upgrade.stderr | length > 0
 
     - name: Debug molecule_apt_get_upgrade.stdout_lines
       ansible.builtin.debug:

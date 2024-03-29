@@ -9,7 +9,7 @@
 # You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 # Set apt to true for the tasks in this role to be run
-apt: false
+apt: false  # noqa: no-role-prefix
 # The optional apt_config will be combined with the apt_default_config if defined
 # apt_config:
 # Set apt_distro_switch to true if switching distro, eg buster to bullseye

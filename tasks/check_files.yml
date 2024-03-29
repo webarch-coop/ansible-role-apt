@@ -21,7 +21,7 @@
       vars:
         apt_file: /etc/apt/sources.list
       when:
-        - ( ansible_check_mode | bool ) or ( ansible_verbosity >= 1 )
+        - ( ansible_check_mode | bool ) or ( ansible_verbosity >= 1 ) or ( apt_rescue is defined and apt_rescue | bool )
         - apt_sources_list.stat.exists | bool
 
     - name: Find all files in /etc/apt/sources.list.d that end in .list or .sources
@@ -48,7 +48,7 @@
         loop_var: apt_file
         label: "{{ apt_file | ansible.builtin.basename }}"
       when:
-        - ( ansible_check_mode | bool ) or ( ansible_verbosity >= 1 )
+        - ( ansible_check_mode | bool ) or ( ansible_verbosity >= 1 ) or ( apt_rescue is defined and apt_rescue | bool )
         - apt_sources_list_d_paths != []
 
   tags:

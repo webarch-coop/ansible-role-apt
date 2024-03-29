@@ -42,12 +42,26 @@
         - apt_sources != []
         - apt_sources | length > 0
 
-    - name: "Include the .list and .sources file checks for {{ apt_distro }}"
-      ansible.builtin.include_tasks: check_files.yml
+    - name: Update apt cache in a block so failures can be debugged
+      block:
 
-    - name: "Update apt cache to check apt sources and list files for {{ apt_distro }}"
-      ansible.builtin.apt:
-        update_cache: true
+        - name: "Update apt cache to check apt sources and list files for {{ apt_distro }}"
+          ansible.builtin.apt:
+            update_cache: true
+          register: apt_update_cache
+
+      rescue:
+
+        - name: "Include the .list and .sources file checks for {{ apt_distro }}"
+          ansible.builtin.include_tasks: check_files.yml
+          vars:
+            apt_rescue: true
+
+        - name: Fail due to apt-get update error
+          ansible.builtin.fail:
+            msg:
+              - "standard out: {{ apt_update_cache.stdout }}"
+              - "standard err: {{ apt_update_cache.stderr }}"
 
   tags:
     - apt

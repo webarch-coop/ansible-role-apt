@@ -21,6 +21,18 @@
         var: ansible_distribution_release
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
+    - name: Print the distros listed in apt_default_config
+      ansible.builtin.debug:
+        var: apt_default_config | community.general.json_query('[].name')
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: Print the distros listed in apt_pkgs
+      ansible.builtin.debug:
+        var: apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query)
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+      vars:
+        apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
+
     - name: Check that the distro and version is supported
       ansible.builtin.assert:
         that:

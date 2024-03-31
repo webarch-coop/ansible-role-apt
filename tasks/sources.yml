@@ -33,6 +33,21 @@
       loop_control:
         loop_var: apt_source
         label: "{{ apt_source.name }}"
+      register: apt_sources_files_present
+
+    - name: Debug apt_sources_files_present
+      ansible.builtin.debug:
+        var: apt_sources_files_present
+        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
+
+    - name: "Set a fact for the sources files present for {{ ansible_distribution }}"
+      ansible.builtin.set_fact:
+        apt_sources_files_content: "{{ apt_sources_files_present.results | community.general.json_query('[].repo') | map('community.general.jc', 'ini') }}"
+
+    - name: "Debug apt sources files content present for {{ ansible_distribution }}"
+      ansible.builtin.debug:
+        var: apt_sources_files_content
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
     - name: Include apt source files absent tasks
       ansible.builtin.include_tasks: file_absent.yml

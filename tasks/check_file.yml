@@ -16,14 +16,31 @@
         src: "{{ apt_file }}"
       register: apt_file_contents_b64encoded
 
-    - name: "Decode the base64 encoded version of {{ apt_file }}"
-      ansible.builtin.set_fact:
-        apt_file_content: "{{ apt_file_contents_b64encoded['content'] | ansible.builtin.b64decode | trim }}"
-        apt_file_content_lines: "{{ apt_file_contents_b64encoded['content'] | ansible.builtin.b64decode | trim | ansible.builtin.split('\n') }}"
+    - name: Set fact for .list file contents
+      block:
 
-    - name: "Print the contents of {{ apt_file }}"
-      ansible.builtin.debug:
-        var: apt_file_content_lines
+        - name: "Decode the base64 encoded version of {{ apt_file }}"
+          ansible.builtin.set_fact:
+            apt_file_content_lines: "{{ apt_file_contents_b64encoded['content'] | ansible.builtin.b64decode | trim | ansible.builtin.split('\n') | map('regex_replace', '^#') | map('regex_replace', '^$') }}"
+
+        - name: "Print the contents of {{ apt_file }}"
+          ansible.builtin.debug:
+            var: apt_file_content_lines
+
+      when: apt_file is regex('[.]list$')
+
+    - name: Set fact for .sources file content
+      block:
+
+        - name: "Decode the base64 encoded version of {{ apt_file }}"
+          ansible.builtin.set_fact:
+            apt_file_content: "{{ apt_file_contents_b64encoded['content'] | ansible.builtin.b64decode | trim | community.general.jc('ini') }}"
+
+        - name: "Print the contents of {{ apt_file }}"
+          ansible.builtin.debug:
+            var: apt_file_content
+
+      when: apt_file is regex('[.]sources$')
 
   tags:
     - apt

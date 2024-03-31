@@ -48,6 +48,8 @@
         - name: "Update apt cache to check apt sources and list files for {{ apt_distro }}"
           ansible.builtin.apt:
             update_cache: true
+          check_mode: false
+          changed_when: false
           register: apt_update_cache
 
       rescue:

@@ -42,6 +42,8 @@ apt_pkgs:
   - apt-show-versions
   - apt-utils
   - aptitude
+  - aptitude-common
+  - file
   - needrestart
 apt_verify: true
 ...

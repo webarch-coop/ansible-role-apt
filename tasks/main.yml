@@ -74,12 +74,18 @@
             autoremove: true
             upgrade: dist
             update_cache: true
+          register: apt_dist_upgrade
+
+        - name: Re-read Ansible local facts  # noqa: no-handler
+          ansible.builtin.setup:
+            filter: ansible_local
+          when: apt_dist_upgrade.changed | bool
 
         - name: Packages present
           ansible.builtin.apt:
             pkg: "{{ apt_pkgs }}"
             state: present
-            update_cache: false
+            update_cache: true
           when: >-
             ( ( apt_pkgs is defined ) and
             ( apt_pkgs != [] ) ) and

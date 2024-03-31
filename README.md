@@ -134,7 +134,7 @@ The main configuration list for `.list` files and also `.sources` file, the writ
 
 ```yaml
 apt_config:
-  - name: noble
+  - distro: noble
     lists:
       - path: /etc/apt/sources.list
         state: absent
@@ -167,7 +167,7 @@ apt_config:
           - restricted
           - universe
         signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-  - name: jammy
+  - distro: jammy
     lists:
       - path: /etc/apt/sources.list
         state: present

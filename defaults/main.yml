@@ -54,7 +54,8 @@ apt_pkgs:
     pkgs:
       - debian-archive-keyring
       - apt-listchanges
-      - apt-show-versions
+      # Installing apt-show-versions fails in the CI
+      # - apt-show-versions
       - apt-utils
       - aptitude
       - aptitude-common

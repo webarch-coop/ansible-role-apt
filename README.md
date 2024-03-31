@@ -113,14 +113,19 @@ The default value of `apt_local_facts_packages` is:
 
 ### apt_pkgs
 
-A optional list of `.deb` packages that will be installed, by default `apt_pkgs` is set to:
+A required list of `.deb` packages that will be installed for each supported distro, for example:
 
 ```yaml
-  - aptitude
-  - apt-listchanges
-  - apt-show-versions
-  - apt-utils
-  - needrestart
+apt_pkgs:
+  - distro: bookworm
+    pkgs:
+      - apt-listchanges
+      - apt-show-versions
+      - apt-utils
+      - aptitude
+      - aptitude-common
+      - file
+      - needrestart
 ```
 
 ### apt_config

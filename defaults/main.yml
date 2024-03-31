@@ -38,12 +38,52 @@ apt_local_facts_pkgs:
   - gpg
   - jo
 apt_pkgs:
-  - apt-listchanges
-  - apt-show-versions
-  - apt-utils
-  - aptitude
-  - aptitude-common
-  - file
-  - needrestart
+  - distro: bookworm
+    pkgs:
+      - apt-listchanges
+      - apt-show-versions
+      - apt-utils
+      - aptitude
+      - aptitude-common
+      - file
+      - needrestart
+  - distro: bullseye
+    pkgs:
+      - apt-listchanges
+      - apt-show-versions
+      - apt-utils
+      - aptitude
+      - aptitude-common
+      - file
+      - needrestart
+  - distro: jammy
+    pkgs:
+      - apt-listchanges
+      - apt-show-versions
+      - apt-utils
+      - aptitude
+      - aptitude-common
+      - file
+      - needrestart
+  - distro: noble
+    pkgs:
+      - apt-listchanges
+      - apt-show-versions
+      - apt-utils
+      # Currently fails with
+      # aptitude : Depends: aptitude-common (= 0.8.13-5ubuntu2) but 0.8.13-5ubuntu4 is to be installed
+      # - aptitude
+      # - aptitude-common
+      - file
+      - needrestart
+  - distro: trixie
+    pkgs:
+      - apt-listchanges
+      - apt-show-versions
+      - apt-utils
+      - aptitude
+      - aptitude-common
+      - file
+      - needrestart
 apt_verify: true
 ...

@@ -24,8 +24,4 @@
         name: apt
       vars:  # noqa var-naming[no-role-prefix]
         apt: true
-        apt_pkgs:
-          - apt-listchanges
-          - apt-utils
-          - aptitude
 ...

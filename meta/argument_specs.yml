@@ -164,9 +164,26 @@ argument_specs:
         elements: str
       apt_pkgs:
         type: list
-        required: false
-        description: A list of .deb packages that will be installed.
-        elements: str
+        required: true
+        description: Distro packages.
+        options:
+          distro:
+            type: str
+            required: true
+            description: Distro name.
+            choices:
+              - bullseye
+              - bookworm
+              - forky
+              - jammy
+              - focal
+              - noble
+              - trixie
+          pkgs:
+            type: list
+            elements: str
+            required: true
+            description: Packages.
       apt_verify:
         type: bool
         required: true

@@ -15,6 +15,8 @@ variables:
   ANSIBLE_FORCE_COLOR: "1"
   APT_ANSIBLE: "8.7.0"
   APT_ANSIBLE_CORE: "2.15.10"
+  # Newer versions of ansible-lint can't be installed on Bullseye as they require Python >= 3.10
+  APT_ANSIBLE_LINT: "6.22.2"
   APT_JC: "1.25.2"
   APT_JMESPATH: "1.0.1"
   # Newer versions of Molecule can't be installed on Bullseye as they require Python >= 3.10
@@ -53,7 +55,7 @@ trixie:
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint=${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -84,7 +86,7 @@ bookworm:
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint=${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -115,7 +117,7 @@ bullseye:
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint=${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -146,7 +148,7 @@ jammy:
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint=${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -177,7 +179,7 @@ noble:
     - python3 --version
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint=${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version

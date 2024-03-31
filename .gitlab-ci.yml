@@ -65,7 +65,7 @@ trixie:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
-    - pre-commit install
+    - pre-commit install -c .pre-commit-config-gitlab-ci.yaml
     - pre-commit run --all-files
     - molecule test
 bookworm:
@@ -96,7 +96,7 @@ bookworm:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
-    - pre-commit install
+    - pre-commit install -c .pre-commit-config-gitlab-ci.yaml
     - pre-commit run --all-files
     - molecule test
 bullseye:
@@ -127,7 +127,7 @@ bullseye:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
-    - pre-commit install
+    - pre-commit install -c .pre-commit-config-gitlab-ci.yaml
     - pre-commit run --all-files
     - molecule test
 jammy:
@@ -158,7 +158,7 @@ jammy:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
-    - pre-commit install
+    - pre-commit install -c .pre-commit-config-gitlab-ci.yaml
     - pre-commit run --all-files
     - molecule test
 noble:
@@ -189,7 +189,7 @@ noble:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
-    - pre-commit install
+    - pre-commit install -c .pre-commit-config-gitlab-ci.yaml
     - pre-commit run --all-files
     - molecule test
 ...

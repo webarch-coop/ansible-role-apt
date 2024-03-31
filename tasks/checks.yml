@@ -26,13 +26,25 @@
         that:
           - ansible_distribution is regex('^Debian|Ubuntu$')
           - ansible_distribution_release in (apt_default_config | community.general.json_query('[].name'))
+          - ansible_distribution_release in (apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query))
         quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+      vars:
+        apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
 
     - name: Print apt_distro
       ansible.builtin.debug:
         var: apt_distro
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
       when: apt_distro is defined
+
+    - name: Check that the apt_distro is supported
+      ansible.builtin.assert:
+        that:
+          - apt_distro in (apt_default_config | community.general.json_query('[].name'))
+          - apt_distro in (apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query))
+        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+      vars:
+        apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
 
     - name: Fail if the checked distro version doesn't match the specified value of apt_distro
       ansible.builtin.fail:

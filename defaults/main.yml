@@ -40,6 +40,7 @@ apt_local_facts_pkgs:
 apt_pkgs:
   - distro: bookworm
     pkgs:
+      - debian-archive-keyring
       - apt-listchanges
       - apt-show-versions
       - apt-utils
@@ -47,8 +48,11 @@ apt_pkgs:
       - aptitude-common
       - file
       - needrestart
+      - python3-apt
+      - python3-debian
   - distro: bullseye
     pkgs:
+      - debian-archive-keyring
       - apt-listchanges
       - apt-show-versions
       - apt-utils
@@ -56,6 +60,8 @@ apt_pkgs:
       - aptitude-common
       - file
       - needrestart
+      - python3-apt
+      - python3-debian
   - distro: jammy
     pkgs:
       - apt-listchanges
@@ -65,6 +71,9 @@ apt_pkgs:
       - aptitude-common
       - file
       - needrestart
+      - python3-apt
+      - python3-debian
+      - ubuntu-keyring
   - distro: noble
     pkgs:
       - apt-listchanges
@@ -76,8 +85,12 @@ apt_pkgs:
       # - aptitude-common
       - file
       - needrestart
+      - python3-apt
+      - python3-debian
+      - ubuntu-keyring
   - distro: trixie
     pkgs:
+      - debian-archive-keyring
       - apt-listchanges
       - apt-show-versions
       - apt-utils
@@ -85,5 +98,7 @@ apt_pkgs:
       - aptitude-common
       - file
       - needrestart
+      - python3-apt
+      - python3-debian
 apt_verify: true
 ...

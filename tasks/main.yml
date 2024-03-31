@@ -37,23 +37,12 @@
     - name: Include checks
       ansible.builtin.include_tasks: checks.yml
 
-    - name: Packages file, python3-apt and python3-debian present
+    - name: Packages present
       ansible.builtin.apt:
-        pkg:
-          - file
-          - python3-apt
-          - python3-debian
+        pkg: "{{ apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query) }}"
         update_cache: true
-
-    - name: Debian packages present
-      ansible.builtin.apt:
-        pkg: debian-archive-keyring
-      when: ansible_distribution == "Debian"
-
-    - name: Ubuntu packages present
-      ansible.builtin.apt:
-        pkg: ubuntu-keyring
-      when: ansible_distribution == "Ubuntu"
+      vars:
+        apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
 
     - name: Include apt config tasks
       ansible.builtin.include_tasks: config.yml
@@ -76,18 +65,10 @@
             update_cache: true
           register: apt_dist_upgrade
 
-        - name: Packages present
-          ansible.builtin.apt:
-            pkg: "{{ apt_pkgs }}"
-            state: present
-          register: apt_pkg_install
-
         - name: Re-read Ansible local facts  # noqa: no-handler
           ansible.builtin.setup:
             filter: ansible_local
-          when: >-
-            ( apt_dist_upgrade.changed | bool ) or
-            ( apt_pkg_install.changed | bool )
+          when: apt_dist_upgrade.changed | bool
 
         - name: Include apticron tasks
           ansible.builtin.include_tasks: apticron.yml

@@ -94,7 +94,7 @@ apt_default_config:
         state: present
         types: deb
         uris:
-          - http://deb.debian.org/debian
+          - https://deb.debian.org/debian
         suites:
           - trixie
         components:
@@ -107,7 +107,7 @@ apt_default_config:
         state: present
         types: deb
         uris:
-          - http://deb.debian.org/debian
+          - https://deb.debian.org/debian
         suites:
           - trixie-backports
         components:
@@ -133,7 +133,7 @@ apt_default_config:
         state: present
         types: deb
         uris:
-          - http://deb.debian.org/debian
+          - https://deb.debian.org/debian
         suites:
           - trixie-updates
         components:
@@ -153,7 +153,7 @@ apt_default_config:
         state: present
         types: deb
         uris:
-          - http://deb.debian.org/debian
+          - https://deb.debian.org/debian
         suites:
           - bookworm
         components:
@@ -166,7 +166,7 @@ apt_default_config:
         state: present
         types: deb
         uris:
-          - http://deb.debian.org/debian
+          - https://deb.debian.org/debian
         suites:
           - bookworm-backports
         components:
@@ -192,7 +192,7 @@ apt_default_config:
         state: present
         types: deb
         uris:
-          - http://deb.debian.org/debian
+          - https://deb.debian.org/debian
         suites:
           - bookworm-updates
         components:

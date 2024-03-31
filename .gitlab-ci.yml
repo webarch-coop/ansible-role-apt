@@ -21,8 +21,10 @@ variables:
   APT_MOLECULE: "6.0.3"
   APT_PYTHON_DEBIAN: "0.1.49"
   DEBIAN_FRONTEND: noninteractive
+  DEFAULT_MANAGED_STR: "Ansible managed"
   GIT_STRATEGY: none
   MOLECULE_VERBOSITY: "0"
+  PRE_COMMIT_COLOR: always
   PIPX_BIN_DIR: "/usr/local/bin"
   PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"
@@ -61,6 +63,8 @@ trixie:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
+    - pre-commit install
+    - pre-commit run --all-files
     - molecule test
 bookworm:
   image: debian:bookworm
@@ -90,6 +94,8 @@ bookworm:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
+    - pre-commit install
+    - pre-commit run --all-files
     - molecule test
 bullseye:
   image: debian:bullseye-backports
@@ -119,6 +125,8 @@ bullseye:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
+    - pre-commit install
+    - pre-commit run --all-files
     - molecule test
 jammy:
   image: ubuntu:jammy
@@ -148,6 +156,8 @@ jammy:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
+    - pre-commit install
+    - pre-commit run --all-files
     - molecule test
 noble:
   image: ubuntu:noble
@@ -177,5 +187,7 @@ noble:
     - chmod 700 ${CI_PROJECT_NAME}
     - cd ${CI_PROJECT_NAME}
   script:
+    - pre-commit install
+    - pre-commit run --all-files
     - molecule test
 ...

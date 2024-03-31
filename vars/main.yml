@@ -33,9 +33,9 @@ apt_default_config:
           - noble-updates
         components:
           - main
-          - multiverse
-          - restricted
           - universe
+          - restricted
+          - multiverse
         signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
       - name: ubuntu-security
         state: present
@@ -46,9 +46,9 @@ apt_default_config:
           - noble-security
         components:
           - main
-          - multiverse
-          - restricted
           - universe
+          - restricted
+          - multiverse
         signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
   - name: jammy
     lists:

@@ -43,7 +43,7 @@ argument_specs:
                 choices:
                   - absent
                   - present
-          name:
+          distro:
             type: str
             required: true
             description: The name of the Debian / Ubuntu LTS distro.
@@ -125,7 +125,7 @@ argument_specs:
                 choices:
                   - absent
                   - present
-          name:
+          distro:
             type: str
             required: true
             description: The name of the Debian / Ubuntu LTS distro.

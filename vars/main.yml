@@ -17,7 +17,7 @@ apt_local_facts_present: "{{ apt_local_facts_files | community.general.json_quer
 apt_local_facts_names_present: "{{ apt_local_facts_files | community.general.json_query('[?state==`present`].name') | map('regex_replace', '[.]fact$') }}"
 
 apt_default_config:
-  - name: noble
+  - distro: noble
     lists:
       - path: /etc/apt/sources.list
         state: absent
@@ -50,7 +50,7 @@ apt_default_config:
           - restricted
           - multiverse
         signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-  - name: jammy
+  - distro: jammy
     lists:
       - path: /etc/apt/sources.list
         state: absent
@@ -83,7 +83,7 @@ apt_default_config:
           - restricted
           - universe
         signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
-  - name: trixie
+  - distro: trixie
     lists:
       - path: /etc/apt/sources.list
         state: absent
@@ -142,7 +142,7 @@ apt_default_config:
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
-  - name: bookworm
+  - distro: bookworm
     lists:
       - path: /etc/apt/sources.list
         state: absent
@@ -201,7 +201,7 @@ apt_default_config:
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
-  - name: bullseye
+  - distro: bullseye
     lists:
       - path: /etc/apt/sources.list
         state: present
@@ -212,7 +212,7 @@ apt_default_config:
           - deb https://deb.debian.org/debian bullseye-backports main contrib non-free
       - path: /etc/apt/sources.list.d/backports.list
         state: absent
-  - name: buster
+  - distro: buster
     lists:
       - path: /etc/apt/sources.list
         state: present

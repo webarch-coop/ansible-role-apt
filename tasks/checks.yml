@@ -23,48 +23,47 @@
 
     - name: Print the distros listed in apt_default_config
       ansible.builtin.debug:
-        var: apt_default_config | community.general.json_query('[].name')
+        var: apt_default_config | community.general.json_query('[].distro')
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
     - name: Print the distros listed in apt_pkgs
       ansible.builtin.debug:
-        var: apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query)
+        var: apt_pkgs | community.general.json_query('[].distro')
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
-      vars:
-        apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
 
     - name: Check that the distro and version is supported
       ansible.builtin.assert:
         that:
           - ansible_distribution is regex('^Debian|Ubuntu$')
-          - ansible_distribution_release in (apt_default_config | community.general.json_query('[].name'))
-          - ansible_distribution_release in (apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query))
+          - ansible_distribution_release in (apt_default_config | community.general.json_query('[].distro'))
+          - ansible_distribution_release in (apt_pkgs | community.general.json_query('[].distro'))
         quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
-      vars:
-        apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
 
-    - name: Print apt_distro
-      ansible.builtin.debug:
-        var: apt_distro
-        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+    - name: Check apt_distro
+      block:
+
+        - name: Print apt_distro
+          ansible.builtin.debug:
+            var: apt_distro
+            verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+
+        - name: Check that the apt_distro is supported
+          ansible.builtin.assert:
+            that:
+              - apt_distro in (apt_default_config | community.general.json_query('[].distro'))
+              - apt_distro in (apt_pkgs | community.general.json_query('[].distro'))
+            quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+
+        - name: Fail if the checked distro version doesn't match the specified value of apt_distro
+          ansible.builtin.fail:
+            msg: >-
+              The distro was detected as {{ ansible_distribution_release }} but you are asking for the server to be
+              configured for {{ apt_distro }}.
+          when:
+            - apt_distro != ansible_distribution_release
+            - not apt_distro_switch | bool
+
       when: apt_distro is defined
-
-    - name: Check that the apt_distro is supported
-      ansible.builtin.assert:
-        that:
-          - apt_distro in (apt_default_config | community.general.json_query('[].name'))
-          - apt_distro in (apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query))
-        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
-      vars:
-        apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
-
-    - name: Fail if the checked distro version doesn't match the specified value of apt_distro
-      ansible.builtin.fail:
-        msg: "The distro was detected as {{ ansible_distribution_release }} but you are asking for the server to be configured for {{ apt_distro }}."
-      when:
-        - apt_distro is defined
-        - apt_distro != ansible_distribution_release
-        - not apt_distro_switch | bool
 
     - name: Warning and tasks for switching distros
       block:
@@ -78,6 +77,8 @@
           changed_when: true
 
       when:
+        - apt_distro is defined
+        - apt_distro != ansible_distribution_release
         - apt_distro_switch is defined
         - apt_distro_switch | bool
 
@@ -136,8 +137,8 @@
         apt_lists: "{{ apt_combined_config | community.general.json_query(apt_lists_json_query) }}"
         apt_sources: "{{ apt_combined_config | community.general.json_query(apt_sources_json_query) }}"
       vars:
-        apt_lists_json_query: "[?name=='{{ apt_distro }}'].lists|[0]"
-        apt_sources_json_query: "[?name=='{{ apt_distro }}'].sources|[0]"
+        apt_lists_json_query: "[?distro=='{{ apt_distro }}'].lists|[0]"
+        apt_sources_json_query: "[?distro=='{{ apt_distro }}'].sources|[0]"
 
     - name: Print apt_lists
       ansible.builtin.debug:

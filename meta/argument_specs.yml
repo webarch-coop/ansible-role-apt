@@ -79,7 +79,7 @@ argument_specs:
                 choices:
                   - absent
                   - present
-          name:
+          distro:
             type: str
             required: true
             description: The name of the Debian / Ubuntu LTS distro.
@@ -172,13 +172,21 @@ argument_specs:
             required: true
             description: Distro name.
             choices:
-              - bullseye
+              - bionic
               - bookworm
+              - bullseye
+              - buster
+              - focal
               - forky
               - jammy
-              - focal
+              - jessie
               - noble
+              - squeeze
+              - stretch
               - trixie
+              - trusty
+              - wheezy
+              - xenial
           pkgs:
             type: list
             elements: str

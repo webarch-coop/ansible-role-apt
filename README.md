@@ -4,7 +4,7 @@
 
 This role contains an Ansible role for configuring the `apt` [/etc/apt/sources.list](https://wiki.debian.org/SourcesList) or the [DEB822-style format](https://manpages.debian.org/bookworm/apt/sources.list.5.en.html#DEB822-STYLE_FORMAT) file on Debian and Ubuntu LTS.
 
-This role has been automatically tested using [GitLab CI](.gitlab-ci.yml) and [Molecule](molecule/default/molecule.yml) on Debian Trixie, Bookworm, Bullseye and Ubuntu Jammy, it should also work on Debian Buster and Ubuntu Focal but it hasn't been tested on these versions as the version of Python is too old for the latest versions of Ansible and Molecule to be used to run the tests.
+This role has been automatically tested using [GitLab CI](.gitlab-ci.yml) and [Molecule](molecule/default/molecule.yml) on Debian Trixie, Bookworm, Bullseye and Ubuntu Jammy and Noble, it should also work on Debian Buster and Ubuntu Focal but it hasn't been tested on these versions as the version of Python is too old for recent versions of Ansible and Molecule to be used to run the tests (testing on Bullseye requires old versions of `ansible`, `ansible-lint` and `molecule`).
 
 See also the [upgrade role](https://git.coop/webarch/upgrade), the [Bullseye role](https://git.coop/webarch/bullseye) for upgrading from Debian Buster, the [Bookworm role](https://git.coop/webarch/bookworm) for upgrading from Debian Bullseye and the [localhost repo](https://git.coop/webarch/localhost) which can be used with this role to configure the `sources.list` or the DEB822-style file locally.
 

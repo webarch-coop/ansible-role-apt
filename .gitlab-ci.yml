@@ -13,6 +13,7 @@ variables:
   ANSIBLE_DIFF_ALWAYS: "1"
   ANSIBLE_DISPLAY_SKIPPED_HOSTS: "0"
   ANSIBLE_FORCE_COLOR: "1"
+  # Newer versions of ansible can't be installed on Bullseye as they require Python >= 3.10
   APT_ANSIBLE: "8.7.0"
   APT_ANSIBLE_CORE: "2.15.10"
   # Newer versions of ansible-lint can't be installed on Bullseye as they require Python >= 3.10

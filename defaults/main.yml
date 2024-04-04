@@ -50,6 +50,7 @@ apt_pkgs:
       - needrestart
       - python3-apt
       - python3-debian
+      - xz-utils
   - distro: bullseye
     pkgs:
       - debian-archive-keyring
@@ -63,6 +64,7 @@ apt_pkgs:
       - needrestart
       - python3-apt
       - python3-debian
+      - xz-utils
   - distro: buster
     pkgs:
       - debian-archive-keyring
@@ -75,6 +77,7 @@ apt_pkgs:
       - needrestart
       - python3-apt
       - python3-debian
+      - xz-utils
   - distro: jammy
     pkgs:
       - apt-listchanges
@@ -87,6 +90,7 @@ apt_pkgs:
       - python3-apt
       - python3-debian
       - ubuntu-keyring
+      - xz-utils
   - distro: noble
     pkgs:
       - apt-listchanges
@@ -101,6 +105,7 @@ apt_pkgs:
       - python3-apt
       - python3-debian
       - ubuntu-keyring
+      - xz-utils
   - distro: trixie
     pkgs:
       - debian-archive-keyring
@@ -113,5 +118,6 @@ apt_pkgs:
       - needrestart
       - python3-apt
       - python3-debian
+      - xz-utils
 apt_verify: true
 ...

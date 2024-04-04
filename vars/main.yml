@@ -98,8 +98,8 @@ apt_default_config:
         suites:
           - trixie
         components:
-          - contrib
           - main
+          - contrib
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -111,8 +111,8 @@ apt_default_config:
         suites:
           - trixie-backports
         components:
-          - contrib
           - main
+          - contrib
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -124,8 +124,8 @@ apt_default_config:
         suites:
           - trixie-security
         components:
-          - contrib
           - main
+          - contrib
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -137,8 +137,8 @@ apt_default_config:
         suites:
           - trixie-updates
         components:
-          - contrib
           - main
+          - contrib
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -157,8 +157,8 @@ apt_default_config:
         suites:
           - bookworm
         components:
-          - contrib
           - main
+          - contrib
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -170,8 +170,8 @@ apt_default_config:
         suites:
           - bookworm-backports
         components:
-          - contrib
           - main
+          - contrib
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -183,8 +183,8 @@ apt_default_config:
         suites:
           - bookworm-security
         components:
-          - contrib
           - main
+          - contrib
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
@@ -196,8 +196,8 @@ apt_default_config:
         suites:
           - bookworm-updates
         components:
-          - contrib
           - main
+          - contrib
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg

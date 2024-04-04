@@ -24,6 +24,7 @@
             src: "/etc/apt/sources.list.d/{{ apt_source.name }}.sources"
           register: apt_sources_contents_b64encoded
 
+        # NOTE if the .sources files contains multiple repos the jc ini filter will just register the last one
         - name: Set a fact for the prior apt repository sources file contents
           ansible.builtin.set_fact:
             apt_sources_contents_prior: "{{ apt_sources_contents_b64encoded['content'] | ansible.builtin.b64decode | community.general.jc('ini') }}"

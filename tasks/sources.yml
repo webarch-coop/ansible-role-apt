@@ -8,60 +8,37 @@
 #
 # You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
-- name: Sources file tasks
+- name: Sources files tasks
   block:
 
-    - name: "Sources file in place for {{ ansible_distribution }}"
-      ansible.builtin.deb822_repository:
-        allow_downgrade_to_insecure: false
-        allow_insecure: false
-        allow_weak: false
-        architectures: "{{ apt_architecture }}"
-        check_date: true
-        check_valid_until: true
-        components: "{{ apt_source.components }}"
-        enabled: true
-        pdiffs: true
-        name: "{{ apt_source.name }}"
-        signed_by: "{{ apt_source.signed_by }}"
-        suites: "{{ apt_source.suites }}"
-        types: "{{ apt_source.types }}"
-        uris: "{{ apt_source.uris }}"
+    - name: Debug apt_source
+      ansible.builtin.debug:
+        var: apt_sources
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+
+    - name: Include apt source files absent tasks
+      ansible.builtin.include_tasks: file_absent.yml
+      vars:
+        apt_file_absent: "/etc/apt/sources.list.d/{{ apt_source.name }}.sources"
       when:
+        - apt_source.name is defined
+        - apt_source.state is defined
+        - apt_source.state == "absent"
+      loop: "{{ apt_sources }}"
+      loop_control:
+        loop_var: apt_source
+        label: "{{ apt_source.name }}"
+
+    - name: Include apt source files present tasks
+      ansible.builtin.include_tasks: sources_file.yml
+      when:
+        - apt_source.name is defined
         - apt_source.state is defined
         - apt_source.state == "present"
       loop: "{{ apt_sources }}"
       loop_control:
         loop_var: apt_source
         label: "{{ apt_source.name }}"
-      register: apt_sources_files_present
-
-    - name: Debug apt_sources_files_present
-      ansible.builtin.debug:
-        var: apt_sources_files_present
-        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
-
-    - name: "Set a fact for the sources files present for {{ ansible_distribution }}"
-      ansible.builtin.set_fact:
-        apt_sources_files_content: "{{ apt_sources_files_present.results | community.general.json_query('[].repo') | map('community.general.jc', 'ini') }}"
-
-    - name: "Debug apt sources files content present for {{ ansible_distribution }}"
-      ansible.builtin.debug:
-        var: apt_sources_files_content
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
-
-    - name: Include apt source files absent tasks
-      ansible.builtin.include_tasks: file_absent.yml
-      vars:
-        apt_file_absent: "/etc/apt/sources.list.d/{{ apt_sources_file_absent.name }}.sources"
-      when:
-        - apt_sources_file_absent.name is defined
-        - apt_sources_file_absent.state is defined
-        - apt_sources_file_absent.state == "absent"
-      loop: "{{ apt_sources }}"
-      loop_control:
-        loop_var: apt_sources_file_absent
-        label: "{{ apt_sources_file_absent.name }}"
 
   when:
     - apt_sources is defined

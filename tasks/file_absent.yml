@@ -21,14 +21,19 @@
         path: "{{ apt_file_absent }}"
       register: apt_file_absent_path
 
-    - name: "File absent {{ apt_file_absent }}"
+    - name: "Backup and remove {{ apt_file_absent }}"
       ansible.builtin.command:
         cmd: >-
           mv
           {{ apt_file_absent }}
-          {{ apt_file_absent | ansible.builtin.dirname }}/.{{ apt_file_absent | ansible.builtin.basename }}.{{ ansible_date_time.iso8601_basic_short }}.ansible.save
+          {{ apt_file_backup }}
       args:
-        creates: "{{ apt_file_absent | ansible.builtin.dirname }}/.{{ apt_file_absent | ansible.builtin.basename }}.{{ ansible_date_time.iso8601_basic_short }}.ansible.save"
+        creates: "{{ apt_file_backup }}"
         removes: "{{ apt_file_absent }}"
+      vars:
+        apt_file_backup: "{{ apt_file_absent | ansible.builtin.dirname }}/.{{ apt_file_absent | ansible.builtin.basename }}.{{ ansible_date_time.iso8601_basic_short }}.ansible.save"
       when: apt_file_absent_path.stat.exists | bool
+
+  tags:
+    - apt
 ...

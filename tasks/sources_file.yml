@@ -1,0 +1,111 @@
+# Copyright 2019-2024 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+- name: Sources file tasks
+  block:
+
+    - name: Stat the apt repository sources file
+      ansible.builtin.stat:
+        path: "/etc/apt/sources.list.d/{{ apt_source.name }}.sources"
+      register: apt_sources_path
+
+    - name: Read and backup apt repository sources file
+      block:
+
+        - name: Slurp the apt repository sources file
+          ansible.builtin.slurp:
+            src: "/etc/apt/sources.list.d/{{ apt_source.name }}.sources"
+          register: apt_sources_contents_b64encoded
+
+        # NOTE if the .sources files contains multiple repos the jc ini filter will just register the last one
+        - name: Set a fact for the prior apt repository sources file contents
+          ansible.builtin.set_fact:
+            apt_sources_contents_prior: "{{ apt_sources_contents_b64encoded['content'] | ansible.builtin.b64decode | community.general.jc('ini') }}"
+
+        - name: "Check apt repository sources file present for {{ ansible_distribution }}"
+          ansible.builtin.deb822_repository:
+            allow_downgrade_to_insecure: false
+            allow_insecure: false
+            allow_weak: false
+            architectures: "{{ apt_architecture }}"
+            check_date: true
+            check_valid_until: true
+            components: "{{ apt_source.components }}"
+            enabled: true
+            name: "{{ apt_source.name }}"
+            pdiffs: true
+            signed_by: "{{ apt_source.signed_by }}"
+            suites: "{{ apt_source.suites }}"
+            types: "{{ apt_source.types }}"
+            uris: "{{ apt_source.uris }}"
+          check_mode: true
+          changed_when: false
+          register: apt_sources_check
+
+        - name: Debug proposed apt_sources_check.repo
+          ansible.builtin.debug:
+            var: apt_sources_check.repo
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+
+        - name: Backup old apt.sources file
+          ansible.builtin.command:
+            cmd: >-
+              mv
+              /etc/apt/sources.list.d/{{ apt_source.name }}.sources
+              /etc/apt/sources.list.d/.{{ apt_source.name }}.sources.{{ apt_date_timestamp }}.ansible.save
+          args:
+            creates: "/etc/apt/sources.list.d/.{{ apt_source.name }}.sources.{{ apt_date_timestamp }}.ansible.save"
+            removes: /etc/apt/sources.list.d/{{ apt_source.name }}.sources
+          vars:
+            apt_date_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
+          when: apt_sources_contents_prior != apt_sources_check.repo | string | community.general.jc('ini')
+
+      when: apt_sources_path.stat.exists | bool
+
+    - name: "Apt repository sources file present for {{ ansible_distribution }}"
+      ansible.builtin.deb822_repository:
+        allow_downgrade_to_insecure: false
+        allow_insecure: false
+        allow_weak: false
+        architectures: "{{ apt_architecture }}"
+        check_date: true
+        check_valid_until: true
+        components: "{{ apt_source.components }}"
+        enabled: true
+        name: "{{ apt_source.name }}"
+        pdiffs: true
+        signed_by: "{{ apt_source.signed_by }}"
+        suites: "{{ apt_source.suites }}"
+        types: "{{ apt_source.types }}"
+        uris: "{{ apt_source.uris }}"
+      register: apt_sources
+
+    - name: Print the changes in the apt repository sources file  # noqa: no-handler
+      block:
+
+        - name: Debug updated apt_sources.repo
+          ansible.builtin.debug:
+            var: apt_sources.repo
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+
+        - name: Diff apt repository sources file update
+          ansible.utils.fact_diff:
+            before: "{{ apt_sources_contents_prior | ansible.builtin.to_nice_yaml }}"
+            after: "{{ apt_sources.repo | string | community.general.jc('ini') | ansible.builtin.to_nice_yaml }}"
+          when:
+            - ( ansible_check_mode | bool ) or ( ansible_diff_mode | bool )
+            - apt_sources_contents_prior is defined
+            - apt_sources.repo is defined
+
+      when: apt_sources.changed | bool
+
+  tags:
+    - apt
+...

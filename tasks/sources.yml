@@ -21,6 +21,7 @@
         check_valid_until: true
         components: "{{ apt_source.components }}"
         enabled: true
+        pdiffs: true
         name: "{{ apt_source.name }}"
         signed_by: "{{ apt_source.signed_by }}"
         suites: "{{ apt_source.suites }}"

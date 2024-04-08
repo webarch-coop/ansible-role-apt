@@ -31,13 +31,45 @@
         var: apt_pkgs | community.general.json_query('[].distro')
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
-    - name: Check that the distro and version is supported
-      ansible.builtin.assert:
-        that:
-          - ansible_distribution is regex('^Debian|Ubuntu$')
-          - ansible_distribution_release in (apt_default_config | community.general.json_query('[].distro'))
-          - ansible_distribution_release in (apt_pkgs | community.general.json_query('[].distro'))
-        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+    - name: Dictro check in a block to all a rescue
+      block:
+
+        - name: Check that the distro and version is supported
+          ansible.builtin.assert:
+            that:
+              - ansible_distribution is regex('^Debian|Ubuntu$')
+              - ansible_distribution_release in (apt_default_config | community.general.json_query('[].distro'))
+              - ansible_distribution_release in (apt_pkgs | community.general.json_query('[].distro'))
+            quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+
+      rescue:
+
+        - name: Print ansible_distribution
+          ansible.builtin.debug:
+            var: ansible_distribution
+
+        - name: Print ansible_distribution_release
+          ansible.builtin.debug:
+            var: ansible_distribution_release
+
+        - name: Print apt_default_config
+          ansible.builtin.debug:
+            var: apt_default_config
+
+        - name: Print the distros listed in apt_default_config
+          ansible.builtin.debug:
+            var: apt_default_config | community.general.json_query('[].distro')
+
+        - name: Print apt_pkgs
+          ansible.builtin.debug:
+            var: apt_pkgs
+
+        - name: Print the distros listed in apt_pkgs
+          ansible.builtin.debug:
+            var: apt_pkgs | community.general.json_query('[].distro')
+
+        - name: Fail due to erors in checking if the distro and version are supported
+          ansible.builtin.fail:
 
     - name: Check apt_distro
       block:

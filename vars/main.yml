@@ -220,7 +220,8 @@ apt_default_config:
           - deb https://deb.debian.org/debian buster main contrib non-free
           - deb https://deb.debian.org/debian buster-updates main contrib non-free
           - deb https://deb.debian.org/debian-security buster/updates main contrib non-free
-          - deb https://deb.debian.org/debian buster-backports main contrib non-free
+          # The repository 'https://deb.debian.org/debian buster-backports Release' no longer has a Release file.
+          # - deb https://deb.debian.org/debian buster-backports main contrib non-free
       - path: /etc/apt/sources.list.d/backports.list
         state: absent
 ...

@@ -18,7 +18,7 @@ variables:
   APT_ANSIBLE_CORE: "2.15.10"
   # Newer versions of ansible-lint can't be installed on Bullseye as they require Python >= 3.10
   APT_ANSIBLE_LINT: "6.22.2"
-  APT_JC: "1.25.2"
+  APT_JC: "1.25.3"
   APT_JMESPATH: "1.0.1"
   # Newer versions of Molecule can't be installed on Bullseye as they require Python >= 3.10
   APT_MOLECULE: "6.0.3"

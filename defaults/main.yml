@@ -30,6 +30,8 @@ apt_local_facts_files:
     state: absent
   - name: gpg.fact
     state: present
+  - name: sh.fact
+    state: present
 apt_local_facts_pkgs:
   - bash
   - coreutils

@@ -37,13 +37,16 @@
     - name: Include checks
       ansible.builtin.include_tasks: checks.yml
 
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+
     - name: Install packages in a block as this task will fail when the sources are not correct
       block:
 
         - name: Packages present
           ansible.builtin.apt:
             pkg: "{{ apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query) }}"
-            update_cache: true
           vars:
             apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
 

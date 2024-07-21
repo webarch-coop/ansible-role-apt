@@ -209,6 +209,8 @@ apt_default_config:
           - deb https://deb.debian.org/debian bullseye main contrib non-free
           - deb https://deb.debian.org/debian bullseye-updates main contrib non-free
           - deb https://security.debian.org/debian-security bullseye-security main contrib non-free
+          # Bullseye LTS start date will also be EOL for backports, August 15th, 2024
+          # https://wiki.debian.org/LTS
           - deb https://deb.debian.org/debian bullseye-backports main contrib non-free
       - path: /etc/apt/sources.list.d/backports.list
         state: absent
@@ -220,7 +222,6 @@ apt_default_config:
           - deb https://deb.debian.org/debian buster main contrib non-free
           - deb https://deb.debian.org/debian buster-updates main contrib non-free
           - deb https://deb.debian.org/debian-security buster/updates main contrib non-free
-          # The repository 'https://deb.debian.org/debian buster-backports Release' no longer has a Release file.
           # - deb https://deb.debian.org/debian buster-backports main contrib non-free
       - path: /etc/apt/sources.list.d/backports.list
         state: absent

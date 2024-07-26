@@ -31,7 +31,7 @@
         var: apt_pkgs | community.general.json_query('[].distro')
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
-    - name: Dictro check in a block to all a rescue
+    - name: Distro check in a block to allow a rescue
       block:
 
         - name: Check that the distro and version is supported

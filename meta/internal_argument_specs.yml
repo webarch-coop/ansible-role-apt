@@ -186,6 +186,31 @@ argument_specs:
                 type: str
                 required: false
                 description: Either a URL to a GPG key, absolute path to a keyring file, one or more fingerprints of keys either in the trusted.gpg keyring or in the keyrings in the trusted.gpg.d/ directory, or an ASCII armored GPG public key block.
+      apt_freexian_distros:
+        type: list
+        elements: str
+        required: false
+        choices:
+          - buster
+          - jessie
+          - stretch
+      apt_freexian_gpg_checksum:
+        type: str
+        required: false
+        description: Freexian extended LTS GPG public key checksum.
+      apt_freexian_gpg_fingerprints:
+        type: list
+        elements: str
+        required: false
+        description: Freexian extended LTS GPG public key fingerprints.
+      apt_freexian_gpg_fingerprints_query:
+        type: str
+        required: false
+        description: Freexian GPG key JMESPath query.
+      apt_freexian_gpg_url:
+        type: str
+        required: false
+        description: Freexian extended LTS GPG public key URL.
       apt_internal_argument_spec:
         type: dict
         required: false

@@ -1,0 +1,77 @@
+# Copyright 2019-2024 Chris Croome
+#
+# This file is part of the Webarchitects apt Ansible role.
+#
+# The Webarchitects apt Ansible role is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# The Webarchitects apt Ansible role is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
+---
+- name: Freexian tasks
+  block:
+
+    - name: Freexian gpg asc key downloaded
+      ansible.builtin.get_url:
+        url: "{{ apt_freexian_gpg_url }}"
+        dest: /root/freexian-archive-extended-lts.gpg
+        checksum: "{{ apt_freexian_gpg_checksum }}"
+        force: true
+        mode: "0644"
+        owner: root
+        group: root
+
+    - name: Stat /root/freexian-archive-extended-lts.gpg
+      ansible.builtin.stat:
+        path: /root/freexian-archive-extended-lts.gpg
+      register: apt_freexian_gpg_path
+
+    - name: Check Freexian GPG signatures when the public key is present
+      block:
+
+        - name: Check Freexian GPG signatures
+          ansible.builtin.command: >
+            gpg --with-colons
+            {% if ansible_local.gpg.version is version('2.2.12', '<') %}
+            --with-fingerprint --with-subkey-fingerprint
+            {% else %}
+            --show-keys
+            {% endif %}
+            /root/freexian-archive-extended-lts.gpg
+          check_mode: false
+          changed_when: false
+          register: apt_freexian_gpg
+
+        - name: Set a fact for the Freexian GPG fingerprints on the server
+          ansible.builtin.set_fact:
+            apt_freexian_gpg_fingerprints_found: "{{ apt_freexian_gpg.stdout | string | community.general.jc('gpg') | community.general.json_query(apt_freexian_gpg_fingerprints_query) | list }}"
+
+        - name: Freexian gpg key check first fingerprint for GPG versions less that 2.2.12
+          ansible.builtin.assert:
+            that:
+              - apt_freexian_gpg_fingerprints_found[0] == apt_freexian_gpg_fingerprints[0]
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+          when: ansible_local.gpg.version is version('2.2.12', '<')
+
+        - name: Freexian gpg key check all fingerprints
+          ansible.builtin.assert:
+            that:
+              - apt_freexian_gpg_fingerprints_found | difference(apt_freexian_gpg_fingerprints) | length == 0
+              - apt_freexian_gpg_fingerprints | difference(apt_freexian_gpg_fingerprints_found) | length == 0
+            quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
+          when: ansible_local.gpg.version is version('2.2.12', '>=')
+
+        - name: Freexian GPG public key in place
+          ansible.builtin.copy:
+            src: /root/freexian-archive-extended-lts.gpg
+            dest: /etc/apt/trusted.gpg.d/freexian-archive-extended-lts.gpg
+            remote_src: true
+            mode: "0644"
+            owner: root
+            group: root
+
+      when: apt_freexian_gpg_path.stat.exists | bool
+
+  tags:
+    - apt
+...

@@ -37,6 +37,10 @@
     - name: Include checks
       ansible.builtin.include_tasks: checks.yml
 
+    - name: Include Freexian tasks for supported distros
+      ansible.builtin.include_tasks: freexian.yml
+      when: apt_distro in apt_freexian_distros
+
     - name: Update apt cache
       ansible.builtin.apt:
         update_cache: true

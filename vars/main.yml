@@ -12,6 +12,17 @@
 aptvarnames: "{{ q('varnames', '^apt_') | sort }}"
 apthostvars: "{{ dict(aptvarnames | list | zip(q('vars', *aptvarnames))) }}"
 
+# https://www.freexian.com/lts/extended/docs/how-to-use-extended-lts/
+apt_freexian_distros:
+  - buster
+  - stretch
+  - jessie
+apt_freexian_gpg_checksum: sha256:a0b22152fdf1942f49cc1559ec4598bae8d8954da9ed38662d15b97a60909db8
+apt_freexian_gpg_fingerprints:
+  - AB597C4F6F3380BD4B2BEBC2A07310D369055D5A
+apt_freexian_gpg_fingerprints_query: "[?type=='fpr'].user_id"
+apt_freexian_gpg_url: https://deb.freexian.com/extended-lts/archive-key.gpg
+
 apt_local_facts_absent: "{{ apt_local_facts_files | community.general.json_query('[?state==`absent`].name') }}"
 apt_local_facts_present: "{{ apt_local_facts_files | community.general.json_query('[?state==`present`].name') }}"
 apt_local_facts_names_present: "{{ apt_local_facts_files | community.general.json_query('[?state==`present`].name') | map('regex_replace', '[.]fact$') }}"
@@ -223,6 +234,7 @@ apt_default_config:
           - deb https://deb.debian.org/debian buster-updates main contrib non-free
           - deb https://deb.debian.org/debian-security buster/updates main contrib non-free
           # - deb https://deb.debian.org/debian buster-backports main contrib non-free
+          - deb http://deb.freexian.com/extended-lts buster-lts main contrib non-free
       - path: /etc/apt/sources.list.d/backports.list
         state: absent
 ...

@@ -11,7 +11,7 @@
 - name: Sources list file tasks
   block:
 
-    - name: "List files in place for {{ ansible_distribution }}"
+    - name: "List files in place for {{ ansible_facts.distribution }}"
       ansible.builtin.template:
         src: sources.list.j2
         dest: "{{ apt_list.path }}"
@@ -20,7 +20,7 @@
         group: root
         backup: true
       vars:
-        apt_file_dest: "/etc/apt/sources.list.d/{{ ansible_distribution | lower }}.sources"
+        apt_file_dest: "/etc/apt/sources.list.d/{{ ansible_facts.distribution | lower }}.sources"
       when:
         - apt_list.state is defined
         - apt_list.state == "present"
@@ -29,7 +29,7 @@
         loop_var: apt_list
         label: "{{ apt_list.path | ansible.builtin.basename | ansible.builtin.regex_replace('[.]lists$') }}"
 
-    - name: "Include apt list files absent tasks for {{ ansible_distribution }}"
+    - name: "Include apt list files absent tasks for {{ ansible_facts.distribution }}"
       ansible.builtin.include_tasks: file_absent.yml
       vars:
         apt_file_absent: "{{ apt_lists_file_absent.path }}"

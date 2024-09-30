@@ -29,7 +29,7 @@
           ansible.builtin.set_fact:
             apt_sources_contents_prior: "{{ apt_sources_contents_b64encoded['content'] | ansible.builtin.b64decode | community.general.jc('ini') }}"
 
-        - name: "Check apt repository sources file present for {{ ansible_distribution }}"
+        - name: "Check apt repository sources file present for {{ ansible_facts.distribution }}"
           ansible.builtin.deb822_repository:
             allow_downgrade_to_insecure: false
             allow_insecure: false
@@ -64,12 +64,12 @@
             creates: "/etc/apt/sources.list.d/.{{ apt_source.name }}.sources.{{ apt_date_timestamp }}.ansible.save"
             removes: /etc/apt/sources.list.d/{{ apt_source.name }}.sources
           vars:
-            apt_date_timestamp: "{{ ansible_date_time.iso8601_basic_short }}"
+            apt_date_timestamp: "{{ ansible_facts.date_time.iso8601_basic_short }}"
           when: apt_sources_contents_prior != apt_sources_check.repo | string | community.general.jc('ini')
 
       when: apt_sources_path.stat.exists | bool
 
-    - name: "Apt repository sources file present for {{ ansible_distribution }}"
+    - name: "Apt repository sources file present for {{ ansible_facts.distribution }}"
       ansible.builtin.deb822_repository:
         allow_downgrade_to_insecure: false
         allow_insecure: false

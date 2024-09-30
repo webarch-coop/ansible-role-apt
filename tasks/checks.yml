@@ -11,14 +11,14 @@
 - name: Apt checks
   block:
 
-    - name: Print ansible_distribution
+    - name: Print ansible_facts.distribution
       ansible.builtin.debug:
-        var: ansible_distribution
+        var: ansible_facts.distribution
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
-    - name: Print ansible_distribution_release
+    - name: Print ansible_facts.distribution_release
       ansible.builtin.debug:
-        var: ansible_distribution_release
+        var: ansible_facts.distribution_release
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
 
     - name: Print the distros listed in apt_default_config
@@ -37,20 +37,20 @@
         - name: Check that the distro and version is supported
           ansible.builtin.assert:
             that:
-              - ansible_distribution is regex('^Debian|Ubuntu$')
-              - ansible_distribution_release in (apt_default_config | community.general.json_query('[].distro'))
-              - ansible_distribution_release in (apt_pkgs | community.general.json_query('[].distro'))
+              - ansible_facts.distribution is regex('^Debian|Ubuntu$')
+              - ansible_facts.distribution_release in (apt_default_config | community.general.json_query('[].distro'))
+              - ansible_facts.distribution_release in (apt_pkgs | community.general.json_query('[].distro'))
             quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
       rescue:
 
-        - name: Print ansible_distribution
+        - name: Print ansible_facts.distribution
           ansible.builtin.debug:
-            var: ansible_distribution
+            var: ansible_facts.distribution
 
-        - name: Print ansible_distribution_release
+        - name: Print ansible_facts.distribution_release
           ansible.builtin.debug:
-            var: ansible_distribution_release
+            var: ansible_facts.distribution_release
 
         - name: Print apt_default_config
           ansible.builtin.debug:
@@ -89,10 +89,10 @@
         - name: Fail if the checked distro version doesn't match the specified value of apt_distro
           ansible.builtin.fail:
             msg: >-
-              The distro was detected as {{ ansible_distribution_release }} but you are asking for the server to be
+              The distro was detected as {{ ansible_facts.distribution_release }} but you are asking for the server to be
               configured for {{ apt_distro }}.
           when:
-            - apt_distro != ansible_distribution_release
+            - apt_distro != ansible_facts.distribution_release
             - not apt_distro_switch | bool
 
       when: apt_distro is defined
@@ -102,7 +102,7 @@
 
         - name: Print a warning the the distro is being changed
           ansible.builtin.debug:
-            msg: "WARNING: Updating distro from {{ ansible_distribution_release }} to {{ apt_distro }}."
+            msg: "WARNING: Updating distro from {{ ansible_facts.distribution_release }} to {{ apt_distro }}."
 
         - name: Run apt-get --allow-releaseinfo-change update
           ansible.builtin.command: apt-get --allow-releaseinfo-change update
@@ -110,13 +110,13 @@
 
       when:
         - apt_distro is defined
-        - apt_distro != ansible_distribution_release
+        - apt_distro != ansible_facts.distribution_release
         - apt_distro_switch is defined
         - apt_distro_switch | bool
 
     - name: Set apt_distro if not defined
       ansible.builtin.set_fact:
-        apt_distro: "{{ ansible_distribution_release }}"
+        apt_distro: "{{ ansible_facts.distribution_release }}"
       when: apt_distro is not defined
 
     - name: Check the processor architecture when ansible_local.dpkg.arch is not defined

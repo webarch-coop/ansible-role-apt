@@ -31,7 +31,7 @@
         creates: "{{ apt_file_backup }}"
         removes: "{{ apt_file_absent }}"
       vars:
-        apt_file_backup: "{{ apt_file_absent | ansible.builtin.dirname }}/.{{ apt_file_absent | ansible.builtin.basename }}.{{ ansible_date_time.iso8601_basic_short }}.ansible.save"
+        apt_file_backup: "{{ apt_file_absent | ansible.builtin.dirname }}/.{{ apt_file_absent | ansible.builtin.basename }}.{{ ansible_facts.date_time.iso8601_basic_short }}.ansible.save"
       when: apt_file_absent_path.stat.exists | bool
 
   tags:

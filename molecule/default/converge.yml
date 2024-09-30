@@ -15,9 +15,26 @@
     - localhost
   tasks:
 
-    - name: Debug ansible_effective_user_id
+    - name: Debug ansible_facts.effective_user_id
       ansible.builtin.debug:
-        var: ansible_effective_user_id
+        var: ansible_facts.effective_user_id
+
+    - name: Debug ansible_facts.user_id
+      ansible.builtin.debug:
+        var: ansible_facts.user_id
+
+    - name: Debug ansible_facts.user_dir
+      ansible.builtin.debug:
+        var: ansible_facts.user_dir
+
+    - name: Debug ansible_version.full
+      ansible.builtin.debug:
+        var: ansible_version.full
+
+    - name: Debug ansible_facts
+      ansible.builtin.debug:
+        var: ansible_facts
+        verbosity: 2
 
     - name: Include apt role as root
       ansible.builtin.include_role:

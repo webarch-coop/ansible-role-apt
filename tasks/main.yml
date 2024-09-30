@@ -52,7 +52,7 @@
           ansible.builtin.apt:
             pkg: "{{ apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query) }}"
           vars:
-            apt_pkgs_jmespath_query: "[?distro=='{{ ansible_distribution_release }}'].pkgs|[0]"
+            apt_pkgs_jmespath_query: "[?distro=='{{ ansible_facts.distribution_release }}'].pkgs|[0]"
 
       rescue:
 

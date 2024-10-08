@@ -12,5 +12,6 @@
 skip_list:
   - command-instead-of-module
   - key-order[task]
+var_naming_pattern: "^[apt|molecule]_?[a-z0-9_]*$"
 # vim: syntax=yaml
 ...

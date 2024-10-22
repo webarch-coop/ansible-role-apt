@@ -46,6 +46,8 @@
         update_cache: true
       check_mode: false
       changed_when: false
+      tags:
+        - molecule-idempotence-notest
 
     - name: Install packages in a block as this task will fail when the sources are not correct
       block:

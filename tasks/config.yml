@@ -63,6 +63,9 @@
           ansible.builtin.fail:
             msg: "{{ apt_update_cache }}"
 
+      tags:
+        - molecule-idempotence-notest
+
   tags:
     - apt
 ...

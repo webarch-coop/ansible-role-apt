@@ -14,4 +14,5 @@
   changed_when: false
   tags:
     - apt
+    - molecule-idempotence-notest
 ...

@@ -119,18 +119,18 @@
         apt_distro: "{{ ansible_facts.distribution_release }}"
       when: apt_distro is not defined
 
-    - name: Check the processor architecture when ansible_local.dpkg.arch is not defined
+    - name: Check the processor architecture when ansible_facts.ansible_local.dpkg.arch is not defined
       ansible.builtin.command: dpkg --print-architecture
       check_mode: false
       changed_when: false
       register: apt_dpkg_architecture
-      when: ansible_local.dpkg.arch is not defined
+      when: ansible_facts.ansible_local.dpkg.arch is not defined
 
     - name: Set a fact for the processor architecture
       ansible.builtin.set_fact:
         apt_architecture: >-
-          {% if ansible_local.dpkg.arch is defined %}
-          {{- ansible_local.dpkg.arch -}}
+          {% if ansible_facts.ansible_local.dpkg.arch is defined %}
+          {{- ansible_facts.ansible_local.dpkg.arch -}}
           {% elif apt_dpkg_architecture is defined %}
           {{- apt_dpkg_architecture.stdout -}}
           {% endif %}

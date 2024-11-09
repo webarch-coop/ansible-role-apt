@@ -18,7 +18,7 @@
         update_cache: true
       when: >-
         ( ( apt_local_facts_pkgs is defined ) and ( apt_local_facts_pkgs != [] ) ) and
-        ( ( ansible_local.dpkg.installed is not defined ) or
+        ( ( ansible_facts.ansible_local.dpkg.installed is not defined ) or
         ( apt_local_facts_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != [] ) )
 
     - name: Ansible facts.d directory present
@@ -67,7 +67,7 @@
     - name: Check that ansible_local facts are defined
       ansible.builtin.assert:
         that:
-          - ansible_local[apt_fact_name] is defined
+          - ansible_facts.ansible_local[apt_fact_name] is defined
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
       loop: "{{ apt_local_facts_names_present }}"
       loop_control:
@@ -78,7 +78,7 @@
 
     - name: Print Ansible local dpkg facts
       ansible.builtin.debug:
-        var: ansible_local[apt_fact_name]
+        var: ansible_facts.ansible_local[apt_fact_name]
         verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
       loop: "{{ apt_local_facts_names_present }}"
       loop_control:

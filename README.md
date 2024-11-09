@@ -193,9 +193,9 @@ In addition to the direct use of this role to configure the `/etc/apt/sources.li
     name: apt
     tasks_from: local_facts.yml
   when: >-
-    ( ansible_local.dpkg.arch is not defined ) or
-    ( ansible_local.gpg.version is not defined ) or
-    ( ansible_local.bash.path is not defined )
+    ( ansible_facts.ansible_local.dpkg.arch is not defined ) or
+    ( ansible_facts.ansible_local.gpg.version is not defined ) or
+    ( ansible_facts.ansible_local.bash.path is not defined )
 ```
 
 The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an example of this usage in the [apt.yml](https://git.coop/webarch/yarn/-/blob/master/tasks/apt.yml) tasks, `ansible_local.bash.path` is used by the `gpg --dearmor` task, the `ansible_local.dpkg.arch` variable is used by the [yarn.sources](https://git.coop/webarch/yarn/-/blob/master/templates/yarn.sources.j2) template and the `ansible_local.gpg.version` variable is used to conditionally include the `--with-fingerprint --with-subkey-fingerprint` options for the `gpg --show-keys` command.

@@ -26,7 +26,7 @@
             install_recommends: false
             update_cache: true
           when: >-
-            ( ( ansible_local.dpkg.installed is not defined ) or
+            ( ( ansible_facts.ansible_local.dpkg.installed is not defined ) or
             ( apt_apticron_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != [] ) )
 
       when:
@@ -58,7 +58,7 @@
             update_cache: true
           register: apt_apticron_absent
           when: >-
-            ( ( ansible_local.dpkg.installed is not defined ) or
+            ( ( ansible_facts.ansible_local.dpkg.installed is not defined ) or
             ( apt_apticron_pkgs | ansible.builtin.intersect(ansible_local.dpkg.installed) != [] ) )
 
       when: >-

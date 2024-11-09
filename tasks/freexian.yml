@@ -32,7 +32,7 @@
         - name: Check Freexian GPG signatures
           ansible.builtin.command: >
             gpg --with-colons
-            {% if ansible_local.gpg.version is version('2.2.12', '<') %}
+            {% if ansible_facts.ansible_local.gpg.version is version('2.2.12', '<') %}
             --with-fingerprint --with-subkey-fingerprint
             {% else %}
             --show-keys
@@ -51,7 +51,7 @@
             that:
               - apt_freexian_gpg_fingerprints_found[0] == apt_freexian_gpg_fingerprints[0]
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
-          when: ansible_local.gpg.version is version('2.2.12', '<')
+          when: ansible_facts.ansible_local.gpg.version is version('2.2.12', '<')
 
         - name: Freexian gpg key check all fingerprints
           ansible.builtin.assert:
@@ -59,7 +59,7 @@
               - apt_freexian_gpg_fingerprints_found | difference(apt_freexian_gpg_fingerprints) | length == 0
               - apt_freexian_gpg_fingerprints | difference(apt_freexian_gpg_fingerprints_found) | length == 0
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
-          when: ansible_local.gpg.version is version('2.2.12', '>=')
+          when: ansible_facts.ansible_local.gpg.version is version('2.2.12', '>=')
 
         - name: Freexian GPG public key in place
           ansible.builtin.copy:

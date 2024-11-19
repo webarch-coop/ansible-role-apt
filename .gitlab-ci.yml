@@ -37,6 +37,7 @@ variables:
   PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"
 stages:
+  - focal
   - bullseye
   - bookworm
   - trixie
@@ -141,7 +142,7 @@ bullseye:
     - molecule test
 focal:
   image: ubuntu:focal
-  stage: jammy
+  stage: focal
   before_script:
     - echo 'export DEBIAN_FRONTEND="${DEBIAN_FRONTEND}"' >> ~/.bashrc
     - echo 'export PIPX_BIN_DIR="${PIPX_BIN_DIR}"' >> ~/.bashrc

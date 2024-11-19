@@ -70,6 +70,9 @@
 
         - name: Fail due to erors in checking if the distro and version are supported
           ansible.builtin.fail:
+            msg: >-
+              This role doesn't appear to support the version of Linux that {{ inventory_hostname }} is running, please check the debugging information
+              above to see if {{ ansible_facts.distribution }} {{ ansible_facts.distribution_release }} is listed above.
 
     - name: Check apt_distro
       block:

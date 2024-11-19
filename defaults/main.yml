@@ -80,6 +80,19 @@ apt_pkgs:
       - python3-apt
       - python3-debian
       - xz-utils
+  - distro: focal
+    pkgs:
+      - apt-listchanges
+      - apt-show-versions
+      - apt-utils
+      - aptitude
+      - aptitude-common
+      - file
+      - needrestart
+      - python3-apt
+      - python3-debian
+      - ubuntu-keyring
+      - xz-utils
   - distro: jammy
     pkgs:
       - apt-listchanges

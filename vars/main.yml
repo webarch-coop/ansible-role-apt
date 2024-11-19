@@ -237,4 +237,19 @@ apt_default_config:
           - deb http://deb.freexian.com/extended-lts buster-lts main contrib non-free
       - path: /etc/apt/sources.list.d/backports.list
         state: absent
+  - distro: focal
+    lists:
+      - path: /etc/apt/sources.list
+        state: present
+        repos:
+          - deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+          - deb-src http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse
+          - deb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+          - deb-src http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse
+          - deb http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+          - deb-src http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse
+          - deb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
+          - deb-src http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
+      - path: /etc/apt/sources.list.d/backports.list
+        state: absent
 ...

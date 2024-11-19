@@ -160,7 +160,7 @@ focal:
     - pipx install --include-deps pre-commit
     # - pipx install --include-deps molecule==${APT_MOLECULE}
     - pipx install --include-deps molecule==4.0.4
-    - pipx inject --include-deps --use_binaries molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version

@@ -200,6 +200,10 @@ In addition to the direct use of this role to configure the `/etc/apt/sources.li
 
 The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an example of this usage in the [apt.yml](https://git.coop/webarch/yarn/-/blob/master/tasks/apt.yml) tasks, `ansible_local.bash.path` is used by the `gpg --dearmor` task, the `ansible_local.dpkg.arch` variable is used by the [yarn.sources](https://git.coop/webarch/yarn/-/blob/master/templates/yarn.sources.j2) template and the `ansible_local.gpg.version` variable is used to conditionally include the `--with-fingerprint --with-subkey-fingerprint` options for the `gpg --show-keys` command.
 
+## Notes
+
+This role removes `/etc/apt.conf` files as this role previously created them using the wrong format and in addition any required apt config should be written to files in `/etc/apt/apt.conf.d/`.
+
 ## Repository
 
 The primary URL of this repo is [`https://git.coop/webarch/apt`](https://git.coop/webarch/apt) however it is also [mirrored to GitHub](https://github.com/webarch-coop/ansible-role-apt) and [available via Ansible Galaxy](https://galaxy.ansible.com/chriscroome/apt).

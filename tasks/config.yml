@@ -19,14 +19,15 @@
         owner: root
         group: root
 
-    - name: "File /etc/apt.conf in place for {{ apt_distro }}"
-      ansible.builtin.template:
-        src: templates/apt.conf.j2
-        dest: /etc/apt.conf
-        mode: "0644"
-        owner: root
-        group: root
-        backup: true
+    - name: Set a fact for the date to be used in the /etc/apt.conf backup path
+      ansible.builtin.set_fact:
+        apt_date: "{{ ansible_facts.date_time.iso8601_basic_short }}"
+
+    - name: Legacy /etc/apt.conf file absent
+      ansible.builtin.command: "mv /etc/apt.conf /etc/.apt.conf.{{ apt_date }}.ansible.save"
+      args:
+        creates: "/etc/.apt.conf.{{ apt_date }}.ansible.save"
+        removes: /etc/apt.conf
 
     - name: "Include apt list file tasks for {{ apt_distro }}"
       ansible.builtin.include_tasks: lists.yml

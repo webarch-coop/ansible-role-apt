@@ -17,6 +17,7 @@ variables:
   ANSIBLE_INJECT_FACT_VARS: "0"
   ANSIBLE_NOCOWS: "1"
   ANSIBLE_REMOTE_TMP: "/tmp"
+  ANSIBLE_ROLES_PATH: "${CI_PROJECT_DIR}/..:~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles"
   ANSIBLE_SHELL_ALLOW_WORLD_READABLE_TEMP: "1"
   # Newer versions of ansible can't be installed on Bullseye as they require Python >= 3.10
   APT_ANSIBLE: "8.7.0"
@@ -30,7 +31,7 @@ variables:
   APT_PYTHON_DEBIAN: "0.1.49"
   DEBIAN_FRONTEND: noninteractive
   DEFAULT_MANAGED_STR: "Ansible managed"
-  GIT_STRATEGY: none
+  # GIT_STRATEGY: none
   MOLECULE_VERBOSITY: "0"
   PRE_COMMIT_COLOR: always
   PIPX_BIN_DIR: "/usr/local/bin"
@@ -65,11 +66,11 @@ trixie:
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - chmod 700 ${CI_PROJECT_NAME}
-    - cd ${CI_PROJECT_NAME}
+    # - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - git clone ${CI_PROJECT_URL}.git
+    # - chmod 700 ${CI_PROJECT_NAME}
+    # - cd ${CI_PROJECT_NAME}
   script:
     - mv .pre-commit-config-gitlab-ci.yaml .pre-commit-config.yaml
     - pre-commit install
@@ -97,11 +98,11 @@ bookworm:
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - chmod 700 ${CI_PROJECT_NAME}
-    - cd ${CI_PROJECT_NAME}
+    # - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - git clone ${CI_PROJECT_URL}.git
+    # - chmod 700 ${CI_PROJECT_NAME}
+    # - cd ${CI_PROJECT_NAME}
   script:
     - mv .pre-commit-config-gitlab-ci.yaml .pre-commit-config.yaml
     - pre-commit install
@@ -129,11 +130,11 @@ bullseye:
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - chmod 700 ${CI_PROJECT_NAME}
-    - cd ${CI_PROJECT_NAME}
+    # - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - git clone ${CI_PROJECT_URL}.git
+    # - chmod 700 ${CI_PROJECT_NAME}
+    # - cd ${CI_PROJECT_NAME}
   script:
     - mv .pre-commit-config-gitlab-ci.yaml .pre-commit-config.yaml
     - pre-commit install
@@ -161,11 +162,11 @@ jammy:
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - chmod 700 ${CI_PROJECT_NAME}
-    - cd ${CI_PROJECT_NAME}
+    # - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - git clone ${CI_PROJECT_URL}.git
+    # - chmod 700 ${CI_PROJECT_NAME}
+    # - cd ${CI_PROJECT_NAME}
   script:
     - mv .pre-commit-config-gitlab-ci.yaml .pre-commit-config.yaml
     - pre-commit install
@@ -193,11 +194,11 @@ noble:
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
-    - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
-    - git clone ${CI_PROJECT_URL}.git
-    - chmod 700 ${CI_PROJECT_NAME}
-    - cd ${CI_PROJECT_NAME}
+    # - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - git clone ${CI_PROJECT_URL}.git
+    # - chmod 700 ${CI_PROJECT_NAME}
+    # - cd ${CI_PROJECT_NAME}
   script:
     - mv .pre-commit-config-gitlab-ci.yaml .pre-commit-config.yaml
     - pre-commit install

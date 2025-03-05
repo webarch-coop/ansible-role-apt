@@ -86,7 +86,8 @@
           loop_control:
             extended: true
             loop_var: molecule_apt_sources_list_d_b64
-            label: "{{ ansible_loop.index }}"
+            # label: "{{ ansible_loop.index }}"
+            label: "{{ (molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode)['X-Repolib-Name'] }}"
           when:
             - molecule_apt_sources_list_d_b64encoded.results is defined
             - molecule_apt_sources_list_d_b64encoded.results != []

@@ -77,7 +77,7 @@
         - name: Debug molecule_apt_sources_list_d_b64encoded.results
           ansible.builtin.debug:
             var: molecule_apt_sources_list_d_b64encoded
-            # verbosity: 1
+            verbosity: 1
 
         - name: Debug the content of the .list and .sources files in /etc/apt/sources.list.d
           ansible.builtin.debug:
@@ -86,8 +86,8 @@
           loop_control:
             extended: true
             loop_var: molecule_apt_sources_list_d_b64
-            # label: "{{ ansible_loop.index }}"
-            label: "{{ (molecule_apt_sources_list_d_b64 | ansible.builtin.b64decode)['X-Repolib-Name'] }}"
+            # Ideally the label would be the file path and name... they are listed in the debug task above this task
+            label: "{{ ansible_loop.index }}"
           when:
             - molecule_apt_sources_list_d_b64encoded.results is defined
             - molecule_apt_sources_list_d_b64encoded.results != []

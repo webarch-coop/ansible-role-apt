@@ -86,6 +86,7 @@
           loop_control:
             extended: true
             loop_var: molecule_apt_sources_list_d_b64
+            # Ideally the label would be the file path and name... they are listed in the debug task above this task
             label: "{{ ansible_loop.index }}"
           when:
             - molecule_apt_sources_list_d_b64encoded.results is defined

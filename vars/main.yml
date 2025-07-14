@@ -15,8 +15,8 @@ apthostvars: "{{ dict(aptvarnames | list | zip(q('vars', *aptvarnames))) }}"
 # https://www.freexian.com/lts/extended/docs/how-to-use-extended-lts/
 apt_freexian_distros:
   - buster
-  - stretch
   - jessie
+  - stretch
 apt_freexian_gpg_checksum: sha256:a0b22152fdf1942f49cc1559ec4598bae8d8954da9ed38662d15b97a60909db8
 apt_freexian_gpg_fingerprints:
   - AB597C4F6F3380BD4B2BEBC2A07310D369055D5A
@@ -220,8 +220,6 @@ apt_default_config:
           - deb https://deb.debian.org/debian bullseye main contrib non-free
           - deb https://deb.debian.org/debian bullseye-updates main contrib non-free
           - deb https://security.debian.org/debian-security bullseye-security main contrib non-free
-          # Bullseye LTS start date will also be EOL for backports, August 15th, 2024
-          # https://wiki.debian.org/LTS
           - deb https://deb.debian.org/debian bullseye-backports main contrib non-free
       - path: /etc/apt/sources.list.d/backports.list
         state: absent
@@ -230,10 +228,9 @@ apt_default_config:
       - path: /etc/apt/sources.list
         state: present
         repos:
-          - deb https://deb.debian.org/debian buster main contrib non-free
-          - deb https://deb.debian.org/debian buster-updates main contrib non-free
-          - deb https://deb.debian.org/debian-security buster/updates main contrib non-free
-          # - deb https://deb.debian.org/debian buster-backports main contrib non-free
+          - deb https://archive.debian.org/debian buster main contrib non-free
+          - deb https://archive.debian.org/debian buster-updates main contrib non-free
+          - deb https://archive.debian.org/debian-security buster/updates main contrib non-free
           - deb http://deb.freexian.com/extended-lts buster-lts main contrib non-free
       - path: /etc/apt/sources.list.d/backports.list
         state: absent

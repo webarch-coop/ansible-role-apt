@@ -41,16 +41,16 @@
       ansible.builtin.include_tasks: freexian.yml
       when: apt_distro in apt_freexian_distros
 
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: true
-      check_mode: false
-      changed_when: false
-      tags:
-        - molecule-idempotence-notest
-
     - name: Install packages in a block as this task will fail when the sources are not correct
       block:
+
+        - name: Update apt cache
+          ansible.builtin.apt:
+            update_cache: true
+          check_mode: false
+          changed_when: false
+          tags:
+            - molecule-idempotence-notest
 
         - name: Packages present
           ansible.builtin.apt:
@@ -60,9 +60,9 @@
 
       rescue:
 
-        - name: Package install failed
+        - name: Package cache update / install failed
           ansible.builtin.debug:
-            msg: This failure is being ignored as the package install might require a prior update to the apt sources.
+            msg: This failure is being ignored as the cache update and package install might require a prior update to have run.
 
     - name: Include apt config tasks
       ansible.builtin.include_tasks: config.yml

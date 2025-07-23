@@ -124,11 +124,13 @@ bullseye:
     - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
     - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pre-commit python3-apt python3-debian python3-pip python3-venv
     - python3 --version
+    - export PIPX_BIN_DIR: "/usr/local/bin"
+    - export PIPX_HOME: "/opt/pipx"
     - python3 -m pip install --user pipx
     - python3 -m pipx ensurepath
-    - /usr/local/bin/pipx --version
-    - /usr/local/bin/pipx install --include-deps molecule==${APT_MOLECULE}
-    - /usr/local/bin/pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx --version
+    - pipx install --include-deps molecule==${APT_MOLECULE}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version

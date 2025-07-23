@@ -109,7 +109,7 @@ bookworm:
     - pre-commit run --all-files
     - molecule test
 bullseye:
-  image: debian:bullseye-backports
+  image: debian:bullseye
   stage: bullseye
   before_script:
     - echo 'export DEBIAN_FRONTEND="${DEBIAN_FRONTEND}"' >> ~/.bashrc

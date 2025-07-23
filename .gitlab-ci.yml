@@ -126,9 +126,9 @@ bullseye:
     - python3 --version
     - python3 -m pip install --user pipx
     - python3 -m pipx ensurepath
-    - pipx --version
-    - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - /usr/local/bin/pipx --version
+    - /usr/local/bin/pipx install --include-deps molecule==${APT_MOLECULE}
+    - /usr/local/bin/pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version

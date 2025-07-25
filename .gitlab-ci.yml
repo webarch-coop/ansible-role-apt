@@ -19,22 +19,18 @@ variables:
   ANSIBLE_REMOTE_TMP: "/tmp"
   ANSIBLE_ROLES_PATH: "${CI_PROJECT_DIR}/..:~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles"
   ANSIBLE_SHELL_ALLOW_WORLD_READABLE_TEMP: "1"
-  # Newer versions of ansible can't be installed on Bullseye as they require Python >= 3.10
-  APT_ANSIBLE: "8.7.0"
-  APT_ANSIBLE_CORE: "2.15.10"
-  # Newer versions of ansible-lint can't be installed on Bullseye as they require Python >= 3.10
-  APT_ANSIBLE_LINT: "6.22.2"
-  APT_JC: "1.25.3"
+  APT_ANSIBLE: "11.8.0"
+  APT_ANSIBLE_CORE: "2.19.0"
+  APT_ANSIBLE_LINT: "25.6.1"
+  APT_JC: "1.25.5"
   APT_JMESPATH: "1.0.1"
-  # Newer versions of Molecule can't be installed on Bullseye as they require Python >= 3.10
-  APT_MOLECULE: "6.0.3"
+  APT_MOLECULE: "25.6.0"
   APT_PYTHON_DEBIAN: "0.1.49"
   DEBIAN_FRONTEND: noninteractive
   DEFAULT_MANAGED_STR: "Ansible managed"
   # GIT_STRATEGY: none
   MOLECULE_VERBOSITY: "0"
   PRE_COMMIT_COLOR: always
-  PIP_PREFIX: "/usr/local"
   PIPX_BIN_DIR: "/usr/local/bin"
   PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"
@@ -112,6 +108,16 @@ bookworm:
 bullseye:
   image: debian:bullseye
   stage: bullseye
+  variables:
+     # Newer versions of ansible can't be installed on Bullseye as they require Python >= 3.10
+    APT_ANSIBLE: "8.7.0"
+    APT_ANSIBLE_CORE: "2.15.10"
+    # Newer versions of ansible-lint can't be installed on Bullseye as they require Python >= 3.10
+    APT_ANSIBLE_LINT: "6.22.2"
+    # Newer versions of Molecule can't be installed on Bullseye as they require Python >= 3.10
+    APT_MOLECULE: "6.0.3"
+    # Bullseye doesn't package pipx anymore
+    PIP_PREFIX: "/usr/local"
   before_script:
     - echo 'export DEBIAN_FRONTEND="${DEBIAN_FRONTEND}"' >> ~/.bashrc
     - echo 'export PIP_PREFIX="${PIPX_PREFIX}"' >> ~/.bashrc
@@ -119,6 +125,7 @@ bullseye:
     - echo 'export PIPX_HOME="${PIPX_HOME}"' >> ~/.bashrc
     - source ~/.profile
     - echo $DEBIAN_FRONTEND
+    # For reasons unknown the PIP_PREFIX is not set at this stage
     - echo $PIP_PREFIX
     - echo $PIPX_BIN_DIR
     - echo $PIPX_HOME
@@ -131,7 +138,6 @@ bullseye:
     - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pre-commit python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - PIP_PREFIX="${PIPX_PREFIX}" python3 -m pip install pipx
-    - python3 -m pipx ensurepath
     - which -a pipx
     - pipx --version
     - pipx install --include-deps molecule==${APT_MOLECULE}

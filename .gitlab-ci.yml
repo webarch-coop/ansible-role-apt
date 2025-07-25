@@ -156,6 +156,10 @@ bullseye:
 jammy:
   image: ubuntu:jammy
   stage: jammy
+  variables:
+     # Newer versions of ansible can't be installed on Jammy as ansible 11.x requires python >=3.11
+    APT_ANSIBLE: "10.7.0"
+    APT_ANSIBLE_CORE: "2.15.10"
   before_script:
     - echo 'export DEBIAN_FRONTEND="${DEBIAN_FRONTEND}"' >> ~/.bashrc
     - echo 'export PIPX_BIN_DIR="${PIPX_BIN_DIR}"' >> ~/.bashrc

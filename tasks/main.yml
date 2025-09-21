@@ -117,8 +117,19 @@
         - name: Apt autoremove
           ansible.builtin.apt:
             autoremove: true
+          when: (ansible_connection is not defined) or (ansible_connection != "chroot")
+          register: apt_autoremove
+          tags:
+            - molecule-idempotence-notest
+
+        - name: Apt autoremove with a chroot connection
+          ansible.builtin.apt:
+            autoremove: true
           # When run via the chroot role this is always changed causing molecule idempotence test fails
-          changed_when: "{% if ansible_connection == 'chroot' %}false{% else %}true{% endif %}"
+          changed_when: false
+          when:
+            - ansible_connection is defined
+            - ansible_connection == "chroot"
           register: apt_autoremove
           tags:
             - molecule-idempotence-notest

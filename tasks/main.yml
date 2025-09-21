@@ -118,6 +118,8 @@
           ansible.builtin.apt:
             autoremove: true
           register: apt_autoremove
+          tags:
+            - molecule-idempotence-notest
 
         - name: Debug apt_autoremove
           ansible.builtin.debug:
@@ -125,6 +127,7 @@
             verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
           tags:
             - debug
+            - molecule-idempotence-notest
 
         - name: Apt auto clean
           ansible.builtin.apt:

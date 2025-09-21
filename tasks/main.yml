@@ -77,26 +77,73 @@
     - name: When switching distros updates should not be done using Ansible
       block:
 
-        - name: Packages upgraded
+        - name: Apt update cache
           ansible.builtin.apt:
-            autoclean: true
-            autoremove: true
-            upgrade: dist
             update_cache: true
+          register: apt_update_cache
+
+        - name: Debug apt_update_cache
+          ansible.builtin.debug:
+            var: apt_update_cache
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
+
+        - name: Apt dist upgrade
+          ansible.builtin.apt:
+            upgrade: dist
           register: apt_dist_upgrade
+
+        - name: Debug apt_dist_upgrade
+          ansible.builtin.debug:
+            var: apt_dist_upgrade
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
 
         - name: Re-read Ansible local facts  # noqa: no-handler
           ansible.builtin.setup:
             filter: ansible_local
           when: apt_dist_upgrade.changed | bool
 
-        - name: Include apticron tasks
-          ansible.builtin.include_tasks: apticron.yml
-          when: apt_apticron is defined
+        - name: Debug apt_dist_upgrade
+          ansible.builtin.debug:
+            var: apt_dist_upgrade
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
+
+        - name: Apt autoremove
+          ansible.builtin.apt:
+            autoremove: true
+          register: apt_autoremove
+
+        - name: Debug apt_autoremove
+          ansible.builtin.debug:
+            var: apt_autoremove
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
+
+        - name: Apt auto clean
+          ansible.builtin.apt:
+            autoclean: true
+          register: apt_autoclean
+
+        - name: Debug apt_autoclean
+          ansible.builtin.debug:
+            var: apt_autoclean
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
 
         - name: Apt clean
           ansible.builtin.include_tasks: apt_clean.yml
           when: ansible_version.full is version('2.13', '>=')
+
+        - name: Include apticron tasks
+          ansible.builtin.include_tasks: apticron.yml
+          when: apt_apticron is defined
 
       when: >-
         ( apt_distro_switch is not defined ) or

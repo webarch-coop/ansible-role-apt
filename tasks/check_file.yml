@@ -23,10 +23,12 @@
           ansible.builtin.set_fact:
             apt_file_content_lines: "{{ apt_file_contents_b64encoded['content'] | ansible.builtin.b64decode | trim | ansible.builtin.split('\n') | reject('regex', '^#') | reject('regex', '^$') }}"
 
-        - name: "Print the contents of {{ apt_file }}"
+        - name: Debug apt_file_content_lines
           ansible.builtin.debug:
             var: apt_file_content_lines
-          when: apt_file_content_lines != []
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
 
       when: apt_file is regex('[.]list$')
 
@@ -37,9 +39,12 @@
           ansible.builtin.set_fact:
             apt_file_content: "{{ apt_file_contents_b64encoded['content'] | ansible.builtin.b64decode | trim | community.general.jc('ini') }}"
 
-        - name: "Print the contents of {{ apt_file }}"
+        - name: Debug apt_file_content
           ansible.builtin.debug:
             var: apt_file_content
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
 
       when: apt_file is regex('[.]sources$')
 

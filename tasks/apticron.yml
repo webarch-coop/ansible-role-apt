@@ -61,6 +61,13 @@
             ( ( ansible_facts.ansible_local.dpkg.installed is not defined ) or
             ( apt_apticron_pkgs | ansible.builtin.intersect(ansible_local.dpkg.installed) != [] ) )
 
+        - name: Debug apt_apticron_absent
+          ansible.builtin.debug:
+            var: apt_apticron_absent
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
+
       when: >-
         ( inventory_hostname == "localhost" ) or
         ( ansible_connection == "chroot" ) or

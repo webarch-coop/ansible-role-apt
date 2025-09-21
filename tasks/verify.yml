@@ -15,11 +15,15 @@
       ansible.builtin.debug:
         var: aptvarnames
         verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
+      tags:
+        - debug
 
     - name: Debug the hostvars variable names that start with apt_  # noqa: no-role-prefix
       ansible.builtin.debug:
         var: apthostvars
         verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
+      tags:
+        - debug
 
     - name: Set a fact for the argument spec and internal argument spec  # noqa: no-role-prefix
       ansible.builtin.set_fact:

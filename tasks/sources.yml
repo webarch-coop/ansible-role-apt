@@ -15,6 +15,8 @@
       ansible.builtin.debug:
         var: apt_sources
         verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
 
     - name: Include apt source files absent tasks
       ansible.builtin.include_tasks: file_absent.yml

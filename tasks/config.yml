@@ -53,6 +53,13 @@
           changed_when: false
           register: apt_update_cache
 
+        - name: Debug apt_update_cache
+          ansible.builtin.debug:
+            var: apt_update_cache
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          tags:
+            - debug
+
       rescue:
 
         - name: "Include the .list and .sources file checks for {{ apt_distro }}"

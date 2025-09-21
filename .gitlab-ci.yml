@@ -27,8 +27,6 @@ variables:
   APT_MOLECULE: "25.9.0"
   APT_PYTHON_DEBIAN: "0.1.49"
   DEBIAN_FRONTEND: noninteractive
-  # DEFAULT_MANAGED_STR: "Ansible managed"
-  # GIT_STRATEGY: none
   MOLECULE_VERBOSITY: "0"
   PRE_COMMIT_COLOR: always
   PIPX_BIN_DIR: "/usr/local/bin"

@@ -81,6 +81,8 @@
           ansible.builtin.apt:
             update_cache: true
           register: apt_update_cache
+          tags:
+            - molecule-idempotence-notest
 
         - name: Debug apt_update_cache
           ansible.builtin.debug:
@@ -88,6 +90,7 @@
             verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
           tags:
             - debug
+            - molecule-idempotence-notest
 
         - name: Apt dist upgrade
           ansible.builtin.apt:

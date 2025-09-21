@@ -116,7 +116,7 @@
         var: molecule_apt_get_upgrade.stdout_lines
         verbosity: 1
 
-    - name: Set a fcat for the results of apt-get -sqq upgrade
+    - name: Set a fact for the results of apt-get -sqq upgrade
       ansible.builtin.set_fact:
         molecule_upgrade: "{{ molecule_apt_get_upgrade.stdout | community.general.jc('apt_get_sqq') }}"
 

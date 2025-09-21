@@ -106,7 +106,7 @@
         - name: Re-read Ansible local facts  # noqa: no-handler
           ansible.builtin.setup:
             filter: ansible_local
-          when: apt_dist_upgrade.changed | bool
+          when: apt_dist_upgrade_result.changed | bool
 
         - name: Apt autoremove
           ansible.builtin.apt:

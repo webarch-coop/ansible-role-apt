@@ -149,11 +149,11 @@
     - name: Set a fact for the processor architecture
       ansible.builtin.set_fact:
         apt_architecture: >-
-          {% if ansible_facts.ansible_local.dpkg.arch is defined %}
+          {%- if ansible_facts.ansible_local.dpkg.arch is defined -%}
           {{- ansible_facts.ansible_local.dpkg.arch -}}
-          {% elif apt_dpkg_architecture is defined %}
+          {%- elif apt_dpkg_architecture is defined -%}
           {{- apt_dpkg_architecture.stdout -}}
-          {% endif %}
+          {%- endif -%}
 
     - name: Print apt_architecture
       ansible.builtin.debug:

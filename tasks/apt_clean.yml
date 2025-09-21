@@ -15,8 +15,8 @@
       ansible.builtin.apt:
         clean: true
       register: apt_clean
-      # tags:
-      #   - molecule-idempotence-notest
+      tags:
+        - molecule-idempotence-notest
 
     - name: Debug apt_clean
       ansible.builtin.debug:
@@ -24,6 +24,7 @@
         verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
       tags:
         - debug
+        - molecule-idempotence-notest
 
   tags:
     - apt

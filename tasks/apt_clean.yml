@@ -15,8 +15,7 @@
       ansible.builtin.apt:
         clean: true
       register: apt_clean
-      tags:
-        - molecule-idempotence-notest
+      changed_when: ((apt_clean.diff.prepared is defined) and (apt_clean.diff.prepared | length != 0))
 
     - name: Debug apt_clean
       ansible.builtin.debug:

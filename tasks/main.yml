@@ -49,8 +49,6 @@
             update_cache: true
           check_mode: false
           changed_when: false
-          tags:
-            - molecule-idempotence-notest
 
         - name: Packages present
           ansible.builtin.apt:

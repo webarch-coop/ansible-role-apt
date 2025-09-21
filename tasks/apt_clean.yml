@@ -14,12 +14,12 @@
     - name: Apt clean
       ansible.builtin.apt:
         clean: true
-      register: apt_clean
+      register: apt_clean_result
       changed_when: ((apt_clean.diff.prepared is defined) and (apt_clean.diff.prepared | length != 0))
 
-    - name: Debug apt_clean
+    - name: Debug apt_clean_result
       ansible.builtin.debug:
-        var: apt_clean
+        var: apt_clean_result
         verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
       tags:
         - debug

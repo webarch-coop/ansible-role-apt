@@ -22,6 +22,18 @@ A required boolean, when `apt_apticron` is true packages listed in `apt_apticron
 
 A optional list of `.deb` packages to be installed when `apt_apticron` is `true`, by default `apt_apticron_pkgs` is a list containing one package name, `apticron`.
 
+### apt_autoclean
+
+A boolean, run the `ansible.builtin.apt` module with `autoclean` set to true.
+
+### apt_autoremove
+
+A boolean, run the `ansible.builtin.apt` module with `autoremove` set to true.
+
+### apt_clean
+
+A boolean, run the `ansible.builtin.apt` module with `clean` set to true.
+
 ### apt_distro
 
 An optional string for the distro, if this is not set then it is automatically set to `ansible_distribution_release`, if `apt_distro_switch` is `true` and the disto is set to the next version then the apt sources will be updated in preperation for a manual`update` and `dist-upgrade`.

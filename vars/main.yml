@@ -155,6 +155,65 @@ apt_default_config:
           - non-free
           - non-free-firmware
         signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+  - distro: forky
+    lists:
+      - path: /etc/apt/sources.list
+        state: absent
+      - path: /etc/apt/sources.list.d/backports.list
+        state: absent
+    sources:
+      - name: debian
+        state: present
+        types: deb
+        uris:
+          - https://deb.debian.org/debian
+        suites:
+          - forky
+        components:
+          - main
+          - contrib
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-backports
+        state: present
+        types: deb
+        uris:
+          - https://deb.debian.org/debian
+        suites:
+          - forky-backports
+        components:
+          - main
+          - contrib
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-security
+        state: present
+        types: deb
+        uris:
+          - https://security.debian.org/debian-security
+        suites:
+          - forky-security
+        components:
+          - main
+          - contrib
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
+      - name: debian-updates
+        state: present
+        types: deb
+        uris:
+          - https://deb.debian.org/debian
+        suites:
+          - forky-updates
+        components:
+          - main
+          - contrib
+          - non-free
+          - non-free-firmware
+        signed_by: /usr/share/keyrings/debian-archive-keyring.gpg
   - distro: bookworm
     lists:
       - path: /etc/apt/sources.list

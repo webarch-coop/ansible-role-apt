@@ -13,8 +13,15 @@
 
     - name: Stat /etc/apt/sources.list
       ansible.builtin.stat:
-        path: "/etc/apt/sources.list"
+        path: /etc/apt/sources.list
       register: apt_sources_list
+
+    - name: Debug apt_sources_list
+      ansible.builtin.debug:
+        var: apt_sources_list
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
 
     - name: Include slurp and debug tasks for /etc/apt/sources.list
       ansible.builtin.include_tasks: check_file.yml
@@ -33,13 +40,23 @@
           - '*.sources'
       register: apt_sources_list_d
 
+    - name: Debug apt_sources_list_d
+      ansible.builtin.debug:
+        var: apt_sources_list_d
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
+
     - name: Set a fact for the paths of all the .list and .sources files in /etc/apt/sources.list.d
       ansible.builtin.set_fact:
         apt_sources_list_d_paths: "{{ apt_sources_list_d.files | community.general.json_query('[].path') }}"
 
-    - name: Debug the paths of all the .list and .sources files in /etc/apt/sources.list.d
+    - name: Debug apt_sources_list_d_paths
       ansible.builtin.debug:
         var: apt_sources_list_d_paths
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
 
     - name: Include slurp and debug tasks for the .list and .sources files found in /etc/apt/sources.list.d
       ansible.builtin.include_tasks: check_file.yml

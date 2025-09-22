@@ -41,11 +41,13 @@
         - apt_key is ansible.builtin.regex('^[/]')
         - apt_sources | community.general.json_query('[].signed_by') | ansible.builtin.unique != []
 
-    - name: Print apt_signed_by_paths.results
+    - name: Debug apt_signed_by_paths.results
       ansible.builtin.debug:
         var: apt_signed_by_paths.results
-        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
       when: apt_signed_by_paths.results is defined
+      tags:
+        - debug
 
     - name: Apt keyrings files need to exist
       ansible.builtin.assert:

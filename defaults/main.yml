@@ -12,6 +12,9 @@
 apt: false  # noqa: no-role-prefix
 # The optional apt_config will be combined with the apt_default_config if defined
 # apt_config:
+apt_autoclean: false
+apt_autoremove: false
+apt_clean: false
 # Set apt_distro_switch to true if switching distro, eg buster to bullseye
 apt_distro_switch: false
 # Install apticron, when true this causes a outgoing mailserver to be installed

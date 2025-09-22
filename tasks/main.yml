@@ -49,8 +49,6 @@
             update_cache: true
           check_mode: false
           changed_when: false
-          tags:
-            - molecule-idempotence-notest
 
         - name: Packages present
           ansible.builtin.apt:
@@ -77,26 +75,79 @@
     - name: When switching distros updates should not be done using Ansible
       block:
 
-        - name: Packages upgraded
+        - name: Apt update cache
           ansible.builtin.apt:
-            autoclean: true
-            autoremove: true
-            upgrade: dist
             update_cache: true
-          register: apt_dist_upgrade
+          register: apt_update_cache_result
+          tags:
+            - molecule-idempotence-notest
+
+        - name: Debug apt_update_cache_result
+          ansible.builtin.debug:
+            var: apt_update_cache_result
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          when: apt_update_cache_result is defined
+          tags:
+            - debug
+
+        - name: Apt dist upgrade
+          ansible.builtin.apt:
+            upgrade: dist
+          register: apt_dist_upgrade_result
+
+        - name: Debug apt_dist_upgrade_result
+          ansible.builtin.debug:
+            var: apt_dist_upgrade_result
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          when: apt_dist_upgrade_result is defined
+          tags:
+            - debug
 
         - name: Re-read Ansible local facts  # noqa: no-handler
           ansible.builtin.setup:
             filter: ansible_local
-          when: apt_dist_upgrade.changed | bool
+          when: apt_dist_upgrade_result.changed | bool
+
+        - name: Apt autoremove
+          ansible.builtin.apt:
+            autoremove: true
+          when: apt_autoremove | bool
+          register: apt_autoremove_result
+          tags:
+            - molecule-idempotence-notest
+
+        - name: Debug apt_autoremove_result
+          ansible.builtin.debug:
+            var: apt_autoremove_result
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          when: apt_autoremove_result is defined
+          tags:
+            - debug
+            - molecule-idempotence-notest
+
+        - name: Apt auto clean
+          ansible.builtin.apt:
+            autoclean: true
+          when: apt_autoclean | bool
+          register: apt_autoclean_result
+
+        - name: Debug apt_autoclean_result
+          ansible.builtin.debug:
+            var: apt_autoclean_result
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+          when: apt_autoclean_result is defined
+          tags:
+            - debug
+
+        - name: Apt clean
+          ansible.builtin.include_tasks: apt_clean.yml
+          when:
+            - ansible_version.full is version('2.13', '>=')
+            - apt_clean | bool
 
         - name: Include apticron tasks
           ansible.builtin.include_tasks: apticron.yml
           when: apt_apticron is defined
-
-        - name: Apt clean
-          ansible.builtin.include_tasks: apt_clean.yml
-          when: ansible_version.full is version('2.13', '>=')
 
       when: >-
         ( apt_distro_switch is not defined ) or

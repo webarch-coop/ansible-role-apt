@@ -15,11 +15,20 @@
       ansible.builtin.debug:
         var: apt_file_absent
         verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
 
     - name: "Stat {{ apt_file_absent }}"
       ansible.builtin.stat:
         path: "{{ apt_file_absent }}"
       register: apt_file_absent_path
+
+    - name: Debug apt_file_absent_path
+      ansible.builtin.debug:
+        var: apt_file_absent_path
+        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
 
     - name: "Backup and remove {{ apt_file_absent }}"
       ansible.builtin.command:

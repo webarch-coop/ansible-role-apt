@@ -42,6 +42,13 @@
         - apt_local_facts_absent is defined
         - apt_local_facts_absent != []
 
+    - name: Debug apt_local_facts_files_absent
+      ansible.builtin.debug:
+        var: apt_local_facts_files_absent
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
+
     - name: Ansible local facts files present
       ansible.builtin.copy:
         src: "{{ apt_fact_file }}"
@@ -56,6 +63,13 @@
       when:
         - apt_local_facts_present is defined
         - apt_local_facts_present != []
+
+    - name: Debug apt_local_facts_files_present
+      ansible.builtin.debug:
+        var: apt_local_facts_files_present
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
 
     - name: Re-read Ansible local facts  # noqa: no-handler
       ansible.builtin.setup:
@@ -86,6 +100,8 @@
       when:
         - apt_local_facts_names_present is defined
         - apt_local_facts_names_present != []
+      tags:
+        - debug
 
   when:
     - apt_local_facts is defined

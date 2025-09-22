@@ -53,6 +53,8 @@
           ansible.builtin.debug:
             var: apt_sources_check.repo
             verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+          tags:
+            - debug
 
         - name: Backup old apt.sources file
           ansible.builtin.command:
@@ -94,6 +96,8 @@
           ansible.builtin.debug:
             var: apt_sources.repo
             verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+          tags:
+            - debug
 
         - name: Diff apt repository sources file update
           ansible.utils.fact_diff:

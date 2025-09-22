@@ -19,16 +19,14 @@ variables:
   ANSIBLE_REMOTE_TMP: "/tmp"
   ANSIBLE_ROLES_PATH: "${CI_PROJECT_DIR}/..:~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles"
   ANSIBLE_SHELL_ALLOW_WORLD_READABLE_TEMP: "1"
-  APT_ANSIBLE: "11.8.0"
-  APT_ANSIBLE_CORE: "2.19.0"
-  APT_ANSIBLE_LINT: "25.8.2"
+  APT_ANSIBLE: "12.0.0"
+  APT_ANSIBLE_CORE: "2.19.2"
+  APT_ANSIBLE_LINT: "25.9.0"
   APT_JC: "1.25.5"
   APT_JMESPATH: "1.0.1"
-  APT_MOLECULE: "25.7.0"
+  APT_MOLECULE: "25.9.0"
   APT_PYTHON_DEBIAN: "0.1.49"
   DEBIAN_FRONTEND: noninteractive
-  DEFAULT_MANAGED_STR: "Ansible managed"
-  # GIT_STRATEGY: none
   MOLECULE_VERBOSITY: "0"
   PRE_COMMIT_COLOR: always
   PIPX_BIN_DIR: "/usr/local/bin"

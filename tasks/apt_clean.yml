@@ -9,10 +9,21 @@
 # You should have received a copy of the GNU General Public License along with the Webarchitects apt Ansible role. If not, see <https://www.gnu.org/licenses/>.
 ---
 - name: Apt clean
-  ansible.builtin.apt:
-    clean: true
-  changed_when: false
+  block:
+
+    - name: Apt clean
+      ansible.builtin.apt:
+        clean: true
+      register: apt_clean_result
+      changed_when: ((apt_clean.diff.prepared is defined) and (apt_clean.diff.prepared | length != 0))
+
+    - name: Debug apt_clean_result
+      ansible.builtin.debug:
+        var: apt_clean_result
+        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+      tags:
+        - debug
+
   tags:
     - apt
-    - molecule-idempotence-notest
 ...

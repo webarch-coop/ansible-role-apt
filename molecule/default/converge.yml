@@ -41,4 +41,7 @@
         name: apt
       vars:  # noqa var-naming[no-role-prefix]
         apt: true
+        apt_autoclean: false
+        apt_autoremove: false
+        apt_clean: false
 ...

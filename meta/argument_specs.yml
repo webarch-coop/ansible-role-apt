@@ -58,6 +58,18 @@ argument_specs:
         required: false
         description: A list of .deb packages to be installed when apt_apticron is true.
         elements: str
+      apt_autoclean:
+        type: bool
+        required: true
+        description: Run apt autoclean.
+      apt_autoremove:
+        type: bool
+        required: true
+        description: Run apt autoremove.
+      apt_clean:
+        type: bool
+        required: true
+        description: Run apt clean.
       apt_config:
         type: list
         required: false

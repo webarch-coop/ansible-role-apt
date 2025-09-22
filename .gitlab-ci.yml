@@ -35,11 +35,44 @@ variables:
   PIPX_HOME: "/opt/pipx"
   PY_COLORS: "1"
 stages:
-  - bullseye
   - bookworm
-  - trixie
+  - bullseye
+  - forky
   - jammy
   - noble
+  - trixie
+forky:
+  image: debian:forky
+  stage: forky
+  before_script:
+    - echo 'export DEBIAN_FRONTEND="${DEBIAN_FRONTEND}"' >> ~/.bashrc
+    - echo 'export PIPX_BIN_DIR="${PIPX_BIN_DIR}"' >> ~/.bashrc
+    - echo 'export PIPX_HOME="${PIPX_HOME}"' >> ~/.bashrc
+    - source ~/.profile
+    - whoami
+    - pwd
+    - chmod 700 $(pwd)
+    - DEBIAN_FRONTEND=noninteractive apt-get update -qq
+    - DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -qqy
+    - ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime
+    # Debian Trixie doesn't currently contain the ansible package
+    - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible-core file git pipx pre-commit python3-apt python3-debian python3-pip python3-venv
+    - python3 --version
+    - pipx --version
+    - pipx install --include-deps molecule==${APT_MOLECULE}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - ls -lah /usr/local/bin
+    - which ansible-galaxy
+    - ansible-galaxy --version
+    # - mkdir -p builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - cd builds/${CI_PROJECT_ROOT_NAMESPACE}
+    # - git clone ${CI_PROJECT_URL}.git
+    # - chmod 700 ${CI_PROJECT_NAME}
+    # - cd ${CI_PROJECT_NAME}
+  script:
+    - pre-commit install
+    - pre-commit run --all-files
+    - molecule test
 trixie:
   image: debian:trixie
   stage: trixie

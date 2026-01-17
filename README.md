@@ -212,6 +212,84 @@ In addition to the direct use of this role to configure the `/etc/apt/sources.li
 
 The [Yarn Classic Ansible role](https://git.coop/webarch/yarn) provides an example of this usage in the [apt.yml](https://git.coop/webarch/yarn/-/blob/master/tasks/apt.yml) tasks, `ansible_local.bash.path` is used by the `gpg --dearmor` task, the `ansible_local.dpkg.arch` variable is used by the [yarn.sources](https://git.coop/webarch/yarn/-/blob/master/templates/yarn.sources.j2) template and the `ansible_local.gpg.version` variable is used to conditionally include the `--with-fingerprint --with-subkey-fingerprint` options for the `gpg --show-keys` command.
 
+## Results
+
+This role produces the following files on Debian Trixie, `/etc/apt/sources.list.d/debian-backports.sources`:
+
+```ini
+Allow-Downgrade-To-Insecure: no
+Allow-Insecure: no
+Allow-Weak: no
+Architectures: amd64
+Check-Date: yes
+Check-Valid-Until: yes
+Components: main contrib non-free non-free-firmware
+Enabled: yes
+X-Repolib-Name: debian-backports
+Pdiffs: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+Suites: trixie-backports
+Types: deb
+URIs: https://deb.debian.org/debian
+```
+
+and `/etc/apt/sources.list.d/debian-security.sources`:
+
+```ini
+Allow-Downgrade-To-Insecure: no
+Allow-Insecure: no
+Allow-Weak: no
+Architectures: amd64
+Check-Date: yes
+Check-Valid-Until: yes
+Components: main contrib non-free non-free-firmware
+Enabled: yes
+X-Repolib-Name: debian-security
+Pdiffs: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+Suites: trixie-security
+Types: deb
+URIs: https://security.debian.org/debian-security
+```
+
+and `/etc/apt/sources.list.d/debian.sources`
+
+```ini
+Allow-Downgrade-To-Insecure: no
+Allow-Insecure: no
+Allow-Weak: no
+Architectures: amd64
+Check-Date: yes
+Check-Valid-Until: yes
+Components: main contrib non-free non-free-firmware
+Enabled: yes
+X-Repolib-Name: debian
+Pdiffs: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+Suites: trixie
+Types: deb
+URIs: https://deb.debian.org/debian
+```
+
+and `/etc/apt/sources.list.d/debian-updates.sources`:
+
+```ini
+Allow-Downgrade-To-Insecure: no
+Allow-Insecure: no
+Allow-Weak: no
+Architectures: amd64
+Check-Date: yes
+Check-Valid-Until: yes
+Components: main contrib non-free non-free-firmware
+Enabled: yes
+X-Repolib-Name: debian-updates
+Pdiffs: yes
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+Suites: trixie-updates
+Types: deb
+URIs: https://deb.debian.org/debian
+```
+
 ## Notes
 
 This role removes `/etc/apt.conf` files as this role previously created them using the wrong format and in addition any required apt config should be written to files in `/etc/apt/apt.conf.d/`.
@@ -224,6 +302,6 @@ If you use this role please use a tagged release, see [the release notes](https:
 
 ## Copyright
 
-Copyright 2019-2025 Chris Croome, &lt;[chris@webarchitects.co.uk](mailto:chris@webarchitects.co.uk)&gt;.
+Copyright 2019-2026 Chris Croome, &lt;[chris@webarchitects.co.uk](mailto:chris@webarchitects.co.uk)&gt;.
 
 This role is released under [the same terms as Ansible itself](https://github.com/ansible/ansible/blob/devel/COPYING), the [GNU GPLv3](LICENSE).

@@ -55,6 +55,7 @@
             pkg: "{{ apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query) }}"
           vars:
             apt_pkgs_jmespath_query: "[?distro=='{{ ansible_facts.distribution_release }}'].pkgs|[0]"
+          register: apt_pkgs_present
 
       rescue:
 
@@ -62,15 +63,44 @@
           ansible.builtin.debug:
             msg: This failure is being ignored as the cache update and package install might require a prior update to have run.
 
+    - name: Run update-grub after grub2 has been installed
+      block:
+
+        - name: Debug apt_pkgs_present
+          ansible.builtin.debug:
+            var: apt_pkgs_present
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+
+        - name: Run update-grub
+          ansible.builtin.command:
+            cmd: update-grub
+          changed_when: true
+          register: apt_update_grub
+
+        - name: Debug apt_update_grub
+          ansible.builtin.debug:
+            var: apt_update_grub
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+
+      vars:
+        apt_pkgs_jmespath_query: "[?distro=='{{ ansible_facts.distribution_release }}'].pkgs|[0]"
+      when:
+        - ("grub2" in apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query))
+        - apt_pkgs_present.stdout is defined
+        - ("grub2" in apt_pkgs_present.stdout)
+
+    - name: Debug fail
+      ansible.builtin.fail:
+
     - name: Include apt config tasks
       ansible.builtin.include_tasks: config.yml
 
     - name: Update the cache when switching distros
       ansible.builtin.apt:
         update_cache: true
-      when: >-
-        ( apt_distro_switch is defined ) and
-        ( apt_distro_switch | bool )
+      when:
+        - apt_distro_switch is defined
+        - apt_distro_switch | bool
 
     - name: When switching distros updates should not be done using Ansible
       block:
@@ -150,8 +180,8 @@
           when: apt_apticron is defined
 
       when: >-
-        ( apt_distro_switch is not defined ) or
-        ( not apt_distro_switch | bool )
+        (apt_distro_switch is not defined) or
+        (not apt_distro_switch | bool)
 
     - name: Include check for legacy .list file
       ansible.builtin.include_tasks: list_check.yml

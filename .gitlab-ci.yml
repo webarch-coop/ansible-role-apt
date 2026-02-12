@@ -131,9 +131,6 @@ bookworm:
     # - chmod 700 ${CI_PROJECT_NAME}
     # - cd ${CI_PROJECT_NAME}
   script:
-    - mv .pre-commit-config-bullseye.yaml .pre-commit-config.yaml
-    - pre-commit install
-    - pre-commit run --all-files
     - molecule test
 bullseye:
   image: debian:bullseye
@@ -214,9 +211,6 @@ jammy:
     # - chmod 700 ${CI_PROJECT_NAME}
     # - cd ${CI_PROJECT_NAME}
   script:
-    - mv .pre-commit-config-bullseye.yaml .pre-commit-config.yaml
-    - pre-commit install
-    - pre-commit run --all-files
     - molecule test
 noble:
   image: ubuntu:noble

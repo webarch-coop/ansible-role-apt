@@ -89,9 +89,6 @@
         - apt_pkgs_present.stdout is defined
         - ("grub2" in apt_pkgs_present.stdout)
 
-    - name: Debug fail
-      ansible.builtin.fail:
-
     - name: Include apt config tasks
       ansible.builtin.include_tasks: config.yml
 

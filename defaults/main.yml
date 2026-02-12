@@ -52,6 +52,7 @@ apt_pkgs:
       - aptitude
       - aptitude-common
       - file
+      - grub2
       - needrestart
       - python3-apt
       - python3-debian
@@ -92,6 +93,7 @@ apt_pkgs:
       - aptitude
       - aptitude-common
       - file
+      - grub2
       - needrestart
       - python3-apt
       - python3-debian
@@ -104,6 +106,7 @@ apt_pkgs:
       - aptitude
       - aptitude-common
       - file
+      - grub2
       - needrestart
       - python3-apt
       - python3-debian
@@ -119,6 +122,7 @@ apt_pkgs:
       # - aptitude
       # - aptitude-common
       - file
+      - grub2
       - needrestart
       - python3-apt
       - python3-debian
@@ -133,6 +137,7 @@ apt_pkgs:
       - aptitude
       - aptitude-common
       - file
+      - grub2
       - needrestart
       - python3-apt
       - python3-debian

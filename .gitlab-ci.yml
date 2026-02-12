@@ -19,9 +19,9 @@ variables:
   ANSIBLE_REMOTE_TMP: "/tmp"
   ANSIBLE_ROLES_PATH: "${CI_PROJECT_DIR}/..:~/.ansible/roles:/usr/share/ansible/roles:/etc/ansible/roles"
   ANSIBLE_SHELL_ALLOW_WORLD_READABLE_TEMP: "1"
-  APT_ANSIBLE: "12.3.0"
-  APT_ANSIBLE_CORE: "2.19.2"
-  APT_ANSIBLE_LINT: "26.1.0"
+  APT_ANSIBLE: "13.3.0"
+  APT_ANSIBLE_CORE: "2.20.2"
+  APT_ANSIBLE_LINT: "26.1.1"
   APT_JC: "1.25.6"
   APT_JMESPATH: "1.0.1"
   APT_MOLECULE: "25.12.0"
@@ -106,6 +106,10 @@ trixie:
 bookworm:
   image: debian:bookworm
   stage: bookworm
+  variables:
+    # Newer versions of ansible can't be installed on Bookworm as they require Python >= 3.11
+    APT_ANSIBLE: "12.3.0"
+    APT_ANSIBLE_CORE: "2.19.5"
   before_script:
     - echo 'export DEBIAN_FRONTEND="${DEBIAN_FRONTEND}"' >> ~/.bashrc
     - echo 'export PIPX_BIN_DIR="${PIPX_BIN_DIR}"' >> ~/.bashrc
@@ -138,7 +142,7 @@ bullseye:
   variables:
      # Newer versions of ansible can't be installed on Bullseye as they require Python >= 3.10
     APT_ANSIBLE: "8.7.0"
-    APT_ANSIBLE_CORE: "2.15.10"
+    APT_ANSIBLE_CORE: "2.15.13"
     # Newer versions of ansible-lint can't be installed on Bullseye as they require Python >= 3.10
     APT_ANSIBLE_LINT: "6.22.2"
     # Newer versions of Molecule can't be installed on Bullseye as they require Python >= 3.10
@@ -185,7 +189,7 @@ jammy:
   variables:
      # Newer versions of ansible can't be installed on Jammy as ansible 11.x requires python >=3.11
     APT_ANSIBLE: "10.7.0"
-    APT_ANSIBLE_CORE: "2.15.10"
+    APT_ANSIBLE_CORE: "2.17.14"
   before_script:
     - echo 'export DEBIAN_FRONTEND="${DEBIAN_FRONTEND}"' >> ~/.bashrc
     - echo 'export PIPX_BIN_DIR="${PIPX_BIN_DIR}"' >> ~/.bashrc

@@ -29,6 +29,13 @@
           ansible.builtin.set_fact:
             apt_sources_contents_prior: "{{ apt_sources_contents_b64encoded['content'] | ansible.builtin.b64decode | community.general.jc('ini') }}"
 
+        - name: Debug apt_sources_contents_prior
+          ansible.builtin.debug:
+            var: apt_sources_contents_prior
+            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+          tags:
+            - debug
+
         - name: "Check apt repository sources file present for {{ ansible_facts.distribution }}"
           ansible.builtin.deb822_repository:
             allow_downgrade_to_insecure: false

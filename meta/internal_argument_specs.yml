@@ -14,6 +14,145 @@ argument_specs:
     description: The main entry point for the Ansible role for configuring Debian and Ubuntu apt repos.
     short_description: The main entry point apt role.
     options:
+      apt_apticron_absent:
+        type: dict
+        required: false
+        decription: Results from running the apt module.
+      apt_architecture:
+        type: str
+        required: false
+        decription: CPU architecture.
+      apt_autoclean_result:
+        type: dict
+        required: false
+        decription: Results from running the apt module.
+      apt_autoremove_result:
+        type: dict
+        required: false
+        decription: Results from running the apt module.
+      apt_date:
+        type: str
+        required: false
+        decription: Date.
+      apt_dist_upgrade_result:
+        type: dict
+        required: false
+        decription: Results from running the apt module.
+      apt_dpkg_architecture:
+        type: dict
+        required: false
+        decription: Results from running the command module.
+      apt_file_absent_path:
+        type: dict
+        required: false
+        decription: Results from running the stat module.
+      apt_list_files:
+        type: dict
+        required: false
+        decription: Results from running the find module.
+      apt_lists:
+        type: list
+        required: false
+        decription: List of apt list file paths and state.
+        options:
+          path:
+            type: str
+            required: false
+            decription: File path.
+          state:
+            type: str
+            required: false
+            decription: File state.
+            choices:
+              - absent
+              - present
+      apt_local_facts_files_absent:
+        type: dict
+        required: false
+        decription: Results from running the file module in a loop.
+      apt_local_facts_files_present:
+        type: dict
+        required: false
+        decription: Results from running the copy module in a loop.
+      apt_signed_by_paths:
+        type: dict
+        required: false
+        decription: Results from running the stat module in a loop.
+      apt_sources:
+        type: list
+        required: false
+        description: A list of apt sources for the deb822_repository module.
+        options:
+          name:
+            type: str
+            required: true
+            description: Name of the repo. Specifically used for X-Repolib-Name and in naming the repository and signing key files.
+          state:
+            type: str
+            required: true
+            description: The apt list file state.
+            choices:
+              - absent
+              - present
+          types:
+            type: str
+            required: false
+            description: Which types of packages to look for from a given source; either binary deb or source code deb-src.
+            choices:
+              - deb
+              - deb-src
+          uris:
+            type: list
+            elements: str
+            required: false
+            description: The URIs must specify the base of the Debian distribution archive, from which APT finds the information it needs.
+          suites:
+            type: list
+            required: false
+            description: "Suite can specify an exact path in relation to the URI(s) provided, in which case the Components: must be omitted and suite must end with a slash (/). Alternatively, it may take the form of a distribution version (e.g. a version codename like disco or artful). If the suite does not specify a path, at least one component must be present."
+          components:
+            type: list
+            elements: str
+            required: false
+            description: Components specify different sections of one distribution version present in a Suite.
+          signed_by:
+            type: str
+            required: false
+            description: Either a URL to a GPG key, absolute path to a keyring file, one or more fingerprints of keys either in the trusted.gpg keyring or in the keyrings in the trusted.gpg.d/ directory, or an ASCII armored GPG public key block.
+      apt_sources_check:
+        type: dict
+        required: false
+        decription: Results from running the deb822_repository module in check mode.
+      apt_sources_contents_b64encoded:
+        type: dict
+        required: false
+        decription: Results from running the slurp module.
+      # apt_sources_contents_prior:
+      apt_sources_list:
+        type: dict
+        required: false
+        decription: Results from running the stat module.
+      apt_sources_list_d:
+        type: dict
+        required: false
+        decription: Results from running the find module.
+      apt_sources_list_d_paths:
+        type: list
+        elements: str
+        required: false
+        decription: List of .list and .sources files present.
+      apt_sources_path:
+        type: dict
+        required: false
+        decription: Results from running the stat module.
+      apt_update_cache:
+        type: dict
+        required: false
+        decription: Results from running the apt module.
+      apt_update_cache_result:
+        type: dict
+        required: false
+        decription: Results from running the apt module.
       apt_argument_spec:
         type: dict
         required: false

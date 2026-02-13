@@ -11,7 +11,7 @@
 - name: Sources files tasks
   block:
 
-    - name: Debug apt_source
+    - name: Debug apt_sources
       ansible.builtin.debug:
         var: apt_sources
         verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"

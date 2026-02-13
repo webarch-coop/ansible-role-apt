@@ -127,7 +127,10 @@ argument_specs:
         type: dict
         required: false
         decription: Results from running the slurp module.
-      # apt_sources_contents_prior:
+      apt_sources_contents_prior:
+        type: dict
+        required: false
+        decription: Dictionary representation of the contents of a .sources file
       apt_sources_list:
         type: dict
         required: false
@@ -145,6 +148,10 @@ argument_specs:
         type: dict
         required: false
         decription: Results from running the stat module.
+      apt_sources_present:
+        type: dict
+        required: false
+        decription: Results from running the deb822_repository module.
       apt_update_cache:
         type: dict
         required: false

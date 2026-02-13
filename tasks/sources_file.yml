@@ -93,14 +93,14 @@
         suites: "{{ apt_source.suites }}"
         types: "{{ apt_source.types }}"
         uris: "{{ apt_source.uris }}"
-      register: apt_sources
+      register: apt_sources_present
 
     - name: Print the changes in the apt repository sources file  # noqa: no-handler
       block:
 
-        - name: Debug updated apt_sources.repo
+        - name: Debug updated apt_sources_present.repo
           ansible.builtin.debug:
-            var: apt_sources.repo
+            var: apt_sources_present.repo
             verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
           tags:
             - debug
@@ -108,11 +108,11 @@
         - name: Diff apt repository sources file update
           ansible.utils.fact_diff:
             before: "{{ apt_sources_contents_prior | ansible.builtin.to_nice_yaml }}"
-            after: "{{ apt_sources.repo | string | community.general.jc('ini') | ansible.builtin.to_nice_yaml }}"
+            after: "{{ apt_sources_present.repo | string | community.general.jc('ini') | ansible.builtin.to_nice_yaml }}"
           when:
             - ( ansible_check_mode | bool ) or ( ansible_diff_mode | bool )
             - apt_sources_contents_prior is defined
-            - apt_sources.repo is defined
+            - apt_sources_present.repo is defined
 
       when: apt_sources.changed | bool
 

@@ -44,4 +44,99 @@
         apt_autoclean: false
         apt_autoremove: false
         apt_clean: false
+        apt_pkgs:
+          - distro: bookworm
+            pkgs:
+              - apt-listchanges
+              - apt-show-versions
+              - apt-utils
+              - aptitude
+              - aptitude-common
+              - debian-archive-keyring
+              - file
+              - grub2
+              - needrestart
+              - python3-apt
+              - python3-debian
+              - xz-utils
+              - zstd
+          - distro: bullseye
+            pkgs:
+              - debian-archive-keyring
+              - apt-listchanges
+              - apt-utils
+              - aptitude
+              - aptitude-common
+              - file
+              - needrestart
+              - python3-apt
+              - python3-debian
+              - xz-utils
+          - distro: buster
+            pkgs:
+              - debian-archive-keyring
+              - apt-listchanges
+              - apt-show-versions
+              - apt-utils
+              - aptitude
+              - aptitude-common
+              - file
+              - needrestart
+              - python3-apt
+              - python3-debian
+              - xz-utils
+          - distro: forky
+            pkgs:
+              - debian-archive-keyring
+              - apt-listchanges
+              - apt-show-versions
+              - apt-utils
+              - aptitude
+              - aptitude-common
+              - file
+              - needrestart
+              - python3-apt
+              - python3-debian
+              - xz-utils
+              - zstd
+          - distro: jammy
+            pkgs:
+              - apt-listchanges
+              - apt-show-versions
+              - apt-utils
+              - aptitude
+              - aptitude-common
+              - file
+              - needrestart
+              - python3-apt
+              - python3-debian
+              - ubuntu-keyring
+              - xz-utils
+              - zstd
+          - distro: noble
+            pkgs:
+              - apt-listchanges
+              - apt-show-versions
+              - apt-utils
+              - file
+              - needrestart
+              - python3-apt
+              - python3-debian
+              - ubuntu-keyring
+              - xz-utils
+              - zstd
+          - distro: trixie
+            pkgs:
+              - debian-archive-keyring
+              - apt-listchanges
+              - apt-show-versions
+              - apt-utils
+              - aptitude
+              - aptitude-common
+              - file
+              - needrestart
+              - python3-apt
+              - python3-debian
+              - xz-utils
+              - zstd
 ...

@@ -58,13 +58,12 @@
 
         - name: Backup old apt.sources file
           ansible.builtin.command:
-            cmd: >-
-              mv
-              /etc/apt/sources.list.d/{{ apt_source.name }}.sources
-              /etc/apt/sources.list.d/.{{ apt_source.name }}.sources.{{ apt_date_timestamp }}.ansible.save
-          args:
+            argv:
+              - mv
+              - "/etc/apt/sources.list.d/{{ apt_source.name }}.sources"
+              - "/etc/apt/sources.list.d/.{{ apt_source.name }}.sources.{{ apt_date_timestamp }}.ansible.save"
             creates: "/etc/apt/sources.list.d/.{{ apt_source.name }}.sources.{{ apt_date_timestamp }}.ansible.save"
-            removes: /etc/apt/sources.list.d/{{ apt_source.name }}.sources
+            removes: "/etc/apt/sources.list.d/{{ apt_source.name }}.sources"
           vars:
             apt_date_timestamp: "{{ ansible_facts.date_time.iso8601_basic_short }}"
           when: apt_sources_contents_prior != apt_sources_check.repo | string | community.general.jc('ini')

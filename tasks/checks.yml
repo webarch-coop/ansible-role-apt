@@ -118,7 +118,8 @@
             msg: "WARNING: Updating distro from {{ ansible_facts.distribution_release }} to {{ apt_distro }}."
 
         - name: Run apt-get --allow-releaseinfo-change update
-          ansible.builtin.command: apt-get --allow-releaseinfo-change update
+          ansible.builtin.command:
+            cmd: apt-get --allow-releaseinfo-change update
           changed_when: true
 
       when:
@@ -133,7 +134,8 @@
       when: apt_distro is not defined
 
     - name: Check the processor architecture when ansible_facts.ansible_local.dpkg.arch is not defined
-      ansible.builtin.command: dpkg --print-architecture
+      ansible.builtin.command:
+        cmd: dpkg --print-architecture
       check_mode: false
       changed_when: false
       register: apt_dpkg_architecture

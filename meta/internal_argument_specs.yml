@@ -242,4 +242,12 @@ argument_specs:
         elements: str
         required: false
         description: An internal list of local fact files that should be present.
+      apt_pkgs_present:
+        type: dict
+        required: false
+        description: Results from running apt module.
+      apt_update_grub:
+        type: dict
+        required: false
+        description: Results from running the command module to update-grub.
 ...

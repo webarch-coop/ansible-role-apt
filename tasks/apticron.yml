@@ -26,8 +26,8 @@
             install_recommends: false
             update_cache: true
           when: >-
-            ( ( ansible_facts.ansible_local.dpkg.installed is not defined ) or
-            ( apt_apticron_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != [] ) )
+            ((ansible_facts.ansible_local.dpkg.installed is not defined) or
+            (apt_apticron_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != []))
 
       when:
         - inventory_hostname != "localhost"
@@ -58,8 +58,8 @@
             update_cache: true
           register: apt_apticron_absent
           when: >-
-            ( ( ansible_facts.ansible_local.dpkg.installed is not defined ) or
-            ( apt_apticron_pkgs | ansible.builtin.intersect(ansible_local.dpkg.installed) != [] ) )
+            ((ansible_facts.ansible_local.dpkg.installed is not defined) or
+            (apt_apticron_pkgs | ansible.builtin.intersect(ansible_local.dpkg.installed) != []))
 
         - name: Debug apt_apticron_absent
           ansible.builtin.debug:
@@ -69,10 +69,10 @@
             - debug
 
       when: >-
-        ( inventory_hostname == "localhost" ) or
-        ( ansible_connection == "chroot" ) or
-        ( ( apt_apticron is defined ) and
-        ( not apt_apticron | bool ) )
+        (inventory_hostname == "localhost") or
+        (ansible_connection == "chroot") or
+        ((apt_apticron is defined) and
+        (not apt_apticron | bool))
 
   tags:
     - apt

@@ -32,11 +32,10 @@
 
     - name: "Backup and remove {{ apt_file_absent }}"
       ansible.builtin.command:
-        cmd: >-
-          mv
-          {{ apt_file_absent }}
-          {{ apt_file_backup }}
-      args:
+        argv:
+          - mv
+          - "{{ apt_file_absent }}"
+          - "{{ apt_file_backup }}"
         creates: "{{ apt_file_backup }}"
         removes: "{{ apt_file_absent }}"
       vars:

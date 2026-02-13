@@ -24,8 +24,8 @@
         apt_date: "{{ ansible_facts.date_time.iso8601_basic_short }}"
 
     - name: Legacy /etc/apt.conf file absent
-      ansible.builtin.command: "mv /etc/apt.conf /etc/.apt.conf.{{ apt_date }}.ansible.save"
-      args:
+      ansible.builtin.command:
+        cmd: "mv /etc/apt.conf /etc/.apt.conf.{{ apt_date }}.ansible.save"
         creates: "/etc/.apt.conf.{{ apt_date }}.ansible.save"
         removes: /etc/apt.conf
 

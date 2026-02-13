@@ -17,9 +17,9 @@
         state: present
         update_cache: true
       when: >-
-        ( ( apt_local_facts_pkgs is defined ) and ( apt_local_facts_pkgs != [] ) ) and
-        ( ( ansible_facts.ansible_local.dpkg.installed is not defined ) or
-        ( apt_local_facts_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != [] ) )
+        ((apt_local_facts_pkgs is defined ) and ( apt_local_facts_pkgs != [])) and
+        ((ansible_facts.ansible_local.dpkg.installed is not defined) or
+        (apt_local_facts_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != []))
 
     - name: Ansible facts.d directory present
       ansible.builtin.file:
@@ -75,8 +75,8 @@
       ansible.builtin.setup:
         filter: ansible_local
       when: >-
-        ( apt_local_facts_files_absent.changed | bool ) or
-        ( apt_local_facts_files_present.changed | bool )
+        (apt_local_facts_files_absent.changed | bool) or
+        (apt_local_facts_files_present.changed | bool)
 
     - name: Check that ansible_local facts are defined
       ansible.builtin.assert:

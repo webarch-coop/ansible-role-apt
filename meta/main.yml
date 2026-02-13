@@ -19,14 +19,15 @@ galaxy_info:
   platforms:
     - name: Debian
       versions:
-        # - trixie
         - bookworm
         - bullseye
         - buster
+        - trixie
     - name: Ubuntu
       versions:
         - focal
         - jammy
+        - noble
   galaxy_tags:
     - apt
     - debian

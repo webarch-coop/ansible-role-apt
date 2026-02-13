@@ -36,7 +36,7 @@
           tags:
             - debug
 
-        - name: "Check apt repository sources file present for {{ ansible_facts.distribution }}"
+        - name: "Check apt repository sources file present for {{ ansible_facts.distribution }}"  # noqa: args[module]
           ansible.builtin.deb822_repository:
             allow_downgrade_to_insecure: false
             allow_insecure: false
@@ -77,7 +77,7 @@
 
       when: apt_sources_path.stat.exists | bool
 
-    - name: "Apt repository sources file present for {{ ansible_facts.distribution }}"
+    - name: "Apt repository sources file present for {{ ansible_facts.distribution }}"  # noqa: args[module]
       ansible.builtin.deb822_repository:
         allow_downgrade_to_insecure: false
         allow_insecure: false

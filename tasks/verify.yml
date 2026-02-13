@@ -34,6 +34,22 @@
       ansible.builtin.set_fact:
         apt_combined_argument_spec: "{{ apt_argument_spec | ansible.builtin.combine(apt_internal_argument_spec, recursive=true) }}"
 
+    - name: Debug apt_sources
+      ansible.builtin.debug:
+        var: apt_sources
+        # verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
+      when: apt_sources is defined
+      tags:
+        - debug
+
+    - name: Debug apt_sources_contents_prior
+      ansible.builtin.debug:
+        var: apt_sources_contents_prior
+        # verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
+      when: apt_sources_contents_prior is defined
+      tags:
+        - debug
+
     - name: Check apt_ variables using the combined argument spec  # noqa: no-role-prefix
       ansible.builtin.validate_argument_spec:
         argument_spec: "{{ apt_combined_argument_spec['argument_specs']['main']['options'] }}"

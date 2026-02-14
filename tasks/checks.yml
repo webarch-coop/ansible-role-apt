@@ -217,7 +217,7 @@
       when:
         - apt_sources is defined
         - apt_sources != []
-        - apt_sources | length > 0
+        - apt_sources | ansible.builtin.type_debug != "NoneType"
 
     - name: Check the apt list variables
       ansible.builtin.assert:

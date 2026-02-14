@@ -41,7 +41,7 @@
       when:
         - apt_sources is defined
         - apt_sources != []
-        - apt_sources | length > 0
+        - apt_sources | ansible.builtin.type_debug != "NoneType"
 
     - name: Update apt cache in a block so failures can be debugged
       block:

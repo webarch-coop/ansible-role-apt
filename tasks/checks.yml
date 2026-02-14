@@ -218,6 +218,7 @@
         - apt_sources is defined
         - apt_sources != []
         - apt_sources | ansible.builtin.type_debug != "NoneType"
+        - apt_sources is not ansible.builtin.regex('^$')
 
     - name: Check the apt list variables
       ansible.builtin.assert:
@@ -234,7 +235,8 @@
         - apt_list.state == "present"
         - apt_lists is defined
         - apt_lists != []
-        - apt_lists | length > 0
+        - apt_lists | ansible.builtin.type_debug != "NoneType"
+        - apt_lists is not ansible.builtin.regex('^$')
 
     - name: Include the .list and .sources file checks
       ansible.builtin.include_tasks: check_files.yml

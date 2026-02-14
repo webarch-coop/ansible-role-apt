@@ -42,6 +42,7 @@
         - apt_sources is defined
         - apt_sources != []
         - apt_sources | ansible.builtin.type_debug != "NoneType"
+        - apt_sources is not ansible.builtin.regex('^$')
 
     - name: Update apt cache in a block so failures can be debugged
       block:

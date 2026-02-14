@@ -24,9 +24,6 @@
       loop_control:
         loop_var: apt_source
         label: "{{ apt_source.name }}"
-      when:
-        - apt_sources is defined
-        - apt_sources != []
 
     - name: Check apt sources signed_by keyrings
       ansible.builtin.stat:

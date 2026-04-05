@@ -30,6 +30,39 @@ apt_local_facts_present: "{{ apt_local_facts_files | community.general.json_quer
 apt_local_facts_names_present: "{{ apt_local_facts_files | community.general.json_query('[?state==`present`].name') | map('regex_replace', '[.]fact$') }}"
 
 apt_default_config:
+  - distro: resolute
+    lists:
+      - path: /etc/apt/sources.list
+        state: absent
+    sources:
+      - name: ubuntu
+        state: present
+        types: deb
+        uris:
+          - http://archive.ubuntu.com/ubuntu/
+        suites:
+          - resolute
+          - resolute-backports
+          - resolute-updates
+        components:
+          - main
+          - universe
+          - restricted
+          - multiverse
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+      - name: ubuntu-security
+        state: present
+        types: deb
+        uris:
+          - http://security.ubuntu.com/ubuntu/
+        suites:
+          - resolute-security
+        components:
+          - main
+          - universe
+          - restricted
+          - multiverse
+        signed_by: /usr/share/keyrings/ubuntu-archive-keyring.gpg
   - distro: noble
     lists:
       - path: /etc/apt/sources.list

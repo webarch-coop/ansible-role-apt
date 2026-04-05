@@ -34,7 +34,7 @@ variables:
   PY_COLORS: "1"
 stages:
   - bookworm
-  # - bullseye
+  - bullseye
   - forky
   - jammy
   - noble

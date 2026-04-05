@@ -124,6 +124,18 @@
               - ubuntu-keyring
               - xz-utils
               - zstd
+          - distro: resolute
+            pkgs:
+              - apt-listchanges
+              - apt-show-versions
+              - apt-utils
+              - file
+              - needrestart
+              - python3-apt
+              - python3-debian
+              - ubuntu-keyring
+              - xz-utils
+              - zstd
           - distro: trixie
             pkgs:
               - debian-archive-keyring

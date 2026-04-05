@@ -203,6 +203,7 @@ argument_specs:
               - jammy
               - jessie
               - noble
+              - resolute
               - squeeze
               - stretch
               - trixie
@@ -285,6 +286,7 @@ argument_specs:
               - jammy
               - jessie
               - noble
+              - resolute
               - squeeze
               - stretch
               - trixie

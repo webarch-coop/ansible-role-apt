@@ -120,10 +120,23 @@ apt_pkgs:
       - apt-listchanges
       - apt-show-versions
       - apt-utils
-      # Currently fails with
-      # aptitude : Depends: aptitude-common (= 0.8.13-5ubuntu2) but 0.8.13-5ubuntu4 is to be installed
-      # - aptitude
-      # - aptitude-common
+      - aptitude
+      - aptitude-common
+      - file
+      - grub2
+      - needrestart
+      - python3-apt
+      - python3-debian
+      - ubuntu-keyring
+      - xz-utils
+      - zstd
+  - distro: resolute
+    pkgs:
+      - apt-listchanges
+      - apt-show-versions
+      - apt-utils
+      - aptitude
+      - aptitude-common
       - file
       - grub2
       - needrestart

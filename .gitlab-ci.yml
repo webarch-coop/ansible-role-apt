@@ -58,8 +58,10 @@ forky:
     - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible-core file git pipx pre-commit python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
+    - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
     - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -90,8 +92,10 @@ trixie:
     - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible-core file git pipx pre-commit python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
+    - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
     - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -125,8 +129,10 @@ bookworm:
     - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pipx pre-commit python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
+    - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
     - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -207,8 +213,10 @@ jammy:
     - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pipx pre-commit python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
+    - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
     - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -236,8 +244,10 @@ noble:
     - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pipx pre-commit python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
+    - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
     - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version
@@ -265,8 +275,10 @@ resolute:
     - DEBIAN_FRONTEND=noninteractive apt-get install -qqy ansible file git pipx pre-commit python3-apt python3-debian python3-pip python3-venv
     - python3 --version
     - pipx --version
+    - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
     - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
     - ansible-galaxy --version

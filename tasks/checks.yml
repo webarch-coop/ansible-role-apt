@@ -121,6 +121,8 @@
           ansible.builtin.command:
             cmd: apt-get --allow-releaseinfo-change update
           changed_when: true
+          tags:
+            - molecule-idempotence-notest
 
       when:
         - apt_distro is defined

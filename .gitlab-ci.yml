@@ -25,7 +25,7 @@ variables:
   APT_JC: "1.25.7"
   APT_JMESPATH: "1.0.1"
   APT_MOLECULE: "26.8.0"
-  APT_PYTHON_DEBIAN: "1.1.0"
+  APT_PYTHON_DEBIAN: "1.1.1"
   DEBIAN_FRONTEND: noninteractive
   MOLECULE_VERBOSITY: "0"
   PRE_COMMIT_COLOR: always
@@ -60,7 +60,8 @@ forky:
     - pipx --version
     - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject molecule python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH}
     - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
@@ -94,7 +95,8 @@ trixie:
     - pipx --version
     - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject molecule python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH}
     - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
@@ -131,7 +133,8 @@ bookworm:
     - pipx --version
     - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject molecule python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH}
     - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
@@ -180,7 +183,8 @@ bullseye:
     - pipx --version
     - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject molecule python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH}
     - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
@@ -215,7 +219,8 @@ jammy:
     - pipx --version
     - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject molecule python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH}
     - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
@@ -246,7 +251,8 @@ noble:
     - pipx --version
     - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject molecule python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH}
     - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy
@@ -277,7 +283,8 @@ resolute:
     - pipx --version
     - cd /tmp  # work around for https://github.com/pypa/pipx/issues/1778
     - pipx install --include-deps molecule==${APT_MOLECULE}
-    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH} python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject molecule python-debian==${APT_PYTHON_DEBIAN}
+    - pipx inject --include-deps --include-apps molecule ansible==${APT_ANSIBLE} ansible-core==${APT_ANSIBLE_CORE} ansible-lint==${APT_ANSIBLE_LINT} jc==${APT_JC} jmespath==${APT_JMESPATH}
     - cd -  # work around for https://github.com/pypa/pipx/issues/1778
     - ls -lah /usr/local/bin
     - which ansible-galaxy

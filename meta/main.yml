@@ -15,18 +15,16 @@ galaxy_info:
   description: Ansible role for configuring apt sources files on Debian and Ubuntu servers.
   company: Webarchitects Co-operative
   license: GPL-3.0-or-later
-  min_ansible_version: "2.15.0"
+  min_ansible_version: "2.19.0"
   platforms:
     - name: Debian
       versions:
         - bookworm
-        - bullseye
         - buster
         - trixie
     - name: Ubuntu
       versions:
         - focal
-        - jammy
         - noble
   galaxy_tags:
     - apt

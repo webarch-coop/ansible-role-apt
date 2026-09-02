@@ -338,7 +338,9 @@ argument_specs:
         type: list
         elements: str
         required: false
+        description: Debian distros supported by Freexian Extended LTS.
         choices:
+          - bullseye
           - buster
           - jessie
           - stretch

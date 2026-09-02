@@ -162,16 +162,6 @@ argument_specs:
         type: bool
         required: true
         description: Set to true if switching distro, eg Bullseye to Bookworm.
-      apt_freexian_distros:
-        type: list
-        elements: str
-        required: false
-        description: Debian distros supported by Freexian Extended LTS.
-        choices:
-          - bullseye
-          - buster
-          - jessie
-          - stretch
       apt_local_facts:
         type: bool
         required: false

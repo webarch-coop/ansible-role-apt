@@ -30,21 +30,27 @@
       block:
 
         - name: Check Freexian GPG signatures
-          ansible.builtin.command: >
-            gpg --with-colons
-            {% if ansible_facts.ansible_local.gpg.version is version('2.2.12', '<') %}
-            --with-fingerprint --with-subkey-fingerprint
-            {% else %}
-            --show-keys
-            {% endif %}
-            /root/freexian-archive-extended-lts.gpg
+          ansible.builtin.command:
+            cmd: >-
+              gpg --with-colons
+              {% if ansible_facts.ansible_local.gpg.version is ansible.builtin.version('2.2.12', '<') %}
+              --with-fingerprint --with-subkey-fingerprint
+              {% else %}
+              --show-keys
+              {% endif %}
+              /root/freexian-archive-extended-lts.gpg
           check_mode: false
           changed_when: false
           register: apt_freexian_gpg
 
         - name: Set a fact for the Freexian GPG fingerprints on the server
           ansible.builtin.set_fact:
-            apt_freexian_gpg_fingerprints_found: "{{ apt_freexian_gpg.stdout | string | community.general.jc('gpg') | community.general.json_query(apt_freexian_gpg_fingerprints_query) | list }}"
+            apt_freexian_gpg_fingerprints_found: >-
+              {{ apt_freexian_gpg.stdout
+              | ansible.builtin.string
+              | community.general.jc('gpg')
+              | community.general.json_query(apt_freexian_gpg_fingerprints_query)
+              | ansible.builtin.list }}
 
         - name: Freexian gpg key check first fingerprint for GPG versions less that 2.2.12
           ansible.builtin.assert:
@@ -56,8 +62,14 @@
         - name: Freexian gpg key check all fingerprints
           ansible.builtin.assert:
             that:
-              - apt_freexian_gpg_fingerprints_found | difference(apt_freexian_gpg_fingerprints) | length == 0
-              - apt_freexian_gpg_fingerprints | difference(apt_freexian_gpg_fingerprints_found) | length == 0
+              - >-
+                apt_freexian_gpg_fingerprints_found
+                | ansible.builtin.difference(apt_freexian_gpg_fingerprints)
+                | ansible.builtin.length == 0
+              - >-
+                apt_freexian_gpg_fingerprints
+                | ansible.builtin.difference(apt_freexian_gpg_fingerprints_found)
+                | ansible.builtin.length == 0
             quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
           when: ansible_facts.ansible_local.gpg.version is version('2.2.12', '>=')
 
@@ -70,7 +82,7 @@
             owner: root
             group: root
 
-      when: apt_freexian_gpg_path.stat.exists | bool
+      when: apt_freexian_gpg_path.stat.exists | ansible.builtin.bool
 
   tags:
     - apt

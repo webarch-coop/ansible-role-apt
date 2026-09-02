@@ -344,6 +344,10 @@ argument_specs:
           - buster
           - jessie
           - stretch
+      apt_freexian_gpg:
+        type: dict
+        required: false
+        description: Results from the ansible.builtin.command module.
       apt_freexian_gpg_checksum:
         type: str
         required: false
@@ -353,10 +357,19 @@ argument_specs:
         elements: str
         required: false
         description: Freexian extended LTS GPG public key fingerprints.
+      apt_freexian_gpg_fingerprints_found:
+        type: list
+        elements: str
+        required: false
+        description: Freexian GPG fingerprints found.
       apt_freexian_gpg_fingerprints_query:
         type: str
         required: false
         description: Freexian GPG key JMESPath query.
+      apt_freexian_gpg_path:
+        type: dict
+        required: false
+        description: Results from the ansible.builtin.stat module.
       apt_freexian_gpg_url:
         type: str
         required: false

@@ -47,7 +47,6 @@
           ansible.builtin.set_fact:
             apt_freexian_gpg_fingerprints_found: >-
               {{ apt_freexian_gpg.stdout
-              | ansible.builtin.string
               | community.general.jc('gpg')
               | community.general.json_query(apt_freexian_gpg_fingerprints_query)
               | ansible.builtin.list }}

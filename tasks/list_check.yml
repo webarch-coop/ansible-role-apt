@@ -23,8 +23,8 @@
       loop: "{{ apt_list_files.files }}"
       loop_control:
         loop_var: apt_file
-        label: "{{ apt_file.path | basename }}"
-      when: ( apt_list_files.matched >= 1 )
+        label: "{{ apt_file.path | ansible.builtin.basename }}"
+      when: (apt_list_files.matched >= 1)
 
   tags:
     - apt

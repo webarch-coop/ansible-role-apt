@@ -26,15 +26,15 @@
             install_recommends: false
             update_cache: true
           when: >-
-            ((ansible_facts.ansible_local.dpkg.installed is not defined) or
+            ((ansible_facts.ansible_local.dpkg.installed is not ansible.builtin.defined) or
             (apt_apticron_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != []))
 
       when:
         - inventory_hostname != "localhost"
         - ansible_connection != "chroot"
-        - apt_apticron is defined
-        - apt_apticron | bool
-        - apt_apticron_pkgs is defined
+        - apt_apticron is ansible.builtin.defined
+        - apt_apticron | ansible.builtin.bool
+        - apt_apticron_pkgs is ansible.builtin.defined
         - apt_apticron_pkgs != []
 
     - name: Apticron absent for servers without outgoing mail servers
@@ -58,21 +58,22 @@
             update_cache: true
           register: apt_apticron_absent
           when: >-
-            ((ansible_facts.ansible_local.dpkg.installed is not defined) or
+            ((ansible_facts.ansible_local.dpkg.installed is not ansible.builtin.defined) or
             (apt_apticron_pkgs | ansible.builtin.intersect(ansible_local.dpkg.installed) != []))
 
         - name: Debug apt_apticron_absent
           ansible.builtin.debug:
             var: apt_apticron_absent
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
           tags:
             - debug
 
       when: >-
         (inventory_hostname == "localhost") or
         (ansible_connection == "chroot") or
-        ((apt_apticron is defined) and
-        (not apt_apticron | bool))
+        ((apt_apticron is ansible.builtin.defined) and
+        (not apt_apticron | ansible.builtin.bool))
 
   tags:
     - apt

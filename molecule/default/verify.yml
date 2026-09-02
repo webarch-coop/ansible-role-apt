@@ -98,7 +98,8 @@
         - molecule_apt_sources_list_d_paths | length > 0
 
     - name: Run apt-get update  # noqa: no-changed-when
-      ansible.builtin.command: apt-get update
+      ansible.builtin.command:
+        cmd: apt-get update
       changed_when: false
       register: molecule_apt_get_update
 
@@ -107,7 +108,8 @@
         var: molecule_apt_get_update.stdout_lines
 
     - name: Run apt-get -sqq upgrade  # noqa: no-changed-when
-      ansible.builtin.command: apt-get -sqq upgrade
+      ansible.builtin.command:
+        cmd: apt-get -sqq upgrade
       changed_when: false
       register: molecule_apt_get_upgrade
 

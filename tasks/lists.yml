@@ -20,9 +20,9 @@
         group: root
         backup: true
       vars:
-        apt_file_dest: "/etc/apt/sources.list.d/{{ ansible_facts.distribution | lower }}.sources"
+        apt_file_dest: "/etc/apt/sources.list.d/{{ ansible_facts.distribution | ansible.builtin.lower }}.sources"
       when:
-        - apt_list.state is defined
+        - apt_list.state is ansible.builtin.defined
         - apt_list.state == "present"
       loop: "{{ apt_lists }}"
       loop_control:
@@ -34,8 +34,8 @@
       vars:
         apt_file_absent: "{{ apt_lists_file_absent.path }}"
       when:
-        - apt_lists_file_absent.path is defined
-        - apt_lists_file_absent.state is defined
+        - apt_lists_file_absent.path is ansible.builtin.defined
+        - apt_lists_file_absent.state is ansible.builtin.defined
         - apt_lists_file_absent.state == "absent"
       loop: "{{ apt_lists }}"
       loop_control:

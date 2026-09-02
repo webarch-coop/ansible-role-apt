@@ -17,8 +17,8 @@
         state: present
         update_cache: true
       when: >-
-        ((apt_local_facts_pkgs is defined ) and ( apt_local_facts_pkgs != [])) and
-        ((ansible_facts.ansible_local.dpkg.installed is not defined) or
+        ((apt_local_facts_pkgs is ansible.builtin.defined ) and ( apt_local_facts_pkgs != [])) and
+        ((ansible_facts.ansible_local.dpkg.installed is not ansible.builtin.defined) or
         (apt_local_facts_pkgs | ansible.builtin.difference(ansible_local.dpkg.installed) != []))
 
     - name: Ansible facts.d directory present
@@ -39,13 +39,14 @@
         loop_var: apt_fact_file
       register: apt_local_facts_files_absent
       when:
-        - apt_local_facts_absent is defined
+        - apt_local_facts_absent is ansible.builtin.defined
         - apt_local_facts_absent != []
 
     - name: Debug apt_local_facts_files_absent
       ansible.builtin.debug:
         var: apt_local_facts_files_absent
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
@@ -61,13 +62,14 @@
         loop_var: apt_fact_file
       register: apt_local_facts_files_present
       when:
-        - apt_local_facts_present is defined
+        - apt_local_facts_present is ansible.builtin.defined
         - apt_local_facts_present != []
 
     - name: Debug apt_local_facts_files_present
       ansible.builtin.debug:
         var: apt_local_facts_files_present
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
@@ -75,38 +77,38 @@
       ansible.builtin.setup:
         filter: ansible_local
       when: >-
-        (apt_local_facts_files_absent.changed | bool) or
-        (apt_local_facts_files_present.changed | bool)
+        (apt_local_facts_files_absent.changed | ansible.builtin.bool) or
+        (apt_local_facts_files_present.changed | ansible.builtin.bool)
 
-    - name: Check that ansible_local facts are defined
+    - name: Check that ansible_local facts are ansible.builtin.defined
       ansible.builtin.assert:
         that:
-          - ansible_facts.ansible_local[apt_fact_name] is defined
+          - ansible_facts.ansible_local[apt_fact_name] is ansible.builtin.defined
         quiet: "{% if ansible_verbosity == 0 %}true{% else %}false{% endif %}"
       loop: "{{ apt_local_facts_names_present }}"
       loop_control:
         loop_var: apt_fact_name
       when:
-        - apt_local_facts_names_present is defined
+        - apt_local_facts_names_present is ansible.builtin.defined
         - apt_local_facts_names_present != []
 
     - name: Print Ansible local dpkg facts
       ansible.builtin.debug:
         var: ansible_facts.ansible_local[apt_fact_name]
-        verbosity: "{% if ansible_check_mode | bool %}1{% else %}2{% endif %}"
+        verbosity: "{% if ansible_check_mode | ansible.builtin.bool %}1{% else %}2{% endif %}"
       loop: "{{ apt_local_facts_names_present }}"
       loop_control:
         loop_var: apt_fact_name
       when:
-        - apt_local_facts_names_present is defined
+        - apt_local_facts_names_present is ansible.builtin.defined
         - apt_local_facts_names_present != []
       tags:
         - debug
 
   when:
-    - apt_local_facts is defined
-    - apt_local_facts | bool
-    - apt_local_facts_files is defined
+    - apt_local_facts is ansible.builtin.defined
+    - apt_local_facts | ansible.builtin.bool
+    - apt_local_facts_files is ansible.builtin.defined
     - apt_local_facts_files != []
   tags:
     - apt

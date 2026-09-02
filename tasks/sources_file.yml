@@ -27,12 +27,14 @@
         # NOTE if the .sources files contains multiple repos the jc ini filter will just register the last one
         - name: Set a fact for the prior apt repository sources file contents
           ansible.builtin.set_fact:
-            apt_sources_contents_prior: "{{ apt_sources_contents_b64encoded['content'] | ansible.builtin.b64decode | community.general.jc('ini') }}"
+            apt_sources_contents_prior: >-
+              {{ apt_sources_contents_b64encoded['content'] | ansible.builtin.b64decode | community.general.jc('ini') }}
 
         - name: Debug apt_sources_contents_prior
           ansible.builtin.debug:
             var: apt_sources_contents_prior
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}1{% else %}2{% endif %}
           tags:
             - debug
 
@@ -59,7 +61,8 @@
         - name: Debug proposed apt_sources_check.repo
           ansible.builtin.debug:
             var: apt_sources_check.repo
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}1{% else %}2{% endif %}
           tags:
             - debug
 
@@ -73,9 +76,9 @@
             removes: "/etc/apt/sources.list.d/{{ apt_source.name }}.sources"
           vars:
             apt_date_timestamp: "{{ ansible_facts.date_time.iso8601_basic_short }}"
-          when: apt_sources_contents_prior != apt_sources_check.repo | string | community.general.jc('ini')
+          when: apt_sources_contents_prior != apt_sources_check.repo | community.general.jc('ini')
 
-      when: apt_sources_path.stat.exists | bool
+      when: apt_sources_path.stat.exists | ansible.builtin.bool
 
     - name: "Apt repository sources file present for {{ ansible_facts.distribution }}"  # noqa: args[module]
       ansible.builtin.deb822_repository:
@@ -101,22 +104,23 @@
         - name: Debug updated apt_sources_present.repo
           ansible.builtin.debug:
             var: apt_sources_present.repo
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}1{% else %}2{% endif %}"
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}1{% else %}2{% endif %}
           tags:
             - debug
 
         - name: Diff apt repository sources file update
           ansible.utils.fact_diff:
             before: "{{ apt_sources_contents_prior | ansible.builtin.to_nice_yaml }}"
-            after: "{{ apt_sources_present.repo | string | community.general.jc('ini') | ansible.builtin.to_nice_yaml }}"
+            after: "{{ apt_sources_present.repo | community.general.jc('ini') | ansible.builtin.to_nice_yaml }}"
           when:
-            - (ansible_check_mode | bool) or (ansible_diff_mode | bool)
-            - apt_sources_contents_prior is defined
-            - apt_sources_present.repo is defined
+            - (ansible_check_mode | ansible.builtin.bool) or (ansible_diff_mode | ansible.builtin.bool)
+            - apt_sources_contents_prior is ansible.builtin.defined
+            - apt_sources_present.repo is ansible.builtin.defined
 
       when:
-        - apt_sources_present.changed is defined
-        - apt_sources_present.changed | bool
+        - apt_sources_present.changed is ansible.builtin.defined
+        - apt_sources_present.changed | ansible.builtin.bool
 
   tags:
     - apt

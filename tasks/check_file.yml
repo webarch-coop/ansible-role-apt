@@ -21,12 +21,19 @@
 
         - name: "Decode the base64 encoded version of {{ apt_file }}"
           ansible.builtin.set_fact:
-            apt_file_content_lines: "{{ apt_file_contents_b64encoded['content'] | ansible.builtin.b64decode | trim | ansible.builtin.split('\n') | reject('regex', '^#') | reject('regex', '^$') }}"
+            apt_file_content_lines: >-
+              {{ apt_file_contents_b64encoded['content']
+              | ansible.builtin.b64decode
+              | ansible.builtin.trim
+              | ansible.builtin.split('\n')
+              | ansible.builtin.reject('regex', '^#')
+              | ansible.builtin.reject('regex', '^$') }}
 
         - name: Debug apt_file_content_lines
           ansible.builtin.debug:
             var: apt_file_content_lines
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
           tags:
             - debug
 
@@ -37,16 +44,21 @@
 
         - name: "Decode the base64 encoded version of {{ apt_file }}"
           ansible.builtin.set_fact:
-            apt_file_content: "{{ apt_file_contents_b64encoded['content'] | ansible.builtin.b64decode | trim | community.general.jc('ini') }}"
+            apt_file_content: >-
+              {{ apt_file_contents_b64encoded['content']
+              | ansible.builtin.b64decode
+              | ansible.builtin.trim
+              | community.general.jc('ini') }}
 
         - name: Debug apt_file_content
           ansible.builtin.debug:
             var: apt_file_content
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
           tags:
             - debug
 
-      when: apt_file is regex('[.]sources$')
+      when: apt_file is ansible.builtin.regex('[.]sources$')
 
   tags:
     - apt

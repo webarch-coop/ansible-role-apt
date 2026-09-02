@@ -14,21 +14,22 @@
     - name: Debug the hostvars variable names that start with apt_  # noqa: no-role-prefix
       ansible.builtin.debug:
         var: aptvarnames
-        verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
+        verbosity: "{% if ansible_check_mode | ansible.builtin.bool %}3{% else %}4{% endif %}"
       tags:
         - debug
 
     - name: Debug the hostvars variable names that start with apt_  # noqa: no-role-prefix
       ansible.builtin.debug:
         var: apthostvars
-        verbosity: "{% if ansible_check_mode | bool %}3{% else %}4{% endif %}"
+        verbosity: "{% if ansible_check_mode | ansible.builtin.bool %}3{% else %}4{% endif %}"
       tags:
         - debug
 
     - name: Set a fact for the argument spec and internal argument spec  # noqa: no-role-prefix
       ansible.builtin.set_fact:
-        apt_argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yml') | from_yaml) }}"
-        apt_internal_argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/internal_argument_specs.yml') | from_yaml) }}"
+        apt_argument_spec: "{{ (lookup('ansible.builtin.file', 'meta/argument_specs.yml') | ansible.builtin.from_yaml) }}"
+        apt_internal_argument_spec: >-
+          {{ (lookup('ansible.builtin.file', 'meta/internal_argument_specs.yml') | ansible.builtin.from_yaml) }}
 
     - name: Set a fact for the combined argument spec and internal argument spec
       ansible.builtin.set_fact:
@@ -39,7 +40,7 @@
         argument_spec: "{{ apt_combined_argument_spec['argument_specs']['main']['options'] }}"
         provided_arguments: "{{ apthostvars }}"
 
-  when: apt_verify | bool
+  when: apt_verify | ansible.builtin.bool
   tags:
     - apt
 ...

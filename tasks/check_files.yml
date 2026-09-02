@@ -19,7 +19,8 @@
     - name: Debug apt_sources_list
       ansible.builtin.debug:
         var: apt_sources_list
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
@@ -28,8 +29,11 @@
       vars:
         apt_file: /etc/apt/sources.list
       when:
-        - (ansible_check_mode | bool) or (ansible_verbosity >= 1) or (apt_rescue is defined and apt_rescue | bool)
-        - apt_sources_list.stat.exists | bool
+        - >-
+          (ansible_check_mode | ansible.builtin.bool) or
+          (ansible_verbosity >= 1) or
+          (apt_rescue is ansible.builtin.defined and apt_rescue | ansible.builtin.bool)
+        - apt_sources_list.stat.exists | ansible.builtin.bool
 
     - name: Find all files in /etc/apt/sources.list.d that end in .list or .sources
       ansible.builtin.find:
@@ -43,7 +47,8 @@
     - name: Debug apt_sources_list_d
       ansible.builtin.debug:
         var: apt_sources_list_d
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
@@ -54,7 +59,8 @@
     - name: Debug apt_sources_list_d_paths
       ansible.builtin.debug:
         var: apt_sources_list_d_paths
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
@@ -65,7 +71,10 @@
         loop_var: apt_file
         label: "{{ apt_file | ansible.builtin.basename }}"
       when:
-        - (ansible_check_mode | bool) or (ansible_verbosity >= 1) or (apt_rescue is defined and apt_rescue | bool)
+        - >-
+          (ansible_check_mode | ansible.builtin.bool) or
+          (ansible_verbosity >= 1) or
+          (apt_rescue is ansible.builtin.defined and apt_rescue | ansible.builtin.bool)
         - apt_sources_list_d_paths != []
 
   tags:

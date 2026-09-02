@@ -14,28 +14,28 @@
     - name: Debug ansible_facts.distribution
       ansible.builtin.debug:
         var: ansible_facts.distribution
-        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: "{% if ansible_check_mode | ansible.builtin.bool %}0{% else %}1{% endif %}"
       tags:
         - debug
 
     - name: Debug ansible_facts.distribution_release
       ansible.builtin.debug:
         var: ansible_facts.distribution_release
-        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: "{% if ansible_check_mode | ansible.builtin.bool %}0{% else %}1{% endif %}"
       tags:
         - debug
 
     - name: "Debug apt_default_config | community.general.json_query('[].distro')"
       ansible.builtin.debug:
         var: apt_default_config | community.general.json_query('[].distro')
-        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: "{% if ansible_check_mode | ansible.builtin.bool %}0{% else %}1{% endif %}"
       tags:
         - debug
 
     - name: "Debug apt_pkgs | community.general.json_query('[].distro')"
       ansible.builtin.debug:
         var: apt_pkgs | community.general.json_query('[].distro')
-        verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: "{% if ansible_check_mode | ansible.builtin.bool %}0{% else %}1{% endif %}"
       tags:
         - debug
 
@@ -45,10 +45,10 @@
         - name: Check that the distro and version is supported
           ansible.builtin.assert:
             that:
-              - ansible_facts.distribution is regex('^Debian|Ubuntu$')
+              - ansible_facts.distribution is ansible.builtin.regex('^Debian|Ubuntu$')
               - ansible_facts.distribution_release in (apt_default_config | community.general.json_query('[].distro'))
               - ansible_facts.distribution_release in (apt_pkgs | community.general.json_query('[].distro'))
-            quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+            quiet: "{% if ansible_check_mode | ansible.builtin.bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
       rescue:
 
@@ -79,8 +79,9 @@
         - name: Fail due to erors in checking if the distro and version are supported
           ansible.builtin.fail:
             msg: >-
-              This role doesn't appear to support the version of Linux that {{ inventory_hostname }} is running, please check the debugging information
-              above to see if {{ ansible_facts.distribution }} {{ ansible_facts.distribution_release }} is listed above.
+              This role doesn't appear to support the version of Linux that {{ inventory_hostname }} is running, please check the
+              debugging information above to see if {{ ansible_facts.distribution }} {{ ansible_facts.distribution_release }}
+              is listed above.
 
     - name: Check apt_distro
       block:
@@ -88,7 +89,7 @@
         - name: Print apt_distro
           ansible.builtin.debug:
             var: apt_distro
-            verbosity: "{% if ansible_check_mode | bool %}0{% else %}1{% endif %}"
+            verbosity: "{% if ansible_check_mode | ansible.builtin.bool %}0{% else %}1{% endif %}"
           tags:
             - debug
 
@@ -97,7 +98,7 @@
             that:
               - apt_distro in (apt_default_config | community.general.json_query('[].distro'))
               - apt_distro in (apt_pkgs | community.general.json_query('[].distro'))
-            quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+            quiet: "{% if ansible_check_mode | ansible.builtin.bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
 
         - name: Fail if the checked distro version doesn't match the specified value of apt_distro
           ansible.builtin.fail:
@@ -106,9 +107,9 @@
               configured for {{ apt_distro }}.
           when:
             - apt_distro != ansible_facts.distribution_release
-            - not apt_distro_switch | bool
+            - not apt_distro_switch | ansible.builtin.bool
 
-      when: apt_distro is defined
+      when: apt_distro is ansible.builtin.defined
 
     - name: Warning and tasks for switching distros
       block:
@@ -125,70 +126,74 @@
             - molecule-idempotence-notest
 
       when:
-        - apt_distro is defined
+        - apt_distro is ansible.builtin.defined
         - apt_distro != ansible_facts.distribution_release
-        - apt_distro_switch is defined
-        - apt_distro_switch | bool
+        - apt_distro_switch is ansible.builtin.defined
+        - apt_distro_switch | ansible.builtin.bool
 
-    - name: Set apt_distro if not defined
+    - name: Set apt_distro if not ansible.builtin.defined
       ansible.builtin.set_fact:
         apt_distro: "{{ ansible_facts.distribution_release }}"
-      when: apt_distro is not defined
+      when: apt_distro is not ansible.builtin.defined
 
-    - name: Check the processor architecture when ansible_facts.ansible_local.dpkg.arch is not defined
+    - name: Check the processor architecture when ansible_facts.ansible_local.dpkg.arch is not ansible.builtin.defined
       ansible.builtin.command:
         cmd: dpkg --print-architecture
       check_mode: false
       changed_when: false
       register: apt_dpkg_architecture
-      when: ansible_facts.ansible_local.dpkg.arch is not defined
+      when: ansible_facts.ansible_local.dpkg.arch is not ansible.builtin.defined
 
     - name: Debug apt_dpkg_architecture
       ansible.builtin.debug:
         var: apt_dpkg_architecture
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
     - name: Set a fact for the processor architecture
       ansible.builtin.set_fact:
         apt_architecture: >-
-          {%- if ansible_facts.ansible_local.dpkg.arch is defined -%}
+          {%- if ansible_facts.ansible_local.dpkg.arch is ansible.builtin.defined -%}
           {{- ansible_facts.ansible_local.dpkg.arch -}}
-          {%- elif apt_dpkg_architecture is defined -%}
+          {%- elif apt_dpkg_architecture is ansible.builtin.defined -%}
           {{- apt_dpkg_architecture.stdout -}}
           {%- endif -%}
 
     - name: Print apt_architecture
       ansible.builtin.debug:
         var: apt_architecture
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
     - name: The apt_default_config, apt_lists and apt_sources variables should not be set for hosts
       ansible.builtin.assert:
         that:
-          - hostvars[inventory_hostname].apt_default_config is not defined
-          - hostvars[inventory_hostname].apt_lists is not defined
-          - hostvars[inventory_hostname].apt_sources is not defined
-        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
-        fail_msg: "The internal variables apt_default_config, apt_lists and apt_sources should nto be set at a host level, use apt_config."
+          - hostvars[inventory_hostname].apt_default_config is not ansible.builtin.defined
+          - hostvars[inventory_hostname].apt_lists is not ansible.builtin.defined
+          - hostvars[inventory_hostname].apt_sources is not ansible.builtin.defined
+        quiet: "{% if ansible_check_mode | ansible.builtin.bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+        fail_msg: >-
+          The internal variables apt_default_config, apt_lists and apt_sources should nto be set at a host level, use apt_config.
 
-    - name: Set a fact for the combined apt config when apt_config is not defined
+    - name: Set a fact for the combined apt config when apt_config is not ansible.builtin.defined
       ansible.builtin.set_fact:
         apt_combined_config: "{{ apt_default_config }}"
-      when: apt_config is not defined
+      when: apt_config is not ansible.builtin.defined
 
-    - name: Set a fact for the combined apt config when apt_config is defined
+    - name: Set a fact for the combined apt config when apt_config is ansible.builtin.defined
       ansible.builtin.set_fact:
         apt_combined_config: "{{ apt_config | ansible.builtin.combine(apt_default_config, recursive=true) }}"
-      when: apt_config is defined
+      when: apt_config is ansible.builtin.defined
 
     - name: Debug apt_combined_config
       ansible.builtin.debug:
         var: apt_combined_config
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
@@ -203,21 +208,23 @@
     - name: Debug apt_lists
       ansible.builtin.debug:
         var: apt_lists
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
     - name: Debug apt_sources
       ansible.builtin.debug:
         var: apt_sources
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
     - name: Apt sources checks
       ansible.builtin.include_tasks: check_sources.yml
       when:
-        - apt_sources is defined
+        - apt_sources is ansible.builtin.defined
         - apt_sources != []
         - apt_sources | ansible.builtin.type_debug != "NoneType"
         - apt_sources is not ansible.builtin.regex('^$')
@@ -227,15 +234,15 @@
         that:
           - apt_list.path is ansible.builtin.regex('^[/]etc[/]apt[/]')
           - apt_list.path is ansible.builtin.regex('[.]list$')
-        quiet: "{% if ansible_check_mode | bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
+        quiet: "{% if ansible_check_mode | ansible.builtin.bool or ansible_verbosity >= 1 %}false{% else %}true{% endif %}"
       loop: "{{ apt_lists }}"
       loop_control:
         loop_var: apt_list
         label: "{{ apt_list.path | ansible.builtin.basename }}"
       when:
-        - apt_list.state is defined
+        - apt_list.state is ansible.builtin.defined
         - apt_list.state == "present"
-        - apt_lists is defined
+        - apt_lists is ansible.builtin.defined
         - apt_lists != []
         - apt_lists | ansible.builtin.type_debug != "NoneType"
         - apt_lists is not ansible.builtin.regex('^$')

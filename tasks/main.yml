@@ -11,7 +11,7 @@
 - name: Skip the tasks in this role as apt is false
   ansible.builtin.debug:
     msg: "The apt variable need to be true for the tasks in this role to run."
-  when: not apt | bool
+  when: not apt | ansible.builtin.bool
   tags:
     - apt
 
@@ -21,15 +21,15 @@
     - name: Include verify variables tasks
       ansible.builtin.include_tasks: verify.yml
       when:
-        - apt_verify | bool
-        - ansible_version.full is version('2.11', '>=')
+        - apt_verify | ansible.builtin.bool
+        - ansible_version.full is ansible.builtin.version('2.11', '>=')
 
     - name: Include local facts tasks
       ansible.builtin.include_tasks: local_facts.yml
       when:
-        - apt_local_facts is defined
-        - apt_local_facts | bool
-        - apt_local_facts_files is defined
+        - apt_local_facts is ansible.builtin.defined
+        - apt_local_facts | ansible.builtin.bool
+        - apt_local_facts_files is ansible.builtin.defined
         - apt_local_facts_files != []
       tags:
         - apt_local_facts
@@ -69,7 +69,8 @@
         - name: Debug apt_pkgs_present
           ansible.builtin.debug:
             var: apt_pkgs_present
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
           tags:
             - debug
 
@@ -82,7 +83,8 @@
         - name: Debug apt_update_grub
           ansible.builtin.debug:
             var: apt_update_grub
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
           tags:
             - debug
 
@@ -90,9 +92,9 @@
         apt_pkgs_jmespath_query: "[?distro=='{{ ansible_facts.distribution_release }}'].pkgs|[0]"
       when:
         - ("grub2" in apt_pkgs | community.general.json_query(apt_pkgs_jmespath_query))
-        - apt_pkgs_present.stdout is defined
-        - apt_pkgs_present.failed is defined
-        - not apt_pkgs_present.failed | bool
+        - apt_pkgs_present.stdout is ansible.builtin.defined
+        - apt_pkgs_present.failed is ansible.builtin.defined
+        - not apt_pkgs_present.failed | ansible.builtin.bool
         - ("grub2" in apt_pkgs_present.stdout)
 
     - name: Include apt config tasks
@@ -102,8 +104,8 @@
       ansible.builtin.apt:
         update_cache: true
       when:
-        - apt_distro_switch is defined
-        - apt_distro_switch | bool
+        - apt_distro_switch is ansible.builtin.defined
+        - apt_distro_switch | ansible.builtin.bool
 
     - name: When switching distros updates should not be done using Ansible
       block:
@@ -118,8 +120,9 @@
         - name: Debug apt_update_cache_result
           ansible.builtin.debug:
             var: apt_update_cache_result
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
-          when: apt_update_cache_result is defined
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
+          when: apt_update_cache_result is ansible.builtin.defined
           tags:
             - debug
 
@@ -131,20 +134,21 @@
         - name: Debug apt_dist_upgrade_result
           ansible.builtin.debug:
             var: apt_dist_upgrade_result
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
-          when: apt_dist_upgrade_result is defined
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
+          when: apt_dist_upgrade_result is ansible.builtin.defined
           tags:
             - debug
 
         - name: Re-read Ansible local facts  # noqa: no-handler
           ansible.builtin.setup:
             filter: ansible_local
-          when: apt_dist_upgrade_result.changed | bool
+          when: apt_dist_upgrade_result.changed | ansible.builtin.bool
 
         - name: Apt autoremove
           ansible.builtin.apt:
             autoremove: true
-          when: apt_autoremove | bool
+          when: apt_autoremove | ansible.builtin.bool
           register: apt_autoremove_result
           tags:
             - molecule-idempotence-notest
@@ -152,8 +156,9 @@
         - name: Debug apt_autoremove_result
           ansible.builtin.debug:
             var: apt_autoremove_result
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
-          when: apt_autoremove_result is defined
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
+          when: apt_autoremove_result is ansible.builtin.defined
           tags:
             - debug
             - molecule-idempotence-notest
@@ -161,37 +166,38 @@
         - name: Apt auto clean
           ansible.builtin.apt:
             autoclean: true
-          when: apt_autoclean | bool
+          when: apt_autoclean | ansible.builtin.bool
           register: apt_autoclean_result
 
         - name: Debug apt_autoclean_result
           ansible.builtin.debug:
             var: apt_autoclean_result
-            verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
-          when: apt_autoclean_result is defined
+            verbosity: >-
+              {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
+          when: apt_autoclean_result is ansible.builtin.defined
           tags:
             - debug
 
         - name: Apt clean
           ansible.builtin.include_tasks: apt_clean.yml
           when:
-            - ansible_version.full is version('2.13', '>=')
-            - apt_clean | bool
+            - ansible_version.full is ansible.builtin.version('2.13', '>=')
+            - apt_clean | ansible.builtin.bool
 
         - name: Include apticron tasks
           ansible.builtin.include_tasks: apticron.yml
-          when: apt_apticron is defined
+          when: apt_apticron is ansible.builtin.defined
 
       when: >-
-        (apt_distro_switch is not defined) or
-        (not apt_distro_switch | bool)
+        (apt_distro_switch is not ansible.builtin.defined) or
+        (not apt_distro_switch | ansible.builtin.bool)
 
     - name: Include check for legacy .list file
       ansible.builtin.include_tasks: list_check.yml
       tags:
         - apt_list
 
-  when: apt | bool
+  when: apt | ansible.builtin.bool
   tags:
     - apt
 ...

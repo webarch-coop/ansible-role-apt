@@ -14,7 +14,8 @@
     - name: Debug apt_sources
       ansible.builtin.debug:
         var: apt_sources
-        verbosity: "{% if ansible_check_mode | bool or ansible_diff_mode | bool %}0{% else %}1{% endif %}"
+        verbosity: >-
+          {% if ansible_check_mode | ansible.builtin.bool or ansible_diff_mode | ansible.builtin.bool %}0{% else %}1{% endif %}
       tags:
         - debug
 
@@ -23,8 +24,8 @@
       vars:
         apt_file_absent: "/etc/apt/sources.list.d/{{ apt_source.name }}.sources"
       when:
-        - apt_source.name is defined
-        - apt_source.state is defined
+        - apt_source.name is ansible.builtin.defined
+        - apt_source.state is ansible.builtin.defined
         - apt_source.state == "absent"
       loop: "{{ apt_sources }}"
       loop_control:
@@ -34,8 +35,8 @@
     - name: Include apt source files present tasks
       ansible.builtin.include_tasks: sources_file.yml
       when:
-        - apt_source.name is defined
-        - apt_source.state is defined
+        - apt_source.name is ansible.builtin.defined
+        - apt_source.state is ansible.builtin.defined
         - apt_source.state == "present"
       loop: "{{ apt_sources }}"
       loop_control:
@@ -43,9 +44,9 @@
         label: "{{ apt_source.name }}"
 
   when:
-    - apt_sources is defined
+    - apt_sources is ansible.builtin.defined
     - apt_sources != []
-    - apt_sources | length > 0
+    - apt_sources | ansible.builtin.length > 0
   tags:
     - apt
 ...

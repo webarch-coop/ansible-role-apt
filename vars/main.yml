@@ -16,6 +16,7 @@ apthostvars: "{{ dict(aptvarnames | list | zip(q('vars', *aptvarnames))) }}"
 
 # https://www.freexian.com/lts/extended/docs/how-to-use-extended-lts/
 apt_freexian_distros:
+  - bullseye
   - buster
   - jessie
   - stretch
